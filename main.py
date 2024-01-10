@@ -12,7 +12,7 @@ def getResponse(antennas, phi):
 
 
 # System parameters
-L = 3  # number of paths (including LOS)
+L = 1  # number of paths (including LOS)
 Rs = 100  # total BW in MHz
 N = 10  # number of subcarriers
 Nt = 32  # number of TX antennas
