@@ -96,13 +96,7 @@ if BOTH:
     indices, spectrum = music(cov=angle_time_cov, L=L, n_elements=Nr * K, options=angle_time_options)
     angle_indices = indices // T_res
     time_indices = indices % T_res
-    degs_set, time_set = set(), set()
     filtered_peaks = []
-    for angle_ind, time_ind in zip(angle_indices, time_indices):
-        if angle_ind not in degs_set and time_ind not in time_set:
-            filtered_peaks.append([aa[angle_ind], time_values[time_ind]])
-            degs_set.add(angle_ind)
-            time_set.add(time_ind)
-    print(filtered_peaks)
-    print(AOA)
-    print(TOA)
+    for uniq_time in np.unique(time_indices):
+        avg_angle = int(np.mean(angle_indices[time_indices == uniq_time]))
+        filtered_peaks.append([aa[avg_angle], time_values[uniq_time]])
