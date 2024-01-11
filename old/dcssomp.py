@@ -5,7 +5,7 @@ def DCSSOMP(Y, A, L):
     # Get dimensions
     K = Y.shape[1]  # number of channels
     N = Y.shape[0]  # observations per channel
-    M = A.shape[1]  # size of sparse vector (M >> N)
+    M = A.shape[1]  # size of sparse vector (M >> n_elements)
 
     if L <= 0:
         L = N
@@ -22,7 +22,7 @@ def DCSSOMP(Y, A, L):
         cost = np.zeros(M)
         for m in range(M):
             for k in range(K):
-                # Calculate cost for each column m of A and each channel k
+                # Calculate cost for each column m of A and each channel ns
                 cost[m] = cost[m] + np.abs(np.dot(A[:, m, k].conj().T, R[:, k])) / np.linalg.norm(A[:, m, k], 2)
 
         maxi = np.argmax(cost)
