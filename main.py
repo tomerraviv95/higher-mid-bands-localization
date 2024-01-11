@@ -6,7 +6,7 @@ from dcssomp import DCSSOMP
 np.random.seed(503)
 
 
-# Function to get response for a given number of antennas and spatial frequency
+# Function to get response for a given number of n_elements and spatial frequency
 def getResponse(antennas, phi):
     return np.exp(-1j * np.pi * phi * np.arange(antennas)) / antennas ** 0.5
 
@@ -15,8 +15,8 @@ def getResponse(antennas, phi):
 L = 1  # number of paths (including LOS)
 Rs = 100  # total BW in MHz
 N = 10  # number of subcarriers
-Nt = 32  # number of TX antennas
-Nr = Nt  # number of RX antennas
+Nt = 32  # number of TX n_elements
+Nr = Nt  # number of RX n_elements
 Nb = Nt * 2  # number of beams in dictionary
 Ns = 20  # number of beams sent
 c = 300  # speed of light meter / us
