@@ -3,24 +3,28 @@ from matplotlib import pyplot as plt
 
 from music import music, array_response_vector, compute_time_options, compute_angle_options
 
-np.random.seed(10)
+plt.style.use('dark_background')
+
+np.random.seed(100)
 
 # System parameters
 L = 3  # number of paths (including LOS)
 K = 10  # number of subcarriers
 Nt = 32  # number of TX n_elements
 Nr = Nt  # number of RX n_elements
-Nb = 360  # number of beams in dictionary
-T_res = 200  # number of times in dictionary
+Nb = 180  # number of beams in dictionary
+T_res = 100  # number of times in dictionary
 Ns = 1000  # number of beams sent
 c = 300  # speed of light meter / us
-posRx = np.array([5, 3])  # RX (user) position, TX is assumed to be in [0, 0]
+posRx = np.array([3, 5])  # RX (user) position, TX is assumed to be in [0, 0]
+max_time = 0.1  # maximum time
 sigma = 0.1  # noise standard deviation
 fc = 1000  # carrier frequency in MHz
 BW = 100  # BW frequency in MHz
 
 # Generate scatter points
 SP = np.random.rand(L - 1, 2) * 20 - 10  # random points uniformly placed in a 20 m x 20 m area
+SP = np.array([[8, 4], [4, 1]])
 
 # Compute Channel Parameters for L paths
 TOA = np.zeros(L)
@@ -50,15 +54,15 @@ for ns in range(Ns):
     y[:, :, ns] = H + sigma / np.sqrt(2) * (np.random.randn(Nr, K) + 1j * np.random.randn(Nr, K))
 
 # angle of arrival
-ANGLE = False
+ANGLE = True
 if ANGLE:
     angle_cov = np.cov(y.reshape(Nr, -1), bias=True)
     angle_values = np.arange(Nr)
     angle_options = compute_angle_options(aa, values=angle_values)
     indices, spectrum = music(cov=angle_cov, L=L, n_elements=Nr, options=angle_options)
     fig = plt.figure()
-    plt.plot(aa, spectrum)
-    plt.plot(aa[indices], spectrum[indices], 'x')
+    plt.plot(aa, spectrum, color="cyan")
+    plt.plot(aa[indices], spectrum[indices], 'ro')
     plt.title('MUSIC for AOA Estimation')
     plt.xlabel('degree[rad]')
     plt.ylabel('MUSIC coefficient')
@@ -67,17 +71,17 @@ if ANGLE:
     plt.show()
 
 # time delay
-TIME_DELAY = False
+TIME_DELAY = True
 if TIME_DELAY:
     fig = plt.figure()
     time_cov = np.cov(np.transpose(y, [1, 0, 2]).reshape(K, -1), bias=True)
-    time_values = np.linspace(0, 0.1, T_res)
+    time_values = np.linspace(0, max_time, T_res)
     time_options = compute_time_options(fc, K, BW, values=time_values)
     indices, spectrum = music(cov=time_cov, L=L, n_elements=K, options=time_options)
-    plt.plot(time_values, spectrum)
-    plt.plot(time_values[indices], spectrum[indices], 'x')
+    plt.plot(time_values, spectrum, color="orange")
+    plt.plot(time_values[indices], spectrum[indices], 'ro')
     plt.title('MUSIC for Delay Estimation')
-    plt.xlabel('time[s]')
+    plt.xlabel('time[us]')
     plt.ylabel('MUSIC coefficient')
     plt.legend(['spectrum', 'Estimated delays'])
     plt.savefig('delay.png', dpi=fig.dpi)
@@ -90,7 +94,7 @@ if BOTH:
     angle_time_cov = np.cov(y.reshape(K * Nr, -1), bias=True)
     angle_values = np.arange(Nr)
     angle_options = compute_angle_options(aa, values=angle_values)
-    time_values = np.linspace(0, 0.1, T_res)
+    time_values = np.linspace(0, max_time, T_res)
     time_options = compute_time_options(fc, K, BW, values=time_values)
     angle_time_options = np.kron(angle_options, time_options)
     indices, spectrum = music(cov=angle_time_cov, L=L, n_elements=Nr * K, options=angle_time_options)
@@ -100,3 +104,13 @@ if BOTH:
     for uniq_time in np.unique(time_indices):
         avg_angle = int(np.mean(angle_indices[time_indices == uniq_time]))
         filtered_peaks.append([aa[avg_angle], time_values[uniq_time]])
+    filtered_peaks = np.array(filtered_peaks)
+    fig = plt.figure()
+    plt.contourf(time_values, aa, spectrum.reshape(Nb, T_res), cmap='magma')
+    ax = plt.gca()
+    ax.set_xlabel('time[us]')
+    ax.set_ylabel('AOA[rad]')
+    plt.savefig('AOA_and_delay.png', dpi=fig.dpi)
+    plt.plot(filtered_peaks[:, 1], filtered_peaks[:, 0], 'ro')
+    plt.savefig('AOA_and_delay_est.png', dpi=fig.dpi)
+    plt.show()
