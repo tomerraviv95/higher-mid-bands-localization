@@ -1,16 +1,17 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-from music import music, array_response_vector
+from music import music, array_response_vector, compute_time_options, compute_angle_options
 
 np.random.seed(10)
 
 # System parameters
-L = 5  # number of paths (including LOS)
+L = 3  # number of paths (including LOS)
 K = 10  # number of subcarriers
 Nt = 32  # number of TX n_elements
 Nr = Nt  # number of RX n_elements
 Nb = 360  # number of beams in dictionary
+T_res = 200  # number of times in dictionary
 Ns = 1000  # number of beams sent
 c = 300  # speed of light meter / us
 posRx = np.array([5, 3])  # RX (user) position, TX is assumed to be in [0, 0]
@@ -49,26 +50,59 @@ for ns in range(Ns):
     y[:, :, ns] = H + sigma / np.sqrt(2) * (np.random.randn(Nr, K) + 1j * np.random.randn(Nr, K))
 
 # angle of arrival
-cov = np.cov(y.reshape(Nr, -1), bias=True)
-angle_options = np.sin(aa)
-indices, spectrum = music(cov=cov, L=L, n_elements=Nr, options=angle_options, basis_vector=np.arange(Nr))
-plt.plot(aa, spectrum)
-plt.plot(aa[indices], spectrum[indices], 'x')
-plt.title('MUSIC for AOA estimation')
-plt.xlabel('degree[rad]')
-plt.ylabel('MUSIC coefficient')
-plt.legend(['spectrum', 'Estimated AOAs'])
-plt.show()
+ANGLE = False
+if ANGLE:
+    angle_cov = np.cov(y.reshape(Nr, -1), bias=True)
+    angle_values = np.arange(Nr)
+    angle_options = compute_angle_options(aa, values=angle_values)
+    indices, spectrum = music(cov=angle_cov, L=L, n_elements=Nr, options=angle_options)
+    fig = plt.figure()
+    plt.plot(aa, spectrum)
+    plt.plot(aa[indices], spectrum[indices], 'x')
+    plt.title('MUSIC for AOA Estimation')
+    plt.xlabel('degree[rad]')
+    plt.ylabel('MUSIC coefficient')
+    plt.legend(['spectrum', 'Estimated AOAs'])
+    plt.savefig('AOA.png', dpi=fig.dpi)
+    plt.show()
 
 # time delay
-cov2 = np.cov(np.transpose(y, [1, 0, 2]).reshape(K, -1), bias=True)
-time_options = np.linspace(0, 0.1, 1000)
-time_basis_vector = 2 * (fc + np.arange(K) * BW / K)
-indices2, spectrum2 = music(cov=cov2, L=L, n_elements=K, options=time_options, basis_vector=time_basis_vector)
-plt.plot(time_options, spectrum2)
-plt.plot(time_options[indices2], spectrum2[indices2], 'x')
-plt.title('MUSIC for delay estimation')
-plt.xlabel('time[s]')
-plt.ylabel('MUSIC coefficient')
-plt.legend(['spectrum', 'Estimated delays'])
-plt.show()
+TIME_DELAY = False
+if TIME_DELAY:
+    fig = plt.figure()
+    time_cov = np.cov(np.transpose(y, [1, 0, 2]).reshape(K, -1), bias=True)
+    time_values = np.linspace(0, 0.1, T_res)
+    time_options = compute_time_options(fc, K, BW, values=time_values)
+    indices, spectrum = music(cov=time_cov, L=L, n_elements=K, options=time_options)
+    plt.plot(time_values, spectrum)
+    plt.plot(time_values[indices], spectrum[indices], 'x')
+    plt.title('MUSIC for Delay Estimation')
+    plt.xlabel('time[s]')
+    plt.ylabel('MUSIC coefficient')
+    plt.legend(['spectrum', 'Estimated delays'])
+    plt.savefig('delay.png', dpi=fig.dpi)
+    plt.show()
+
+# combining both estimates, 2-D AOA & TOA
+BOTH = True
+if BOTH:
+    fig = plt.figure()
+    angle_time_cov = np.cov(y.reshape(K * Nr, -1), bias=True)
+    angle_values = np.arange(Nr)
+    angle_options = compute_angle_options(aa, values=angle_values)
+    time_values = np.linspace(0, 0.1, T_res)
+    time_options = compute_time_options(fc, K, BW, values=time_values)
+    angle_time_options = np.kron(angle_options, time_options)
+    indices, spectrum = music(cov=angle_time_cov, L=L, n_elements=Nr * K, options=angle_time_options)
+    angle_indices = indices // T_res
+    time_indices = indices % T_res
+    degs_set, time_set = set(), set()
+    filtered_peaks = []
+    for angle_ind, time_ind in zip(angle_indices, time_indices):
+        if angle_ind not in degs_set and time_ind not in time_set:
+            filtered_peaks.append([aa[angle_ind], time_values[time_ind]])
+            degs_set.add(angle_ind)
+            time_set.add(time_ind)
+    print(filtered_peaks)
+    print(AOA)
+    print(TOA)
