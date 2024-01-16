@@ -14,7 +14,7 @@ Channel = namedtuple("Channel", ["SP", "y", "AOA", "TOA"])
 def create_scatter_points(L):
     # x must be positive. The array lies on the y-axis and points towards the x-axis.
     # SP = np.random.rand(L - 1, 2) * 20 - 10  # random points uniformly placed in a 20 m x 20 m area
-    SP = np.array([[10, 10], [8, 0]])
+    SP = np.array([[10, 10], [15, -12]])
     return SP
 
 
@@ -32,7 +32,7 @@ def compute_gt_channel_parameters(ue_pos: List[float], SP: np.ndarray):
 
 
 def compute_observations(TOA: List[float], AOA: List[float]):
-    alpha = np.sqrt(1 / 2) * (np.random.randn(conf.L) + np.random.randn(conf.L) * 1j)  # random channel gains
+    alpha = np.sqrt(1 / 2) * (np.random.randn(conf.L) + np.random.randn(conf.L) * 1j)
     # Generate the observation and beamformers
     y = np.zeros((conf.Nr, conf.K, conf.Ns), dtype=complex)
     for ns in range(conf.Ns):
@@ -45,8 +45,7 @@ def compute_observations(TOA: List[float], AOA: List[float]):
             if conf.channel_bandwidth == ChannelBWType.NARROWBAND.name:
                 h += F * alpha[l] * np.matmul(aoa_vector, delays_phase_vector)
             elif conf.channel_bandwidth == ChannelBWType.WIDEBAND.name:
-                frequency_wideband_vector = compute_time_options(conf.fc, conf.K, conf.BW,
-                                                                 np.array([1 / conf.fc]))
+                frequency_wideband_vector = compute_time_options(conf.fc, conf.K, conf.BW, np.array([1 / conf.fc]))
                 wideband_matrix = np.matmul(aoa_vector, frequency_wideband_vector)
                 h += F * alpha[l] * wideband_matrix * delays_phase_vector
             else:

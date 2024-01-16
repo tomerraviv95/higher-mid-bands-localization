@@ -13,7 +13,7 @@ def cluster(evs):
         @returns -- The eigenvalues similar or equal to the smallest eigenvalue.
     """
     # simplest clustering method: with threshold
-    threshold = 0.4
+    threshold = 0.1
     return evs[np.where(abs(evs) < abs(evs[-1]) + threshold)]
 
 def music(cov: np.ndarray, n_elements: int, options: np.ndarray):
@@ -26,6 +26,6 @@ def music(cov: np.ndarray, n_elements: int, options: np.ndarray):
     Qn = eigenvectors[:, L_hat:]
     music_coef = 1 / scipy.linalg.norm(Qn.conj().T @ options.T, axis=0)
     spectrum = np.log10(10 * music_coef / music_coef.min())
-    aoa_indices, _ = scipy.signal.find_peaks(spectrum, height=1.35)
+    aoa_indices, _ = scipy.signal.find_peaks(spectrum, height=1.15)
     top_aoa_indices = aoa_indices[np.argsort(spectrum[aoa_indices])[-L_hat - 1:]]
     return top_aoa_indices, spectrum
