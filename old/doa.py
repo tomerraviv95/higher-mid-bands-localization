@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from music import array_response_vector, music
+from python_code.music import array_response_vector, music
 
 np.random.seed(100)
 
