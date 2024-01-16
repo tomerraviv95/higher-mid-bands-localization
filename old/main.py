@@ -104,7 +104,7 @@ for l in range(1, L + 1):
 # determine LOS path index
 min_i = np.argmin(distances)
 
-# map indices back to angle
+# map _indices back to ANGLE
 index1 = np.ceil((indices + 1) / Nb).astype(int) - 1
 index2 = indices - index1 * Nb
 AOD_hat = np.arcsin(aa[index1])

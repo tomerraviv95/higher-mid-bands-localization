@@ -5,7 +5,7 @@ import scipy.linalg
 import scipy.signal
 
 
-def music(cov, L, n_elements: int, options: np.ndarray):
+def music(cov: np.ndarray, L: int, n_elements: int, options: np.ndarray):
     # angle_cov is the signal covariance matrix, L is the number of sources, n_elements is the number of n_elements
     # array holds the positions of antenna elements
     # variables are the grid of directions in the azimuth angular domain

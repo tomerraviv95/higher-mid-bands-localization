@@ -4,11 +4,11 @@ seed: 0 # run seed
 L: 3  # number of paths (including LOS)
 K: 10  # number of subcarriers
 Nr: 32  # number of RX n_elements
-Nb: 180  # number of elements in the angle dictionary
-T_res: 100  # number of elements in the time dictionary
+Nb: 180  # number of elements in the ANGLE dictionary
+T_res: 100  # number of elements in the TIME dictionary
 Ns: 1000  # number of transmitted pilot beams
 rx_pos: [ 3, 5 ]  # RX (user) position, TX is assumed to be in [0, 0]
-max_time: 0.1  # maximum time
+max_time: 0.1  # maximum TIME
 sigma: 0.1  # noise standard deviation
 fc: 1000  # carrier frequency in MHz
 BW: 100  # BW frequency in MHz

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from python_code.music import array_response_vector, music
+from python_code.estimators.music import array_response_vector, music
 
 np.random.seed(100)
 
@@ -34,5 +34,5 @@ print(DoAsMUSIC)
 plt.plot(angles, psindB)
 plt.plot(angles[DoAsMUSIC], psindB[DoAsMUSIC], 'x')
 plt.title('MUSIC')
-plt.legend(['pseudo spectrum', 'Estimated DoAs'])
+plt.legend(['pseudo _spectrum', 'Estimated DoAs'])
 plt.show()
