@@ -39,9 +39,11 @@ def compute_observations(TOA: List[float], AOA: List[float]):
         h = np.zeros((conf.Nr, conf.K), dtype=complex)
         for l in range(conf.L):
             F = np.exp(1j * np.random.rand(1) * 2 * np.pi)  # random beamformer
-            steering_vector = compute_angle_options(np.array([AOA[l]]), np.arange(conf.Nr)).T
+            aoa_vector = compute_angle_options(np.array([AOA[l]]), np.arange(conf.Nr)).T
+            if conf.channel_bandwidth is 'WIDEBAND':
+                wideband_vector = compute_time_options(conf.fc, conf.K, conf.BW, np.array([TOA[l]])).T
             delays_phase_vector = compute_time_options(conf.fc, conf.K, conf.BW, np.array([TOA[l]])).T
-            h += F * alpha[l] * delays_phase_vector.T * steering_vector
+            h += F * alpha[l] * delays_phase_vector.T * aoa_vector
         ## adding the white Gaussian noise
         noise = conf.sigma / np.sqrt(2) * (np.random.randn(conf.Nr, conf.K) + 1j * np.random.randn(conf.Nr, conf.K))
         y[:, :, ns] = h + noise

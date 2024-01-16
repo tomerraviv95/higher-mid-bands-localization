@@ -6,7 +6,8 @@ from python_code.estimators.estimator import AngleEstimator, TimeEstimator, Angl
 from python_code.plotting.plotter import plot_angle, plot_time, plot_angle_time
 from python_code.utils.constants import EstimatorType
 
-estimators = {EstimatorType.ANGLE: AngleEstimator, EstimatorType.TIME: TimeEstimator,
+estimators = {EstimatorType.ANGLE: AngleEstimator,
+              EstimatorType.TIME: TimeEstimator,
               EstimatorType.ANGLE_TIME: AngleTimeEstimator}
 
 np.random.seed(conf.seed)
@@ -14,7 +15,7 @@ np.random.seed(conf.seed)
 if __name__ == "__main__":
     channel_instance = get_channel()
     y = channel_instance.y
-    estimator_type = EstimatorType.TIME
+    estimator_type = EstimatorType.ANGLE
     estimator = estimators[estimator_type]()
     est_values = estimator.estimate(y)
     # estimating the angle only

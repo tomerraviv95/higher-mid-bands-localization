@@ -7,3 +7,8 @@ class EstimatorType(Enum):
     ANGLE = 'ANGLE'
     TIME = 'TIME'
     ANGLE_TIME = 'ANGLE_TIME'
+
+
+class ChannelBWType(Enum):
+    NARROWBAND = 'NARROWBAND'
+    WIDEBAND = 'WIDEBAND'
