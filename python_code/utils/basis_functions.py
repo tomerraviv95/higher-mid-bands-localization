@@ -14,3 +14,5 @@ def compute_time_options(fc, K, BW, values):
 def compute_angle_options(angle_value, values):
     combination = np.dot(np.sin(angle_value).reshape(-1, 1) / 2, values.reshape(1, -1))
     return array_response_vector(combination)
+
+

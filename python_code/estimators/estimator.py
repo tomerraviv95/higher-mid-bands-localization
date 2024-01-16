@@ -7,14 +7,13 @@ from python_code.utils.basis_functions import compute_angle_options, compute_tim
 
 class AngleEstimator:
     def __init__(self):
-        self.angles_dict = np.linspace(-np.pi / 2, np.pi / 2, conf.Nb)  # dictionary of spatial frequencies
+        self.angles_dict = np.linspace(-np.pi/2, np.pi/2, conf.Nb)  # dictionary of spatial frequencies
         self._angle_options = compute_angle_options(self.angles_dict, values=np.arange(conf.Nr))
         self.algorithm = music
 
     def estimate(self, y):
         cov = np.cov(y.reshape(conf.Nr, -1), bias=True)
-        self._indices, self._spectrum = self.algorithm(cov=cov, L=conf.L, n_elements=conf.Nr,
-                                                       options=self._angle_options)
+        self._indices, self._spectrum = self.algorithm(cov=cov, n_elements=conf.Nr, options=self._angle_options)
         return self.angles_dict[self._indices]
 
 
@@ -26,8 +25,7 @@ class TimeEstimator:
 
     def estimate(self, y):
         cov = np.cov(np.transpose(y, [1, 0, 2]).reshape(conf.K, -1), bias=True)
-        self._indices, self._spectrum = self.algorithm(cov=cov, L=conf.L, n_elements=conf.K,
-                                                       options=self._time_options)
+        self._indices, self._spectrum = self.algorithm(cov=cov, n_elements=conf.K, options=self._time_options)
         return self.times_dict[self._indices]
 
 
@@ -40,7 +38,7 @@ class AngleTimeEstimator:
 
     def estimate(self, y):
         angle_time_cov = np.cov(y.reshape(conf.K * conf.Nr, -1), bias=True)
-        indices, self._spectrum = self.algorithm(cov=angle_time_cov, L=conf.L, n_elements=conf.Nr * conf.K,
+        indices, self._spectrum = self.algorithm(cov=angle_time_cov, n_elements=conf.Nr * conf.K,
                                                  options=self.angle_time_options)
         # filter nearby detected peaks
         filtered_peaks = self.filter_nearby_peaks(indices)
