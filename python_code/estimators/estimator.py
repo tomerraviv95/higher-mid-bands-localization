@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 import numpy as np
 
 from python_code import conf
@@ -9,6 +11,9 @@ from python_code.utils.constants import AlgType
 algs = {AlgType.BEAMSWEEPER: BeamSweeper(2), AlgType.MUSIC: MUSIC(1.4)}
 ALG_TYPE = AlgType.MUSIC
 
+Estimation = namedtuple("Estimation", ["AOA", "TOA"], defaults=(None,) * 2)
+
+
 class AngleEstimator:
     def __init__(self):
         self.angles_dict = np.linspace(-np.pi / 2, np.pi / 2, conf.Nb)  # dictionary of spatial frequencies
@@ -17,7 +22,8 @@ class AngleEstimator:
 
     def estimate(self, y):
         self._indices, self._spectrum = self.algorithm.run(y=y, basis_vectors=self._angle_options, n_elements=conf.Nr)
-        return self.angles_dict[self._indices]
+        estimator = Estimation(AOA=self.angles_dict[self._indices])
+        return estimator
 
 
 class WidebandAngleEstimator:
@@ -29,7 +35,7 @@ class WidebandAngleEstimator:
 
     def estimate(self, y):
         self._indices, self._spectrum = self.algorithm.run(y=y, basis_vectors=self._angle_options,
-                                                       n_elements=conf.Nr * conf.K)
+                                                           n_elements=conf.Nr * conf.K)
         return self.angles_dict[self._indices]
 
 
@@ -41,8 +47,9 @@ class TimeEstimator:
 
     def estimate(self, y):
         self._indices, self._spectrum = self.algorithm.run(y=np.transpose(y, [1, 0, 2]), n_elements=conf.K,
-                                                       basis_vectors=self._time_options)
-        return self.times_dict[self._indices]
+                                                           basis_vectors=self._time_options)
+        estimator = Estimation(TOA=self.times_dict[self._indices])
+        return estimator
 
 
 class AngleTimeEstimator:
@@ -54,7 +61,7 @@ class AngleTimeEstimator:
 
     def estimate(self, y):
         indices, self._spectrum = self.algorithm.run(y=y, n_elements=conf.Nr * conf.K,
-                                                 basis_vectors=self.angle_time_options)
+                                                     basis_vectors=self.angle_time_options)
         # filter nearby detected peaks
         filtered_peaks = self.filter_nearby_peaks(indices)
         return filtered_peaks

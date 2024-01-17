@@ -12,22 +12,20 @@ Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA"])
 
 
 def create_scatter_points(L):
-    # x must be positive. The array lies on the y-axis and points towards the x-axis.
     # scatterers = np.random.rand(L - 1, 2) * 20 - 10  # random points uniformly placed in a 20 m x 20 m area
-    scatterers = np.array([[10, 10], [15, -10]])
+    scatterers = np.array([[4, 4], [8, -8]])
     return scatterers
 
 
-def compute_gt_channel_parameters(ue_pos: List[float], scatterers: np.ndarray):
+def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray):
     # Compute Channel Parameters for L paths
     TOA = [0 for _ in range(conf.L)]
     AOA = [0 for _ in range(conf.L)]
-    TOA[0] = np.linalg.norm(ue_pos) / C
-    AOA[0] = np.arctan2(ue_pos[1], ue_pos[0])
+    TOA[0] = np.linalg.norm(ue_pos - bs_loc) / C
+    AOA[0] = np.arctan2(ue_pos[1] - bs_loc[1], ue_pos[0] - bs_loc[0])
     for l in range(1, conf.L):
-        AOA[l] = np.arctan2(scatterers[l - 1, 1], scatterers[l - 1, 0])
-        TOA[l] = (np.linalg.norm(scatterers[l - 1, :]) + np.linalg.norm(conf.ue_pos - scatterers[l - 1, :])) / C
-    conf.max_time = max(TOA) * 1.2
+        AOA[l] = np.arctan2(scatterers[l - 1, 1] - bs_loc[1], scatterers[l - 1, 0] - bs_loc[0])
+        TOA[l] = (np.linalg.norm(bs_loc - scatterers[l - 1]) + np.linalg.norm(conf.ue_pos - scatterers[l - 1])) / C
     return TOA, AOA
 
 
@@ -51,16 +49,14 @@ def compute_observations(TOA: List[float], AOA: List[float]):
             else:
                 raise ValueError("No such type of channel BW!")
             h += F * alpha[l] * delay_aoa_matrix
-
     ## adding the white Gaussian noise
     noise = conf.sigma / np.sqrt(2) * (np.random.randn(conf.Nr, conf.K) + 1j * np.random.randn(conf.Nr, conf.K))
     y[:, :, ns] = h + noise
     return y
 
 
-def get_channel():
-    scatterers = create_scatter_points(conf.L)
-    TOA, AOA = compute_gt_channel_parameters(np.array(conf.ue_pos), scatterers)
+def get_channel(bs_loc, ue_pos, scatterers):
+    TOA, AOA = compute_gt_channel_parameters(bs_loc, ue_pos, scatterers)
     y = compute_observations(TOA, AOA)
     channel_instance = Channel(scatterers=scatterers, y=y, TOA=TOA, AOA=AOA)
     return channel_instance
