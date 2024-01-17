@@ -5,7 +5,7 @@ from typing import List
 import numpy as np
 
 from python_code import conf
-from python_code.utils.basis_functions import compute_time_options, compute_angle_options
+from python_code.utils.basis_functions import compute_time_options, compute_angle_options, create_wideband_aoa_mat
 from python_code.utils.constants import C, ChannelBWType
 
 Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA"])
@@ -45,12 +45,8 @@ def compute_observations(TOA: List[float], AOA: List[float]):
                 aoa_vector = compute_angle_options(np.array([AOA[l]]), np.arange(conf.Nr)).T
                 delay_aoa_matrix = np.matmul(aoa_vector, delays_phase_vector)
             elif conf.channel_bandwidth == ChannelBWType.WIDEBAND.name:
-                wideband_aoa_mat = []
-                for k in range(conf.K):
-                    wideband_angle = np.array([AOA[l]]) * (1 + k * conf.BW / conf.fc)
-                    wideband_aoa_vec = compute_angle_options(wideband_angle, np.arange(conf.Nr)).T
-                    wideband_aoa_mat.append(wideband_aoa_vec)
-                wideband_aoa_mat = np.concatenate(wideband_aoa_mat, axis=1)
+                wideband_aoa_mat = create_wideband_aoa_mat(np.array([AOA[l]]), conf.K, conf.BW, conf.fc, conf.Nr,
+                                                           stack_axis=1)
                 delay_aoa_matrix = wideband_aoa_mat * delays_phase_vector
             else:
                 raise ValueError("No such type of channel BW!")
@@ -60,6 +56,7 @@ def compute_observations(TOA: List[float], AOA: List[float]):
     noise = conf.sigma / np.sqrt(2) * (np.random.randn(conf.Nr, conf.K) + 1j * np.random.randn(conf.Nr, conf.K))
     y[:, :, ns] = h + noise
     return y
+
 
 def get_channel():
     scatterers = create_scatter_points(conf.L)

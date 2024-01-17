@@ -16,3 +16,11 @@ def compute_angle_options(angle_value, values):
     return array_response_vector(combination)
 
 
+def create_wideband_aoa_mat(aoa_dict, K, BW, fc, Nr, stack_axis):
+    wideband_aoa_mat = []
+    for k in range(K):
+        wideband_angle = aoa_dict * (1 + k * BW / fc)
+        wideband_aoa_vec = compute_angle_options(wideband_angle, np.arange(Nr)).T
+        wideband_aoa_mat.append(wideband_aoa_vec)
+    wideband_aoa_mat = np.concatenate(wideband_aoa_mat, axis=stack_axis)
+    return wideband_aoa_mat
