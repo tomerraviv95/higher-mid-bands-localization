@@ -2,13 +2,13 @@
 seed: 0 # run seed
 # System parameters
 L: 3  # number of paths (including LOS)
-K: 20   # number of subcarriers
+K: 10   # number of subcarriers
 Nr: 32  # number of RX n_elements
-Nb: 180  # number of elements in the ANGLE dictionary
+Nb: 360  # number of elements in the ANGLE dictionary
 T_res: 120  # number of elements in the TIME dictionary
-Ns: 64  # number of transmitted pilot beams
+Ns: 20  # number of transmitted pilot beams
 ue_pos: [ 10, -10]  # RX (user) position, TX is assumed to be in [0, 0]
-sigma: 1  # noise standard deviation
+sigma: 0.1  # noise standard deviation
 fc: 28000  # carrier frequency in MHz
-BW: 100  # BW frequency in MHz
+BW: 200  # BW frequency in MHz
 channel_bandwidth: 'WIDEBAND' # either 'NARROWBAND' or 'WIDEBAND'

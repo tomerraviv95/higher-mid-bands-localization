@@ -14,3 +14,8 @@ class EstimatorType(Enum):
 class ChannelBWType(Enum):
     NARROWBAND = 'NARROWBAND'
     WIDEBAND = 'WIDEBAND'
+
+
+class AlgType(Enum):
+    BEAMSWEEPER = 'BEAMSWEEPER'
+    MUSIC = 'MUSIC'

@@ -2,23 +2,21 @@ import numpy as np
 
 from python_code import conf
 from python_code.channel.channel_generator import get_channel
-from python_code.estimators.estimator import AngleEstimator, TimeEstimator, AngleTimeEstimator, \
-    WidebandAngleTimeEstimator, WidebandAngleEstimator
+from python_code.estimators.estimator import AngleEstimator, TimeEstimator, AngleTimeEstimator, WidebandAngleEstimator
 from python_code.plotting.plotter import plot_angle, plot_time, plot_angle_time
 from python_code.utils.constants import EstimatorType
 
 estimators = {EstimatorType.ANGLE: AngleEstimator,
               EstimatorType.WANGLE: WidebandAngleEstimator,
               EstimatorType.TIME: TimeEstimator,
-              EstimatorType.ANGLE_TIME: AngleTimeEstimator,
-              EstimatorType.WANGLE_TIME: WidebandAngleTimeEstimator}
+              EstimatorType.ANGLE_TIME: AngleTimeEstimator}
 
 np.random.seed(conf.seed)
 
 if __name__ == "__main__":
     channel_instance = get_channel()
     y = channel_instance.y
-    estimator_type = EstimatorType.ANGLE
+    estimator_type = EstimatorType.WANGLE
     estimator = estimators[estimator_type]()
     est_values = estimator.estimate(y)
     # estimating the angle only
