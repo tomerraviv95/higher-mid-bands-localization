@@ -26,6 +26,6 @@ def music(cov: np.ndarray, n_elements: int, options: np.ndarray):
     Qn = eigenvectors[:, L_hat:]
     music_coef = 1 / scipy.linalg.norm(Qn.conj().T @ options.T, axis=0)
     spectrum = np.log10(10 * music_coef / music_coef.min())
-    aoa_indices, _ = scipy.signal.find_peaks(spectrum, height=1.15)
+    aoa_indices, _ = scipy.signal.find_peaks(spectrum, height=1.4)
     top_aoa_indices = aoa_indices[np.argsort(spectrum[aoa_indices])[-L_hat - 1:]]
     return top_aoa_indices, spectrum
