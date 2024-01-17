@@ -36,8 +36,8 @@ def compute_observations(TOA: List[float], AOA: List[float]):
     for ns in range(conf.Ns):
         # Generate channel
         h = np.zeros((conf.Nr, conf.K), dtype=complex)
-        F = np.exp(1j * np.random.rand(1) * 2 * np.pi)  # random beamformer
         for l in range(conf.L):
+            F = np.exp(1j * np.random.rand(1) * 2 * np.pi)  # random beamformer
             delays_phase_vector = compute_time_options(conf.fc, conf.K, conf.BW, np.array([TOA[l]]))
             if conf.channel_bandwidth == ChannelBWType.NARROWBAND.name:
                 aoa_vector = compute_angle_options(np.array([AOA[l]]), np.arange(conf.Nr)).T
@@ -49,9 +49,9 @@ def compute_observations(TOA: List[float], AOA: List[float]):
             else:
                 raise ValueError("No such type of channel BW!")
             h += F * alpha[l] * delay_aoa_matrix
-    ## adding the white Gaussian noise
-    noise = conf.sigma / np.sqrt(2) * (np.random.randn(conf.Nr, conf.K) + 1j * np.random.randn(conf.Nr, conf.K))
-    y[:, :, ns] = h + noise
+        ## adding the white Gaussian noise
+        noise = conf.sigma / np.sqrt(2) * (np.random.randn(conf.Nr, conf.K) + 1j * np.random.randn(conf.Nr, conf.K))
+        y[:, :, ns] = h + noise
     return y
 
 

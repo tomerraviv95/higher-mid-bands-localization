@@ -18,14 +18,16 @@ if __name__ == "__main__":
     bs_locs = [[0, 5], [0, -5]]
     scatterers = create_scatter_points(conf.L)
     ue_pos = np.array(conf.ue_pos)
+    print("x-axis up, y-axis right")
+    print(f"UE: {ue_pos}, Scatterers: {[str(scatter) for scatter in scatterers]}")
     estimator_type = EstimatorType.ANGLE_TIME
     print(estimator_type.name)
-    for bs_loc in bs_locs:
+    for i, bs_loc in enumerate(bs_locs):
         bs_ue_channel = get_channel(np.array(bs_loc), ue_pos, scatterers)
         conf.max_time = max(bs_ue_channel.TOA) * 1.2
         estimator = estimators[estimator_type]()
         estimation = estimator.estimate(bs_ue_channel.y)
-        print(f"BS #{bs_loc}")
+        print(f"BS #{i} - {bs_loc}")
         # estimating the angle only
         if estimator_type in [EstimatorType.ANGLE, EstimatorType.WANGLE]:
             print(f"Estimated: {sorted(estimation.AOA)}, GT: {sorted(bs_ue_channel.AOA)}")
@@ -35,11 +37,10 @@ if __name__ == "__main__":
             print(f"Estimated: {sorted(estimation.TOA)}, GT: {sorted(bs_ue_channel.TOA)}")
             plot_time(estimator, estimation)
         # combining both estimates, AOA & TOA
-        elif estimator_type in [EstimatorType.ANGLE_TIME, EstimatorType.WANGLE_TIME]:
-            if estimation.size > 0:
-                print(f"Estimated: {sorted(estimation[:, 0])}, GT: {sorted(bs_ue_channel.TOA)}")
-                print(sorted(estimation.AOA), sorted(bs_ue_channel.AOA))
-                print(sorted(estimation.TOA), sorted(bs_ue_channel.TOA))
+        elif estimator_type in [EstimatorType.ANGLE_TIME]:
+            if len(estimation.AOA) > 0:
+                print(f"Estimated: {sorted(estimation.AOA)}, GT: {sorted(bs_ue_channel.AOA)}")
+                print(f"Estimated: {sorted(estimation.TOA)}, GT: {sorted(bs_ue_channel.TOA)}")
                 plot_angle_time(estimator, estimation)
         else:
             raise ValueError("No such estimator type exists!!")

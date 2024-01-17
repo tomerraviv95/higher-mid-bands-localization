@@ -1,3 +1,4 @@
+import math
 from collections import namedtuple
 
 import numpy as np
@@ -63,17 +64,26 @@ class AngleTimeEstimator:
         indices, self._spectrum = self.algorithm.run(y=y, n_elements=conf.Nr * conf.K,
                                                      basis_vectors=self.angle_time_options)
         # filter nearby detected peaks
-        filtered_peaks = self.filter_nearby_peaks(indices)
-        return filtered_peaks
+        aoa_toa_set = self.filter_peaks(indices)
+        aoa_list, toa_list = zip(*aoa_toa_set)
+        estimator = Estimation(AOA=aoa_list, TOA=toa_list)
+        return estimator
 
-    def filter_nearby_peaks(self, indices):
-        angle_indices = indices // conf.T_res
-        time_indices = indices % conf.T_res
-        filtered_peaks = []
-        for unique_time_ind in np.unique(time_indices):
-            unique_time = self.time_estimator.times_dict[unique_time_ind]
-            avg_angle_ind = int(np.mean(angle_indices[time_indices == unique_time_ind]))
-            ang_angle = self.angle_estimator.angles_dict[avg_angle_ind]
-            filtered_peaks.append([ang_angle, unique_time])
-        filtered_peaks = np.array(filtered_peaks)
-        return filtered_peaks
+    def filter_peaks(self, indices):
+        aoa_indices = indices // conf.T_res
+        toa_indices = indices % conf.T_res
+        aoa_toa_set = set()
+        for unique_toa_ind in np.unique(toa_indices):
+            toa = self.time_estimator.times_dict[unique_toa_ind]
+            avg_aoa_ind = int(np.mean(aoa_indices[toa_indices == unique_toa_ind]))
+            aoa = self.angle_estimator.angles_dict[avg_aoa_ind]
+            if not self.set_contains(aoa_toa_set, (aoa, toa)):
+                aoa_toa_set.add((aoa, toa))
+        return aoa_toa_set
+
+    @staticmethod
+    def set_contains(aoa_toa_set, aoa_toa_tuple):
+        for c_aoa, c_toa in aoa_toa_set:
+            if abs(aoa_toa_tuple[0] - c_aoa) < 5 * math.pi / 180 and abs(aoa_toa_tuple[1] - c_toa) < 0.02:
+                return True
+        return False
