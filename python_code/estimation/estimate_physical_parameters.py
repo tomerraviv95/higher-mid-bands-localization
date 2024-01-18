@@ -2,7 +2,7 @@ import numpy as np
 
 from python_code import conf
 from python_code.channel.channel_generator import get_channel
-from python_code.estimators.estimator import AngleEstimator, WidebandAngleEstimator, TimeEstimator, AngleTimeEstimator
+from python_code.estimation.estimator import AngleEstimator, WidebandAngleEstimator, TimeEstimator, AngleTimeEstimator
 from python_code.plotting.plotter import plot_angle, plot_time, plot_angle_time
 from python_code.utils.constants import EstimatorType
 

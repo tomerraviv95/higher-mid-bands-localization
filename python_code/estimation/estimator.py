@@ -4,8 +4,8 @@ from collections import namedtuple
 import numpy as np
 
 from python_code import conf
-from python_code.estimators.beam_sweeper import BeamSweeper
-from python_code.estimators.music import MUSIC
+from python_code.estimation.beam_sweeper import BeamSweeper
+from python_code.estimation.music import MUSIC
 from python_code.utils.basis_functions import compute_angle_options, compute_time_options, create_wideband_aoa_mat
 from python_code.utils.constants import AlgType
 

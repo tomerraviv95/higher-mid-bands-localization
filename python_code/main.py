@@ -4,8 +4,8 @@ from sklearn.metrics import mean_squared_error
 from python_code import conf
 from python_code.channel.channel_generator import create_scatter_points
 from python_code.utils.constants import EstimatorType
-from python_code.utils.estimate_physical_parameters import estimate_physical_parameters
-from python_code.utils.position_optimizer import optimize_to_estimate_position
+from python_code.estimation.estimate_physical_parameters import estimate_physical_parameters
+from python_code.optimization.position_optimizer import optimize_to_estimate_position
 
 np.random.seed(conf.seed)
 
