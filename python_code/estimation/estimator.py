@@ -35,9 +35,9 @@ class WidebandAngleEstimator:
         self.algorithm = algs[ALG_TYPE]
 
     def estimate(self, y):
-        self._indices, self._spectrum = self.algorithm.run(y=y, basis_vectors=self._angle_options,
-                                                           n_elements=conf.Nr * conf.K)
-        return self.angles_dict[self._indices]
+        self._indices, self._spectrum = self.algorithm.run(y=y, basis_vectors=self._angle_options, n_elements=conf.Nr * conf.K)
+        estimator = Estimation(AOA=self.angles_dict[self._indices])
+        return estimator
 
 
 class TimeEstimator:
