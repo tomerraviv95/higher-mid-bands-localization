@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.metrics import mean_squared_error
 
 from python_code import conf
-from python_code.channel.channel_generator import create_scatter_points
+from python_code.channel.channel_generator import create_scatter_points, create_bs_locs
 from python_code.estimation.estimate_physical_parameters import estimate_physical_parameters
 from python_code.optimization.position_optimizer import optimize_to_estimate_position
 from python_code.utils.constants import EstimatorType
@@ -12,12 +12,12 @@ np.random.seed(conf.seed)
 if __name__ == "__main__":
     # bs locs of type [x,y]. x must be above the x-location of at least one BS.
     # The array lies on the y-axis and points towards the x-axis.
-    bs_locs = [[0, 5], [0, -5], [0, 0]]
+    bs_locs = create_bs_locs(conf.B)
     scatterers = create_scatter_points(conf.L)
     ue_pos = np.array(conf.ue_pos)
     print("x-axis up, y-axis right")
     print(f"UE: {ue_pos}, Scatterers: {[str(scatter) for scatter in scatterers]}")
-    estimator_type = EstimatorType.ANGLE
+    estimator_type = EstimatorType.ANGLE_TIME
     print(estimator_type.name)
     # ------------------------------------- #
     # Physical Parameters' Estimation Phase #

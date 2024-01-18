@@ -11,10 +11,16 @@ from python_code.utils.constants import C, ChannelBWType
 Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA"])
 
 
-def create_scatter_points(L):
-    # scatterers = np.random.rand(L - 1, 2) * 20 - 10  # random points uniformly placed in a 20 m x 20 m area
-    scatterers = np.array([[4, 4], [8, -8]])
-    return scatterers
+def create_scatter_points(L: int):
+    assert L > 0
+    scatterers = np.array([[4, 4], [8, -8], [16, -16], [20, 20]])
+    return scatterers[:L - 1]
+
+
+def create_bs_locs(B: int):
+    assert B > 0
+    bs_locs = np.array([[0, 5], [0, -5], [0, 0]])
+    return bs_locs[:B]
 
 
 def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray):

@@ -4,6 +4,8 @@ from scipy.optimize import least_squares
 from python_code import conf
 from python_code.utils.constants import C
 
+MAX_L = 5
+
 
 def extract_measurements_from_estimations(bs_locs, estimations):
     # extract the toa and aoa measurements for each bs, sorting them such that the LOS is first
@@ -31,11 +33,15 @@ def optimize_to_estimate_position(bs_locs, estimations, scatterers):
         for i in range(len(bs_locs)):
             # aoa
             for l, nlos_aoa in enumerate(aoa_values[i][1:]):
+                if l >= MAX_L:
+                    break
                 cost = abs(
                     np.arctan2(scatterers[l][1] - bs_locs[i][1], scatterers[l][0] - bs_locs[i][0]) - nlos_aoa)
                 costs.append(cost)
             # toa
             for l, nlos_toa in enumerate(toa_values[i][1:]):
+                if l >= MAX_L:
+                    break
                 cost = abs((np.linalg.norm(bs_locs[i] - scatterers[l]) +
                             np.linalg.norm(conf.ue_pos - scatterers[l])) / C - nlos_toa)
                 costs.append(cost)

@@ -4,7 +4,7 @@ import numpy as np
 import scipy.linalg
 import scipy.signal
 
-MUSIC_RESOLUTION = 5
+MUSIC_RESOLUTION = 3
 
 
 def cluster(evs):
