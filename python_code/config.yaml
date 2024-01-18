@@ -13,4 +13,4 @@ sigma: 0.1  # noise standard deviation
 fc: 25000  # carrier frequency in MHz
 BW: 50  # BW frequency in MHz
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
-plot_estimation_results: True
+plot_estimation_results: False

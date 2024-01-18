@@ -30,7 +30,7 @@ if __name__ == "__main__":
     # ------------------------- #
     # Position Estimation Phase #
     # ------------------------- #
-    est_ue_pos = optimize_to_estimate_position(bs_locs, estimations, scatterers)
+    est_ue_pos = optimize_to_estimate_position(bs_locs, estimations)
     print(f"Estimated Position: {est_ue_pos}")
     rmse = mean_squared_error(ue_pos, est_ue_pos, squared=False)
     print(f"RMSE: {rmse}")
