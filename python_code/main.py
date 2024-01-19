@@ -2,9 +2,9 @@ import numpy as np
 from sklearn.metrics import mean_squared_error
 
 from python_code import conf
-from python_code.channel.channel_generator_3d import create_scatter_points, create_bs_locs
+from python_code.channel.bs_scatterers import create_bs_locs, create_scatter_points
 from python_code.estimation.estimate_physical_parameters import estimate_physical_parameters
-from python_code.optimization.position_optimizer import optimize_to_estimate_position
+from python_code.optimization.position_optimizer import optimize_to_estimate_position_2d
 from python_code.utils.constants import EstimatorType, DimensionType
 
 np.random.seed(conf.seed)
@@ -12,7 +12,8 @@ np.random.seed(conf.seed)
 if __name__ == "__main__":
     # bs locs of type [x,y]. x must be above the x-location of at least one BS.
     # The array lies on the y-axis and points towards the x-axis.
-    estimator_type = EstimatorType.TIME
+    assert len(conf.ue_pos) == 2 if conf.dimensions == DimensionType.Two.name else 3
+    estimator_type = EstimatorType.ANGLE_TIME
     bs_locs = create_bs_locs(conf.B)
     scatterers = create_scatter_points(conf.L)
     ue_pos = np.array(conf.ue_pos)
@@ -33,7 +34,7 @@ if __name__ == "__main__":
     # ------------------------- #
     # Position Estimation Phase #
     # ------------------------- #
-    est_ue_pos = optimize_to_estimate_position(bs_locs, estimations)
+    est_ue_pos = optimize_to_estimate_position_2d(bs_locs, estimations)
     print(f"Estimated Position: {est_ue_pos}")
     rmse = mean_squared_error(ue_pos, est_ue_pos, squared=False)
     print(f"RMSE: {rmse}")

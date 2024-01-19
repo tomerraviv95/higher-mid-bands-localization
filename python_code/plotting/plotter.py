@@ -42,7 +42,7 @@ def plot_time(estimator, estimation: Estimation):
     plt.show()
 
 
-def plot_angle_time(estimator, estimation: Estimation):
+def plot_angle_time_2d(estimator, estimation: Estimation):
     fig = plt.figure()
     plt.contourf(estimator.time_estimator.times_dict, estimator.angle_estimator.angles_dict,
                  estimator._spectrum.reshape(conf.aoa_res, conf.T_res), cmap='magma')

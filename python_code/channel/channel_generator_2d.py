@@ -11,18 +11,6 @@ from python_code.utils.constants import C, ChannelBWType
 Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA"])
 
 
-def create_scatter_points(L: int):
-    assert L > 0
-    scatterers = np.array([[4, 4], [8, -8], [16, -16], [20, 20]])
-    return scatterers[:L - 1]
-
-
-def create_bs_locs(B: int):
-    assert B > 0
-    bs_locs = np.array([[0, 5], [0, -5], [0, 0]])
-    return bs_locs[:B]
-
-
 def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray):
     # Compute Channel Parameters for L paths
     TOA = [0 for _ in range(conf.L)]

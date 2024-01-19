@@ -5,12 +5,12 @@ dimensions: 'Three' # 'Two' or 'Three'
 L: 1  # number of paths, up to 5 (including LOS)
 B: 1 # number of BSs, up to 3 (including)
 K: 20   # number of subcarriers
-Nr_x: 16  # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
-Nr_y: 32  # number of RX n_elements in y.
-aoa_res: 240  # number of elements in the AOA dictionary
-zoa_res: 120  # number of elements in the ZOA dictionary
-T_res: 120  # number of elements in the TIME dictionary
-Ns: 20  # number of transmitted pilot beams
+Nr_x: 4  # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
+Nr_y: 4  # number of RX n_elements in y.
+aoa_res: 180  # number of elements in the AOA dictionary
+zoa_res: 90  # number of elements in the ZOA dictionary
+T_res: 40  # number of elements in the TIME dictionary
+Ns: 10  # number of transmitted pilot beams
 ue_pos: [ 5, 0, 0 ]  # TX UE position
 sigma: 0.1  # noise standard deviation
 fc: 25000  # carrier frequency in MHz

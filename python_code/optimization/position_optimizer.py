@@ -18,8 +18,8 @@ def extract_measurements_from_estimations(bs_locs, estimations):
     return toa_values, aoa_values
 
 
-def optimize_to_estimate_position(bs_locs, estimations):
-    def cost_func(x0):
+def optimize_to_estimate_position_2d(bs_locs, estimations):
+    def cost_func_2d(x0):
         ue, scatterers = x0[:2], x0[2:].reshape(-1, 2)
         costs = []
         # LOS AOA constraints
@@ -54,6 +54,6 @@ def optimize_to_estimate_position(bs_locs, estimations):
     initial_ue_loc = np.array([[0, 0]])
     initial_scatterers = np.zeros([MAX_L, 2])
     x0 = np.concatenate([initial_ue_loc, initial_scatterers]).reshape(-1)
-    res = least_squares(cost_func, x0).x
+    res = least_squares(cost_func_2d, x0).x
     est_ue_pos, est_scatterers = res[:2], res[2:].reshape(-1, 2)
     return est_ue_pos
