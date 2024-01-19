@@ -11,7 +11,7 @@ aoa_res: 180  # number of elements in the AOA dictionary
 zoa_res: 90  # number of elements in the ZOA dictionary
 T_res: 40  # number of elements in the TIME dictionary
 Ns: 10  # number of transmitted pilot beams
-ue_pos: [ 5, 0, 0 ]  # TX UE position
+ue_pos: [ 5, 0 ,0]  # TX UE position
 sigma: 0.1  # noise standard deviation
 fc: 25000  # carrier frequency in MHz
 BW: 50  # BW frequency in MHz
