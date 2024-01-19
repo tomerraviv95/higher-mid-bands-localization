@@ -18,3 +18,7 @@ class ChannelBWType(Enum):
 class AlgType(Enum):
     BEAMSWEEPER = 'BEAMSWEEPER'
     MUSIC = 'MUSIC'
+
+class DimensionType(Enum):
+    Two = 'Two'
+    Three = 'Three'

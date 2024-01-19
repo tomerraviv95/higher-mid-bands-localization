@@ -1,11 +1,14 @@
 # general
 seed: 0 # run seed
 # System parameters
+dimensions: 'Two' # 'Two' or 'Three'
 L: 1  # number of paths, up to 5 (including LOS)
 B: 1 # number of BSs, up to 3 (including)
 K: 20   # number of subcarriers
-Nr: 32  # number of RX n_elements
-Nb: 360  # number of elements in the ANGLE dictionary
+Nr_x: 4  # number of RX n_elements in x
+Nr_y: 8  # number of RX n_elements in y
+aoa_res: 180  # number of elements in the AOA dictionary
+zoa_res: 90  # number of elements in the ZOA dictionary
 T_res: 120  # number of elements in the TIME dictionary
 Ns: 200  # number of transmitted pilot beams
 ue_pos: [ 5, 0, -5 ]  # TX UE position
@@ -13,4 +16,4 @@ sigma: 0.1  # noise standard deviation
 fc: 25000  # carrier frequency in MHz
 BW: 50  # BW frequency in MHz
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
-plot_estimation_results: False
+plot_estimation_results: True
