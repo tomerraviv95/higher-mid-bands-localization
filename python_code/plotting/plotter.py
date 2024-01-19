@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 
 from python_code import conf
-from python_code.estimation.estimator import Estimation
+from python_code.estimation.angle_time import Estimation
 
 plt.style.use('dark_background')
 

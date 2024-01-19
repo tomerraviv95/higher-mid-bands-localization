@@ -2,7 +2,7 @@
 seed: 0 # run seed
 # System parameters
 dimensions: 'Three' # 'Two' or 'Three'
-L: 1  # number of paths, up to 5 (including LOS)
+L: 3  # number of paths, up to 5 (including LOS)
 B: 1 # number of BSs, up to 3 (including)
 K: 20   # number of subcarriers
 Nr_x: 4  # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.

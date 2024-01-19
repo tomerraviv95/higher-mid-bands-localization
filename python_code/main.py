@@ -4,7 +4,8 @@ from sklearn.metrics import mean_squared_error
 from python_code import conf
 from python_code.channel.bs_scatterers import create_bs_locs, create_scatter_points
 from python_code.estimation.estimate_physical_parameters import estimate_physical_parameters
-from python_code.optimization.position_optimizer import optimize_to_estimate_position_2d
+from python_code.optimization.position_optimizer_2d import optimize_to_estimate_position_2d
+from python_code.optimization.position_optimizer_3d import optimize_to_estimate_position_3d
 from python_code.utils.constants import EstimatorType, DimensionType
 
 np.random.seed(conf.seed)
@@ -34,7 +35,10 @@ if __name__ == "__main__":
     # ------------------------- #
     # Position Estimation Phase #
     # ------------------------- #
-    est_ue_pos = optimize_to_estimate_position_2d(bs_locs, estimations)
+    if conf.dimensions == DimensionType.Two.name:
+        est_ue_pos = optimize_to_estimate_position_2d(bs_locs, estimations)
+    else:
+        est_ue_pos = optimize_to_estimate_position_3d(bs_locs, estimations)
     print(f"Estimated Position: {est_ue_pos}")
     rmse = mean_squared_error(ue_pos, est_ue_pos, squared=False)
     print(f"RMSE: {rmse}")
