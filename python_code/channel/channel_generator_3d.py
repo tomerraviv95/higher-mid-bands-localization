@@ -70,7 +70,7 @@ def compute_observations(TOA: List[float], AOA: List[float], ZOA: List[float]):
     return y
 
 
-def get_channel(bs_loc, ue_pos, scatterers):
+def get_3d_channel(bs_loc, ue_pos, scatterers):
     TOA, AOA, ZOA = compute_gt_channel_parameters(bs_loc, ue_pos, scatterers)
     y = compute_observations(TOA, AOA, ZOA)
     channel_instance = Channel(scatterers=scatterers, y=y, TOA=TOA, AOA=AOA, ZOA=ZOA)

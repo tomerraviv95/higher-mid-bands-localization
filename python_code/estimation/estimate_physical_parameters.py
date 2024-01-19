@@ -1,7 +1,8 @@
 import numpy as np
 
 from python_code import conf
-from python_code.channel.channel_generator import get_channel
+from python_code.channel.channel_generator_2d import get_2d_channel
+from python_code.channel.channel_generator_3d import get_3d_channel
 from python_code.estimation.estimator import AngleEstimator3D, WidebandAngleEstimator, TimeEstimator, \
     AngleTimeEstimator, AngleEstimator2D
 from python_code.plotting.plotter import plot_angle_2d, plot_time, plot_angle_time, plot_angles_3d
@@ -17,7 +18,10 @@ estimators = {
 def estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type):
     estimations = []
     for i, bs_loc in enumerate(bs_locs):
-        bs_ue_channel = get_channel(np.array(bs_loc), ue_pos, scatterers)
+        if conf.dimensions == DimensionType.Three.name:
+            bs_ue_channel = get_3d_channel(np.array(bs_loc), ue_pos, scatterers)
+        else:
+            bs_ue_channel = get_2d_channel(np.array(bs_loc), ue_pos, scatterers)
         conf.max_time = max(bs_ue_channel.TOA) * 1.2
         estimator = estimators[estimator_type][conf.dimensions]()
         estimation = estimator.estimate(bs_ue_channel.y)

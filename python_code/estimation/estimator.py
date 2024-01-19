@@ -22,12 +22,12 @@ class AngleEstimator2D:
 
     def __init__(self):
         self.angles_dict = np.linspace(-np.pi / 2, np.pi / 2, conf.aoa_res)  # dictionary of spatial frequencies
-        self._angle_options = compute_angle_options(self.angles_dict, zoa=1, values=np.arange(conf.Nr_x * conf.Nr_y))
+        self._angle_options = compute_angle_options(self.angles_dict, zoa=1, values=np.arange(conf.Nr_x))
         self.algorithm = algs[ALG_TYPE]
 
     def estimate(self, y):
         self._indices, self._spectrum = self.algorithm.run(y=y, basis_vectors=self._angle_options,
-                                                           n_elements=conf.Nr_x * conf.Nr_y)
+                                                           n_elements=conf.Nr_x)
         estimator = Estimation(AOA=self.angles_dict[self._indices])
         return estimator
 
