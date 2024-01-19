@@ -37,7 +37,6 @@ def plot_angle_time(estimator, estimation: Estimation):
     ax = plt.gca()
     ax.set_xlabel('TIME[us]')
     ax.set_ylabel('AOA[rad]')
-    plt.savefig('AOA_and_delay.png', dpi=fig.dpi)
     plt.plot(estimation.TOA, estimation.AOA, 'ro')
     plt.savefig('AOA_and_delay_est.png', dpi=fig.dpi)
     plt.show()

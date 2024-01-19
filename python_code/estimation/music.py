@@ -35,6 +35,6 @@ class MUSIC:
         Qn = eigenvectors[:, L_hat:]
         music_coef = 1 / scipy.linalg.norm(Qn.conj().T @ basis_vectors.T, axis=0)
         spectrum = np.log10(10 * music_coef / music_coef.min())
-        aoa_indices, _ = scipy.signal.find_peaks(spectrum, height=self.thresh, distance=MUSIC_RESOLUTION)
-        top_aoa_indices = aoa_indices[np.argsort(spectrum[aoa_indices])[-L_hat - 1:]]
+        indices, _ = scipy.signal.find_peaks(spectrum, height=self.thresh, distance=MUSIC_RESOLUTION)
+        top_aoa_indices = indices[np.argsort(spectrum[indices])[-L_hat:]]
         return top_aoa_indices, spectrum

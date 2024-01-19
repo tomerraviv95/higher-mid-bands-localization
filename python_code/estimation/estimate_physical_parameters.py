@@ -22,7 +22,8 @@ def estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type):
         print(f"BS #{i} - {bs_loc}")
         # estimating the angle only
         if estimator_type in [EstimatorType.ANGLE, EstimatorType.WIDE_ANGLE]:
-            print(f"Estimated: {sorted(estimation.AOA)}, GT: {sorted(bs_ue_channel.AOA)}")
+            print(f"Estimated AOA: {sorted(estimation.AOA)}, GT AOA: {sorted(bs_ue_channel.AOA)}")
+            print(f"Estimated ZOA: {sorted(estimation.ZOA)}, GT ZOA: {sorted(bs_ue_channel.ZOA)}")
             if conf.plot_estimation_results:
                 plot_angle(estimator, estimation)
         # estimating the time delay only

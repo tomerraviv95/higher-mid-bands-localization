@@ -17,7 +17,7 @@ if __name__ == "__main__":
     ue_pos = np.array(conf.ue_pos)
     print("x-axis up, y-axis right")
     print(f"UE: {ue_pos}, Scatterers: {[str(scatter) for scatter in scatterers]}")
-    estimator_type = EstimatorType.ANGLE_TIME
+    estimator_type = EstimatorType.ANGLE
     print(estimator_type.name)
     # ------------------------------------- #
     # Physical Parameters' Estimation Phase #
