@@ -1,7 +1,8 @@
 import numpy as np
 
 from python_code import conf
-from python_code.estimation import ALG_TYPE, ALGS_DICT, Estimation
+from python_code.estimation import Estimation
+from python_code.estimation.algs import ALGS_DICT, ALG_TYPE
 from python_code.utils.basis_functions import create_wideband_aoa_mat, compute_angle_options
 
 

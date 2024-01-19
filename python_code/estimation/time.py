@@ -1,7 +1,8 @@
 import numpy as np
 
 from python_code import conf
-from python_code.estimation import ALG_TYPE, ALGS_DICT, Estimation
+from python_code.estimation import Estimation
+from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
 from python_code.utils.basis_functions import compute_time_options
 
 
