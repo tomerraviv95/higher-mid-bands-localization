@@ -13,13 +13,13 @@ Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA", "ZOA"])
 
 def create_scatter_points(L: int):
     assert L > 0
-    scatterers = np.array([[4, 4, -2], [8, -8, -3], [16, -16, -4], [20, 20, 0]])
+    scatterers = np.array([[4, 4, 4], [8, -8, 3], [16, -16, 8], [20, 20, 0]])
     return scatterers[:L - 1]
 
 
 def create_bs_locs(B: int):
     assert B > 0
-    bs_locs = np.array([[0, 5, 0], [0, -5, 0], [0, 0, 0]])
+    bs_locs = np.array([[0, 5, 10], [0, -5, 10], [0, 1, 10]])
     return bs_locs[:B]
 
 
