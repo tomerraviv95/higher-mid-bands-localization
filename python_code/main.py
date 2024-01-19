@@ -12,6 +12,7 @@ np.random.seed(conf.seed)
 if __name__ == "__main__":
     # bs locs of type [x,y]. x must be above the x-location of at least one BS.
     # The array lies on the y-axis and points towards the x-axis.
+    estimator_type = EstimatorType.TIME
     bs_locs = create_bs_locs(conf.B)
     scatterers = create_scatter_points(conf.L)
     ue_pos = np.array(conf.ue_pos)
@@ -20,7 +21,6 @@ if __name__ == "__main__":
     else:
         print("Right handed 3D axes")
     print(f"UE: {ue_pos}, Scatterers: {[str(scatter) for scatter in scatterers]}")
-    estimator_type = EstimatorType.ANGLE
     print(estimator_type.name)
     # ------------------------------------- #
     # Physical Parameters' Estimation Phase #

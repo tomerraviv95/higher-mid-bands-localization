@@ -3,15 +3,16 @@ import numpy as np
 from python_code import conf
 from python_code.channel.channel_generator_2d import get_2d_channel
 from python_code.channel.channel_generator_3d import get_3d_channel
-from python_code.estimation.estimator import AngleEstimator3D, WidebandAngleEstimator, TimeEstimator, \
-    AngleTimeEstimator, AngleEstimator2D
+from python_code.estimation.angle import AngleEstimator3D, AngleEstimator2D, WidebandAngleEstimator
+from python_code.estimation.estimator import AngleTimeEstimator
+from python_code.estimation.time import TimeEstimator2D, TimeEstimator3D
 from python_code.plotting.plotter import plot_angle_2d, plot_time, plot_angle_time, plot_angles_3d
 from python_code.utils.constants import EstimatorType, DimensionType
 
 estimators = {
     EstimatorType.ANGLE: {DimensionType.Three.name: AngleEstimator3D, DimensionType.Two.name: AngleEstimator2D},
     EstimatorType.WIDE_ANGLE: WidebandAngleEstimator,
-    EstimatorType.TIME: {DimensionType.Three.name: TimeEstimator, DimensionType.Two.name: TimeEstimator},
+    EstimatorType.TIME: {DimensionType.Three.name: TimeEstimator3D, DimensionType.Two.name: TimeEstimator2D},
     EstimatorType.ANGLE_TIME: AngleTimeEstimator}
 
 
