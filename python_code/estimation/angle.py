@@ -4,7 +4,7 @@ from python_code import conf
 from python_code.estimation import Estimation
 from python_code.estimation.algs import ALGS_DICT, ALG_TYPE
 from python_code.utils.basis_functions import create_wideband_aoa_mat, compute_angle_options
-from python_code.utils.peaks_filtering import merge, filter_peaks
+from python_code.utils.peaks_filtering import merge_two, filter_peaks
 
 
 class AngleEstimator2D:
@@ -60,7 +60,7 @@ class AngleEstimator3D:
                                                             n_elements=conf.Nr_y * conf.Nr_x)
         aoa_indices = indices // (conf.zoa_res)
         zoa_indices = indices % (conf.zoa_res)
-        merged = np.array(merge(aoa_indices, zoa_indices))
+        merged = np.array(merge_two(aoa_indices, zoa_indices))
         peaks = filter_peaks(merged, L_hat)
         self._aoa_indices = peaks[:, 0]
         self._zoa_indices = peaks[:, 1]

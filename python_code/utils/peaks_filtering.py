@@ -1,9 +1,13 @@
 from sklearn.cluster import KMeans
 
 
-def merge(list1, list2):
+def merge_two(list1, list2):
     merged_list = [(list1[i], list2[i]) for i in range(0, len(list1))]
+    return merged_list
 
+
+def merge_three(list1, list2, list3):
+    merged_list = [(list1[i], list2[i], list3[i]) for i in range(0, len(list1))]
     return merged_list
 
 
