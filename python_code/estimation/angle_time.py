@@ -35,17 +35,20 @@ class AngleTimeEstimator3D:
     def __init__(self):
         self.angle_estimator = AngleEstimator3D()
         self.time_estimator = TimeEstimator3D()
+        assert len(self.angle_estimator._angle_options) * len(self.time_estimator._time_options) < 10 ** 6
         self.angle_time_options = np.kron(self.angle_estimator._angle_options, self.time_estimator._time_options)
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
     def estimate(self, y):
         indices, self._spectrum, L_hat = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.Nr_y * conf.K,
                                                             basis_vectors=self.angle_time_options, do_one_calc=False)
+        if len(indices) == 0:
+            raise ValueError("No sources detected. Change hyperparameters.")
         angle_indices = indices // conf.T_res
         aoa_indices = angle_indices // (conf.zoa_res)
         zoa_indices = angle_indices % (conf.zoa_res)
         toa_indices = indices % conf.T_res
-        merged = np.array(merge_three(aoa_indices,zoa_indices, toa_indices))
+        merged = np.array(merge_three(aoa_indices, zoa_indices, toa_indices))
         peaks = filter_peaks(merged, L_hat)
         self._aoa_indices = peaks[:, 0]
         self._zoa_indices = peaks[:, 1]

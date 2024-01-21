@@ -33,8 +33,8 @@ def compute_observations(TOA: List[float], AOA: List[float], ZOA: List[float]):
     for ns in range(conf.Ns):
         # Generate channel
         h = np.zeros((conf.Nr_y, conf.Nr_x, conf.K), dtype=complex)
-        F = np.exp(1j * np.random.rand(1) * 2 * np.pi)  # random beamformer
         for l in range(conf.L):
+            F = np.exp(1j * np.random.rand(1) * 2 * np.pi)  # random beamformer
             delays_phase_vector = compute_time_options(conf.fc, conf.K, conf.BW, np.array([TOA[l]]))
             if conf.channel_bandwidth == ChannelBWType.NARROWBAND.name:
                 aoa_vector_y = compute_angle_options(np.array([AOA[l]]).reshape(-1, 1),
