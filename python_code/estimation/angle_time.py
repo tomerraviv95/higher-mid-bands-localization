@@ -1,5 +1,3 @@
-import math
-
 import numpy as np
 
 from python_code import conf
@@ -24,8 +22,6 @@ class AngleTimeEstimator2D:
         # filter nearby detected peaks
         aoa_toa_set = self.filter_peaks(indices)
         aoa_list, toa_list = zip(*aoa_toa_set)
-        if type(aoa_list) is not list:
-            aoa_list, toa_list = [aoa_list], [toa_list]
         estimator = Estimation(AOA=[self.angle_estimator.angles_dict[aoa_ind] for aoa_ind in aoa_list],
                                TOA=[self.time_estimator.times_dict[toa_ind] for toa_ind in toa_list])
         return estimator
@@ -43,6 +39,7 @@ class AngleTimeEstimator2D:
                 aoa_toa_set.add((aoa_ind, toa_ind))
         return aoa_toa_set
 
+
 class AngleTimeEstimator3D:
     def __init__(self):
         self.angle_estimator = AngleEstimator3D()
@@ -51,8 +48,8 @@ class AngleTimeEstimator3D:
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
     def estimate(self, y):
-        indices, self._spectrum = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.Nr_x * conf.K,
-                                                     basis_vectors=self.angle_time_options)
+        indices, self._spectrum = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.Nr_y * conf.K,
+                                                          basis_vectors=self.angle_time_options, do_one_calc=False)
         # filter nearby detected peaks
         aoa_zoa_toa_set = self.filter_peaks(indices)
         aoa_list, zoa_list, toa_list = zip(*aoa_zoa_toa_set)

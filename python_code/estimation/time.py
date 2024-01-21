@@ -22,6 +22,7 @@ class TimeEstimator2D:
 class TimeEstimator3D:
     def __init__(self):
         self.times_dict = np.linspace(0, conf.max_time, conf.T_res)
+        # self.times_dict = np.linspace(1, conf.max_time, conf.T_res)
         self._time_options = compute_time_options(conf.fc, conf.K, conf.BW, values=self.times_dict)
         self.algorithm = ALGS_DICT[ALG_TYPE]
 

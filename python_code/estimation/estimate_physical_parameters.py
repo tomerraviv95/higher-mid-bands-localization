@@ -57,7 +57,7 @@ def estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type):
                         plot_angle_time_2d(estimator, estimation)
                 if conf.dimensions == DimensionType.Three.name:
                     print(f"Estimated AOA: {sorted(estimation.AOA)}, GT AOA: {sorted(bs_ue_channel.AOA)}")
-                    print(f"Estimated AOA: {sorted(estimation.ZOA)}, GT AOA: {sorted(bs_ue_channel.ZOA)}")
+                    print(f"Estimated ZOA: {sorted(estimation.ZOA)}, GT ZOA: {sorted(bs_ue_channel.ZOA)}")
                     print(f"Estimated TOA: {sorted(estimation.TOA)}, GT TOA: {sorted(bs_ue_channel.TOA)}")
         else:
             raise ValueError("No such estimator type exists!!")
