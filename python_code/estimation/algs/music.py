@@ -20,7 +20,7 @@ def cluster(evs):
     return evs[np.where(abs(evs) < abs(evs[-1]) + threshold)]
 
 
-BATCH_SIZE = 1000
+SUB_ARRAY_SIZES = 1000
 
 
 class MUSIC:
@@ -39,11 +39,12 @@ class MUSIC:
         if do_one_calc:
             music_coef = 1 / scipy.linalg.norm(Qn.conj().T @ basis_vectors.T, axis=0)
         else:
-            conj_tran_Q = Qn.conj()
-            music_coef = np.zeros(basis_vectors.shape[0], dtype=complex)
-            for i in range(0, basis_vectors.shape[0], basis_vectors.shape[0] // BATCH_SIZE):
-                music_coef[i:i + BATCH_SIZE] = scipy.linalg.norm(basis_vectors[i:i + BATCH_SIZE] @ conj_tran_Q, axis=1)
-            music_coef = 1 / music_coef
+            conj_tran_Q = Qn.conj().T
+            music_coef = np.zeros(basis_vectors.shape[0])
+            batch_size = basis_vectors.shape[0] // SUB_ARRAY_SIZES
+            for i in range(0, basis_vectors.shape[0], batch_size):
+                music_coef[i:i + batch_size] = 1 / scipy.linalg.norm(conj_tran_Q @ basis_vectors[i:i + batch_size].T,
+                                                                     axis=0)
         spectrum = np.log10(10 * music_coef / music_coef.min())
         indices, _ = scipy.signal.find_peaks(spectrum, height=self.thresh, distance=MUSIC_RESOLUTION)
         top_aoa_indices = indices[np.argsort(spectrum[indices])[-L_hat:]]

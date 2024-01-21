@@ -50,6 +50,7 @@ class AngleTimeEstimator3D:
     def estimate(self, y):
         indices, self._spectrum = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.Nr_y * conf.K,
                                                           basis_vectors=self.angle_time_options, do_one_calc=False)
+        print(indices)
         # filter nearby detected peaks
         aoa_zoa_toa_set = self.filter_peaks(indices)
         aoa_list, zoa_list, toa_list = zip(*aoa_zoa_toa_set)
