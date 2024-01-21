@@ -5,6 +5,7 @@ from python_code.estimation import Estimation
 from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
 from python_code.estimation.angle import AngleEstimator2D, AngleEstimator3D
 from python_code.estimation.time import TimeEstimator2D, TimeEstimator3D
+from python_code.utils.peaks_filtering import merge, filter_peaks
 
 PROXIMITY_THRESH = 15
 
@@ -17,27 +18,17 @@ class AngleTimeEstimator2D:
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
     def estimate(self, y):
-        indices, self._spectrum = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.K,
-                                                     basis_vectors=self.angle_time_options)
-        # filter nearby detected peaks
-        aoa_toa_set = self.filter_peaks(indices)
-        aoa_list, toa_list = zip(*aoa_toa_set)
-        estimator = Estimation(AOA=[self.angle_estimator.angles_dict[aoa_ind] for aoa_ind in aoa_list],
-                               TOA=[self.time_estimator.times_dict[toa_ind] for toa_ind in toa_list])
-        return estimator
-
-    def filter_peaks(self, indices):
+        indices, self._spectrum, L_hat = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.K,
+                                                            basis_vectors=self.angle_time_options)
         aoa_indices = indices // conf.T_res
         toa_indices = indices % conf.T_res
-        aoa_toa_set = set()
-        for aoa_ind, toa_ind in zip(aoa_indices, toa_indices):
-            to_add = True
-            for aoa_ind2, toa_ind2 in aoa_toa_set:
-                if sum([abs(aoa_ind2 - aoa_ind), abs(toa_ind2 - toa_ind)]) < PROXIMITY_THRESH:
-                    to_add = False
-            if to_add:
-                aoa_toa_set.add((aoa_ind, toa_ind))
-        return aoa_toa_set
+        merged = np.array(merge(aoa_indices, toa_indices))
+        peaks = filter_peaks(merged, L_hat)
+        self._aoa_indices = peaks[:, 0]
+        self._toa_indices = peaks[:, 1]
+        estimator = Estimation(AOA=self.angle_estimator.angles_dict[self._aoa_indices],
+                               TOA=self.time_estimator.times_dict[self._toa_indices])
+        return estimator
 
 
 class AngleTimeEstimator3D:
@@ -48,8 +39,8 @@ class AngleTimeEstimator3D:
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
     def estimate(self, y):
-        indices, self._spectrum = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.Nr_y * conf.K,
-                                                          basis_vectors=self.angle_time_options, do_one_calc=False)
+        indices, self._spectrum,L_hat = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.Nr_y * conf.K,
+                                                     basis_vectors=self.angle_time_options, do_one_calc=False)
         print(indices)
         # filter nearby detected peaks
         aoa_zoa_toa_set = self.filter_peaks(indices)

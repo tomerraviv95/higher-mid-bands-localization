@@ -4,6 +4,7 @@ from python_code import conf
 from python_code.estimation import Estimation
 from python_code.estimation.algs import ALGS_DICT, ALG_TYPE
 from python_code.utils.basis_functions import create_wideband_aoa_mat, compute_angle_options
+from python_code.utils.peaks_filtering import merge, filter_peaks
 
 
 class AngleEstimator2D:
@@ -17,8 +18,8 @@ class AngleEstimator2D:
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
     def estimate(self, y):
-        self._indices, self._spectrum = self.algorithm.run(y=y, basis_vectors=self._angle_options,
-                                                           n_elements=conf.Nr_x)
+        self._indices, self._spectrum, _ = self.algorithm.run(y=y, basis_vectors=self._angle_options,
+                                                              n_elements=conf.Nr_x)
         estimator = Estimation(AOA=self.angles_dict[self._indices])
         return estimator
 
@@ -55,10 +56,14 @@ class AngleEstimator3D:
         self._angle_options = (aoa_vector_xs.T[:, :, None] @ aoa_vector_ys.T[:, None, :]).T
 
     def estimate(self, y: np.ndarray):
-        indices, self._spectrum = self.algorithm.run(y=y, basis_vectors=self._angle_options,
-                                                     n_elements=conf.Nr_y * conf.Nr_x)
-        self._aoa_indices = indices // (conf.zoa_res)
-        self._zoa_indices = indices % (conf.zoa_res)
+        indices, self._spectrum, L_hat = self.algorithm.run(y=y, basis_vectors=self._angle_options,
+                                                            n_elements=conf.Nr_y * conf.Nr_x)
+        aoa_indices = indices // (conf.zoa_res)
+        zoa_indices = indices % (conf.zoa_res)
+        merged = np.array(merge(aoa_indices, zoa_indices))
+        peaks = filter_peaks(merged, L_hat)
+        self._aoa_indices = peaks[:, 0]
+        self._zoa_indices = peaks[:, 1]
         estimation = Estimation(AOA=self.aoa_angles_dict[self._aoa_indices],
                                 ZOA=self.zoa_angles_dict[self._zoa_indices])
         return estimation
