@@ -52,3 +52,17 @@ def plot_angle_time_2d(estimator, estimation: Estimation):
     plt.plot(estimation.TOA, estimation.AOA, 'ro')
     plt.savefig('AOA_and_delay_est.png', dpi=fig.dpi)
     plt.show()
+
+
+def plot_angle_time_3d(estimator, estimation: Estimation):
+    from mpl_toolkits.mplot3d import Axes3D
+    ax = Axes3D
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    # Creating plot
+    ax.scatter(estimation.TOA, estimation.AOA, estimation.ZOA, alpha=1, color='red', s=50)
+    ax.set_xlabel('TIME[us]')
+    ax.set_ylabel('AOA[rad]')
+    ax.set_zlabel('ZOA[rad]')
+    plt.savefig('AOA_ZOA_and_delay_est.png', dpi=fig.dpi)
+    plt.show()

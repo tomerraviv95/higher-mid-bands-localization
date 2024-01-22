@@ -13,7 +13,10 @@ np.random.seed(conf.seed)
 if __name__ == "__main__":
     # bs locs of type [x,y]. x must be above the x-location of at least one BS.
     # The array lies on the y-axis and points towards the x-axis.
-    assert len(conf.ue_pos) == 2 if conf.dimensions == DimensionType.Two.name else 3
+    if conf.dimensions == DimensionType.Two.name:
+        assert len(conf.ue_pos) == 2
+    else:
+        assert len(conf.ue_pos) == 3
     estimator_type = EstimatorType.ANGLE_TIME
     bs_locs = create_bs_locs(conf.B)
     scatterers = create_scatter_points(conf.L)

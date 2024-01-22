@@ -6,7 +6,8 @@ from python_code.channel.channel_generator_3d import get_3d_channel
 from python_code.estimation.angle import AngleEstimator3D, AngleEstimator2D, WidebandAngleEstimator
 from python_code.estimation.angle_time import AngleTimeEstimator2D, AngleTimeEstimator3D
 from python_code.estimation.time import TimeEstimator2D, TimeEstimator3D
-from python_code.plotting.plotter import plot_angle_2d, plot_time, plot_angle_time_2d, plot_angles_3d
+from python_code.plotting.plotter import plot_angle_2d, plot_time, plot_angle_time_2d, plot_angles_3d, \
+    plot_angle_time_3d
 from python_code.utils.constants import EstimatorType, DimensionType
 
 estimators = {
@@ -59,6 +60,8 @@ def estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type):
                     print(f"Estimated AOA: {sorted(estimation.AOA)}, GT AOA: {sorted(bs_ue_channel.AOA)}")
                     print(f"Estimated ZOA: {sorted(estimation.ZOA)}, GT ZOA: {sorted(bs_ue_channel.ZOA)}")
                     print(f"Estimated TOA: {sorted(estimation.TOA)}, GT TOA: {sorted(bs_ue_channel.TOA)}")
+                    if conf.plot_estimation_results:
+                        plot_angle_time_3d(estimator, estimation)
         else:
             raise ValueError("No such estimator type exists!!")
     return estimations

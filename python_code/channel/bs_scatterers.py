@@ -5,12 +5,12 @@ from python_code.utils.constants import DimensionType
 
 
 def create_scatter_points_2d(L: int):
-    scatterers = np.array([[4, 4], [8, -8], [16, -16], [20, 20]])
+    scatterers = np.array([[4, 4], [3, -6], [16, -16], [20, 20]])
     return scatterers[:L - 1]
 
 
 def create_scatter_points_3d(L: int):
-    scatterers = np.array([[4, 4, 4], [8, -8, 3], [16, -16, 8], [20, 20, 0]])
+    scatterers = np.array([[4, 4, 4], [3, -6, 3], [16, -16, 8], [20, 20, 0]])
     return scatterers[:L - 1]
 
 
@@ -23,12 +23,12 @@ def create_scatter_points(L: int):
 
 
 def create_bs_locs_2d(B: int):
-    bs_locs = np.array([[0, 5], [0, -5], [0, 0]])
+    bs_locs = np.array([[0, 0], [0, -5], [0, 5]])
     return bs_locs[:B]
 
 
 def create_bs_locs_3d(B: int):
-    bs_locs = np.array([[0, 5, 10], [0, -5, 10], [0, 1, 10]])
+    bs_locs = np.array([[0, 0, 10], [0, -5, 10], [0, 5, 10]])
     return bs_locs[:B]
 
 
