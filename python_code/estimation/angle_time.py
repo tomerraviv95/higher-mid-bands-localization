@@ -35,7 +35,7 @@ class AngleTimeEstimator3D:
     def __init__(self):
         self.angle_estimator = AngleEstimator3D()
         self.time_estimator = TimeEstimator3D()
-        assert len(self.angle_estimator._angle_options) * len(self.time_estimator._time_options) < 10 ** 6
+        assert self.angle_estimator._angle_options.size * self.time_estimator._time_options.size < 10 ** 8
         self.angle_time_options = np.kron(self.angle_estimator._angle_options, self.time_estimator._time_options)
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
