@@ -10,7 +10,8 @@ from python_code.utils.constants import EstimatorType, DimensionType
 
 np.random.seed(conf.seed)
 
-if __name__ == "__main__":
+
+def main():
     # bs locs of type [x,y]. x must be above the x-location of at least one BS.
     # The array lies on the y-axis and points towards the x-axis.
     if conf.dimensions == DimensionType.Two.name:
@@ -45,3 +46,8 @@ if __name__ == "__main__":
     print(f"Estimated Position: {est_ue_pos}")
     rmse = mean_squared_error(ue_pos, est_ue_pos, squared=False)
     print(f"RMSE: {rmse}")
+    return rmse
+
+
+if __name__ == "__main__":
+    main()
