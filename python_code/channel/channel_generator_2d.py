@@ -34,9 +34,10 @@ def compute_observations(TOA: List[float], AOA: List[float]):
             F = np.exp(1j * np.random.rand(1) * 2 * np.pi)  # random beamformer
             delays_phase_vector = compute_time_options(conf.fc, conf.K, conf.BW, np.array([TOA[l]]))
             if conf.channel_bandwidth == ChannelBWType.NARROWBAND.name:
-                aoa_vector = compute_angle_options(np.array([AOA[l]]), zoa=1, values=np.arange(conf.Nr_x)).T
+                aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(conf.Nr_x)).T
                 delay_aoa_matrix = np.matmul(aoa_vector, delays_phase_vector)
             elif conf.channel_bandwidth == ChannelBWType.WIDEBAND.name:
+                raise ValueError("Wideband is currently no supported!!")
                 wideband_aoa_mat = create_wideband_aoa_mat(np.array([AOA[l]]), conf.K, conf.BW, conf.fc, conf.Nr_x,
                                                            stack_axis=1)
                 delay_aoa_matrix = wideband_aoa_mat * delays_phase_vector

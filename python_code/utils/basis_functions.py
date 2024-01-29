@@ -12,7 +12,7 @@ def compute_time_options(fc, K, BW, values):
 
 
 def compute_angle_options(aoa, zoa, values):
-    aoa_zoa_combination = np.kron(np.sin(aoa), zoa)
+    aoa_zoa_combination = np.kron(aoa, zoa)
     combination = np.dot(aoa_zoa_combination.reshape(-1, 1), values.reshape(1, -1))
     return array_response_vector(combination / 2)
 

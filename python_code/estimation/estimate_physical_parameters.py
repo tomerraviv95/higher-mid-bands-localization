@@ -27,7 +27,7 @@ def estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type):
         estimations.append(estimation)
         print(f"BS #{i} - {bs_loc}")
         # print the angle result + graph only
-        if estimator_type in [EstimatorType.ANGLE, EstimatorType.WIDE_ANGLE]:
+        if estimator_type == EstimatorType.ANGLE:
             angle_printer(bs_ue_channel, estimation, estimator)
         # print the delay result + graph only
         elif estimator_type == EstimatorType.TIME:

@@ -14,7 +14,7 @@ class AngleEstimator2D:
 
     def __init__(self):
         self.angles_dict = np.linspace(-np.pi / 2, np.pi / 2, conf.aoa_res)  # dictionary of spatial frequencies
-        self._angle_options = compute_angle_options(self.angles_dict, zoa=1, values=np.arange(conf.Nr_x))
+        self._angle_options = compute_angle_options(np.sin(self.angles_dict), zoa=1, values=np.arange(conf.Nr_x))
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
     def estimate(self, y):
@@ -37,9 +37,9 @@ class AngleEstimator3D:
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
     def calc_angle_options(self):
-        aoa_vector_ys = compute_angle_options(self.aoa_angles_dict.reshape(-1, 1),
+        aoa_vector_ys = compute_angle_options(np.sin(self.aoa_angles_dict).reshape(-1, 1),
                                               np.sin(self.zoa_angles_dict), np.arange(conf.Nr_y)).T
-        aoa_vector_xs = compute_angle_options(self.aoa_angles_dict.reshape(-1, 1),
+        aoa_vector_xs = compute_angle_options(np.sin(self.aoa_angles_dict).reshape(-1, 1),
                                               np.cos(self.zoa_angles_dict), np.arange(conf.Nr_x)).T
         self._angle_options = (aoa_vector_xs.T[:, :, None] @ aoa_vector_ys.T[:, None, :]).T
 
