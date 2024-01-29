@@ -45,7 +45,7 @@ def optimize_to_estimate_position_3d(bs_locs, estimations):
                 cost = abs(
                     np.arctan2(scatterers[l][1] - bs_locs[i][1], scatterers[l][0] - bs_locs[i][0]) - nlos_aoa)
                 costs.append(cost)
-            # LOS ZOA constraints
+            # NLOS ZOA constraints
             for l, nlos_zoa in enumerate(zoa_values[i][1:]):
                 if l >= MAX_L:
                     break
