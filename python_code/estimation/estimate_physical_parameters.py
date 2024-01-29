@@ -1,6 +1,6 @@
 from python_code import conf
 from python_code.channel import get_channel
-from python_code.estimation.angle import AngleEstimator3D, AngleEstimator2D, WidebandAngleEstimator
+from python_code.estimation.angle import AngleEstimator3D, AngleEstimator2D
 from python_code.estimation.angle_time import AngleTimeEstimator2D, AngleTimeEstimator3D
 from python_code.estimation.esimation_utils import aoa_time_printer, time_printer, angle_printer
 from python_code.estimation.time import TimeEstimator2D, TimeEstimator3D
@@ -8,7 +8,6 @@ from python_code.utils.constants import EstimatorType, DimensionType
 
 estimators = {
     EstimatorType.ANGLE: {DimensionType.Three.name: AngleEstimator3D, DimensionType.Two.name: AngleEstimator2D},
-    EstimatorType.WIDE_ANGLE: WidebandAngleEstimator,
     EstimatorType.TIME: {DimensionType.Three.name: TimeEstimator3D, DimensionType.Two.name: TimeEstimator2D},
     EstimatorType.ANGLE_TIME: {DimensionType.Three.name: AngleTimeEstimator3D,
                                DimensionType.Two.name: AngleTimeEstimator2D}}
