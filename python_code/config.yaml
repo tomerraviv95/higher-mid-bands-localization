@@ -4,16 +4,16 @@ seed: 0 # run seed
 dimensions: 'Two' # 'Two' or 'Three'
 L: 1  # number of paths, up to 5 (including LOS)
 B: 1 # number of BSs, up to 3 (including)
-K: 10   # number of subcarriers
+K: 20   # number of subcarriers
 Nr_x: 16  # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
 Nr_y: 7  # number of RX n_elements in y.
 aoa_res: 180  # number of elements in the AOA dictionary
 zoa_res: 90  # number of elements in the ZOA dictionary
 T_res: 25  # number of elements in the TIME dictionary
 Ns: 100  # number of transmitted pilot beams
-ue_pos: [ 5, 0]  # TX UE position
-sigma: 0.1  # noise standard deviation
-fc: 5000  # carrier frequency in MHz
+ue_pos: [ 10, 0]  # TX UE position
+sigma: 1  # noise standard deviation
+fc: 24000  # carrier frequency in MHz
 BW: 50  # BW frequency in MHz
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 plot_estimation_results: False # either True or False

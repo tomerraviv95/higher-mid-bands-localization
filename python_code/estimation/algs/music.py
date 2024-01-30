@@ -16,8 +16,8 @@ def cluster(evs):
         @returns -- The eigenvalues similar or equal to the smallest eigenvalue.
     """
     # simplest clustering method: with threshold
-    threshold = 1
-    return evs[np.where(abs(evs) < abs(evs[-1]) + threshold)]
+    threshold = 0.1
+    return evs[np.where(abs(evs)/abs(evs)[0] < threshold)]
 
 
 SUB_ARRAY_SIZES = 1000

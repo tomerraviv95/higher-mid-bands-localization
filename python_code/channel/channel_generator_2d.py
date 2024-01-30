@@ -1,4 +1,5 @@
 # Generate scatter points
+import math
 from collections import namedtuple
 from typing import List
 
@@ -9,6 +10,13 @@ from python_code.utils.basis_functions import compute_time_options, compute_angl
 from python_code.utils.constants import C, ChannelBWType
 
 Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA"])
+
+P_0 = 10000
+
+
+def compute_path_loss(toa):
+    loss_db = 20 * math.log10(toa) + 20 * math.log10(conf.fc) + 20 * math.log10(4 * math.pi)
+    return 10 ** (loss_db / 20)
 
 
 def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray):
@@ -24,7 +32,7 @@ def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
 
 
 def compute_observations(TOA: List[float], AOA: List[float]):
-    alpha = np.sqrt(1 / 2) * (np.random.randn(conf.L) + np.random.randn(conf.L) * 1j)
+    alpha = P_0 * np.sqrt(1 / 2) * (np.random.randn(conf.L) + np.random.randn(conf.L) * 1j)
     # Generate the observation and beamformers
     y = np.zeros((conf.Nr_x, conf.K, conf.Ns), dtype=complex)
     for ns in range(conf.Ns):
@@ -43,7 +51,8 @@ def compute_observations(TOA: List[float], AOA: List[float]):
                 delay_aoa_matrix = wideband_aoa_mat * delays_phase_vector
             else:
                 raise ValueError("No such type of channel BW!")
-            h += F * alpha[l] * delay_aoa_matrix
+            channel_gain = alpha[l] / compute_path_loss(TOA[l])
+            h += F * channel_gain * delay_aoa_matrix
         ## adding the white Gaussian noise
         noise = conf.sigma / np.sqrt(2) * (np.random.randn(conf.Nr_x, conf.K) + 1j * np.random.randn(conf.Nr_x, conf.K))
         y[:, :, ns] = h + noise

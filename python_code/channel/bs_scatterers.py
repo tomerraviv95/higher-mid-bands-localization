@@ -23,12 +23,12 @@ def create_scatter_points(L: int):
 
 
 def create_bs_locs_2d(B: int):
-    bs_locs = np.array([[0, 0], [0, -5], [0, 5]])
+    bs_locs = np.array([[0, 5], [0, -5], [0, 50]])
     return bs_locs[:B]
 
 
 def create_bs_locs_3d(B: int):
-    bs_locs = np.array([[0, 0, 10], [0, -5, 10], [0, 5, 10]])
+    bs_locs = np.array([[0, 5, 10], [0, -5, 10], [0, 50, 10]])
     return bs_locs[:B]
 
 
