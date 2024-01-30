@@ -17,10 +17,11 @@ def cluster(evs):
     """
     # simplest clustering method: with threshold
     threshold = 0.1
-    return evs[np.where(abs(evs)/abs(evs)[0] < threshold)]
+    return evs[np.where(abs(evs) / abs(evs)[0] < threshold)]
 
 
-SUB_ARRAY_SIZES = 1000
+SUB_ARRAY_SIZES = 10 ** 3
+DEBUG = True
 
 
 class MUSIC:
@@ -44,7 +45,7 @@ class MUSIC:
             batch_size = basis_vectors.shape[0] // SUB_ARRAY_SIZES
             for i in range(0, basis_vectors.shape[0], batch_size):
                 music_coef[i:i + batch_size] = 1 / scipy.linalg.norm(conj_tran_Q @ basis_vectors[i:i + batch_size].T,
-                                                         axis=0)
+                                                                     axis=0)
         spectrum = np.log10(10 * music_coef / music_coef.min())
         indices, _ = scipy.signal.find_peaks(spectrum, height=self.thresh, distance=MUSIC_RESOLUTION)
-        return indices, spectrum,L_hat
+        return indices, spectrum, L_hat

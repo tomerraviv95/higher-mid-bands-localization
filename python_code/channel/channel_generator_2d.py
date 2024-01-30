@@ -7,11 +7,9 @@ import numpy as np
 
 from python_code import conf
 from python_code.utils.basis_functions import compute_time_options, compute_angle_options, create_wideband_aoa_mat
-from python_code.utils.constants import C, ChannelBWType, MAX_DIST
+from python_code.utils.constants import C, ChannelBWType, MAX_DIST, P_0
 
 Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA"])
-
-P_0 = 10000
 
 
 def compute_path_loss(toa):
@@ -41,7 +39,7 @@ def compute_observations(TOA: List[float], AOA: List[float]):
         # Generate channel
         h = np.zeros((conf.Nr_x, conf.K), dtype=complex)
         for l in range(conf.L):
-            F = np.exp(1j * np.random.rand(1) * 2 * np.pi)  # random beamformer
+            F = np.exp(1j * np.random.rand(1) * 2 * np.pi)   # random beamformer
             delays_phase_vector = compute_time_options(conf.fc, conf.K, conf.BW, np.array([TOA[l]]))
             if conf.channel_bandwidth == ChannelBWType.NARROWBAND.name:
                 aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(conf.Nr_x)).T

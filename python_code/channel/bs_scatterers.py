@@ -5,12 +5,12 @@ from python_code.utils.constants import DimensionType
 
 
 def create_scatter_points_2d(L: int):
-    scatterers = np.array([[4, 4], [3, -6], [16, -16], [20, 20]])
+    scatterers = np.array([[100, 2], [30, -16], [50, -50]])
     return scatterers[:L - 1]
 
 
 def create_scatter_points_3d(L: int):
-    scatterers = np.array([[4, 4, 4], [3, -6, 3], [16, -16, 8], [20, 20, 0]])
+    scatterers = np.array([[10, 2, 4], [3, -16, 3], [5, -5, 8]])
     return scatterers[:L - 1]
 
 

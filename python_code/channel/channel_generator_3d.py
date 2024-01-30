@@ -6,7 +6,7 @@ import numpy as np
 
 from python_code import conf
 from python_code.utils.basis_functions import compute_angle_options, create_wideband_aoa_mat, compute_time_options
-from python_code.utils.constants import C, ChannelBWType
+from python_code.utils.constants import C, ChannelBWType, P_0
 
 Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA", "ZOA"])
 
@@ -27,7 +27,7 @@ def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
 
 
 def compute_observations(TOA: List[float], AOA: List[float], ZOA: List[float]):
-    alpha = np.sqrt(1 / 2) * (np.random.randn(conf.L) + np.random.randn(conf.L) * 1j)
+    alpha = P_0 * np.sqrt(1 / 2) * (np.random.randn(conf.L) + np.random.randn(conf.L) * 1j)
     # Generate the observation and beamformers
     y = np.zeros((conf.Nr_y, conf.Nr_x, conf.K, conf.Ns), dtype=complex)
     for ns in range(conf.Ns):
@@ -50,7 +50,8 @@ def compute_observations(TOA: List[float], AOA: List[float], ZOA: List[float]):
                 delay_aoa_matrix = wideband_aoa_mat * delays_phase_vector
             else:
                 raise ValueError("No such type of channel BW!")
-            h += F * alpha[l] * delay_aoa_matrix
+            channel_gain = alpha[l] / compute_path_loss(TOA[l])
+            h += F * channel_gain * delay_aoa_matrix
         ## adding the white Gaussian noise
         noise_real = np.random.randn(conf.Nr_y, conf.Nr_x, conf.K)
         noise_img = 1j * np.random.randn(conf.Nr_y, conf.Nr_x, conf.K)

@@ -9,13 +9,17 @@ from python_code.utils.constants import MAX_DIST, C
 
 class TimeEstimator2D:
     def __init__(self):
-        self.times_dict = np.linspace(0, MAX_DIST / C, conf.T_res)
+        self.times_dict = np.arange(0, MAX_DIST / C, conf.T_res)
+        # self.times_dict = np.linspace(0, MAX_DIST / C, 50)
         self._time_options = compute_time_options(conf.fc, conf.K, conf.BW, values=self.times_dict)
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
     def estimate(self, y):
-        self._indices, self._spectrum, _ = self.algorithm.run(y=np.transpose(y, [1, 0, 2]), n_elements=conf.K,
+        self._indices, self._spectrum, L_hat = self.algorithm.run(y=np.transpose(y, [1, 0, 2]), n_elements=conf.K,
                                                               basis_vectors=self._time_options)
+        print(self._indices)
+        if len(self._indices) > L_hat:
+            self._indices = self._indices[:L_hat]
         estimator = Estimation(TOA=self.times_dict[self._indices])
         return estimator
 
@@ -27,7 +31,9 @@ class TimeEstimator3D:
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
     def estimate(self, y):
-        self._indices, self._spectrum, _ = self.algorithm.run(y=np.transpose(y, [2, 1, 0, 3]), n_elements=conf.K,
-                                                              basis_vectors=self._time_options)
+        self._indices, self._spectrum, L_hat = self.algorithm.run(y=np.transpose(y, [2, 1, 0, 3]), n_elements=conf.K,
+                                                                  basis_vectors=self._time_options)
+        if len(self._indices) > L_hat:
+            self._indices = self._indices[:L_hat]
         estimator = Estimation(TOA=self.times_dict[self._indices])
         return estimator
