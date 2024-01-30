@@ -19,7 +19,6 @@ def estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type):
     for i, bs_loc in enumerate(bs_locs):
         # generate the channel
         bs_ue_channel = get_channel(bs_loc, ue_pos, scatterers)
-        conf.max_time = max(bs_ue_channel.TOA) * 1.2
         # choose the estimator based on the desired type
         estimator = estimators[estimator_type][conf.dimensions]()
         # estimate delay / AOA / ZOA parameters for the current bs

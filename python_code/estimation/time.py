@@ -4,11 +4,12 @@ from python_code import conf
 from python_code.estimation import Estimation
 from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
 from python_code.utils.basis_functions import compute_time_options
+from python_code.utils.constants import MAX_DIST, C
 
 
 class TimeEstimator2D:
     def __init__(self):
-        self.times_dict = np.linspace(0, conf.max_time, conf.T_res)
+        self.times_dict = np.linspace(0, MAX_DIST / C, conf.T_res)
         self._time_options = compute_time_options(conf.fc, conf.K, conf.BW, values=self.times_dict)
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
@@ -21,7 +22,7 @@ class TimeEstimator2D:
 
 class TimeEstimator3D:
     def __init__(self):
-        self.times_dict = np.linspace(0, conf.max_time, conf.T_res)
+        self.times_dict = np.linspace(0, MAX_DIST / C, conf.T_res)
         self._time_options = compute_time_options(conf.fc, conf.K, conf.BW, values=self.times_dict)
         self.algorithm = ALGS_DICT[ALG_TYPE]
 

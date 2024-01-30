@@ -7,7 +7,7 @@ import numpy as np
 
 from python_code import conf
 from python_code.utils.basis_functions import compute_time_options, compute_angle_options, create_wideband_aoa_mat
-from python_code.utils.constants import C, ChannelBWType
+from python_code.utils.constants import C, ChannelBWType, MAX_DIST
 
 Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA"])
 
@@ -28,6 +28,8 @@ def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
     for l in range(1, conf.L):
         AOA[l] = np.arctan2(scatterers[l - 1, 1] - bs_loc[1], scatterers[l - 1, 0] - bs_loc[0])
         TOA[l] = (np.linalg.norm(bs_loc - scatterers[l - 1]) + np.linalg.norm(conf.ue_pos - scatterers[l - 1])) / C
+    # assert that toa are supported, must be smaller than largest distance divided by the speed
+    assert all([TOA[l] < MAX_DIST / C for l in range(len(TOA))])
     return TOA, AOA
 
 

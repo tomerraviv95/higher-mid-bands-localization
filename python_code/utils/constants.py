@@ -1,6 +1,7 @@
 from enum import Enum
 
 C = 300  # speed of light meter / us
+MAX_DIST = 100  # maximum distance in meters supported in the simulation
 
 
 class EstimatorType(Enum):
