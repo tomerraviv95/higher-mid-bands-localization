@@ -5,7 +5,7 @@ from python_code import conf
 from python_code.channel.bs_scatterers import create_bs_locs, create_scatter_points
 from python_code.estimation.estimate_physical_parameters import estimate_physical_parameters
 from python_code.optimization import optimize_to_estimate_position
-from python_code.utils.constants import EstimatorType, DimensionType
+from python_code.utils.constants import EstimatorType, DimensionType, C
 
 np.random.seed(conf.seed)
 
@@ -25,6 +25,7 @@ def main():
     ue_pos = np.array(conf.ue_pos)
     print(f"UE: {ue_pos}, Scatterers: {[str(scatter) for scatter in scatterers]}")
     print(estimator_type.name)
+    print(f"Max distance supported by setup: {C / conf.BW * conf.K}[m]")
     # ------------------------------------- #
     # Physical Parameters' Estimation Phase #
     # ------------------------------------- #

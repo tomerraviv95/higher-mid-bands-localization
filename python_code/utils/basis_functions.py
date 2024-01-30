@@ -11,8 +11,9 @@ def compute_time_options(fc, K, BW, values):
     array_response_combination = array_response_vector(combination)
     if array_response_combination.shape[0] > 1:
         first_row_duplicates = np.all(np.isclose(array_response_combination, array_response_combination[0]), axis=1)
-        dup_row = np.where(first_row_duplicates)[0][1]
-        array_response_combination = array_response_combination[:dup_row]
+        if sum(first_row_duplicates) > 1:
+            dup_row = np.where(first_row_duplicates)[0][1]
+            array_response_combination = array_response_combination[:dup_row]
     return array_response_combination
 
 

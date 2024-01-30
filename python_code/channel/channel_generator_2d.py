@@ -27,7 +27,7 @@ def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
         AOA[l] = np.arctan2(scatterers[l - 1, 1] - bs_loc[1], scatterers[l - 1, 0] - bs_loc[0])
         TOA[l] = (np.linalg.norm(bs_loc - scatterers[l - 1]) + np.linalg.norm(conf.ue_pos - scatterers[l - 1])) / C
     # assert that toa are supported, must be smaller than largest distance divided by the speed
-    assert all([TOA[l] < MAX_DIST / C for l in range(len(TOA))])
+    assert all([TOA[l] < conf.K / conf.BW for l in range(len(TOA))])
     return TOA, AOA
 
 
@@ -39,7 +39,7 @@ def compute_observations(TOA: List[float], AOA: List[float]):
         # Generate channel
         h = np.zeros((conf.Nr_x, conf.K), dtype=complex)
         for l in range(conf.L):
-            F = np.exp(1j * np.random.rand(1) * 2 * np.pi)   # random beamformer
+            F = np.exp(1j * np.random.rand(1) * 2 * np.pi)  # random beamformer
             delays_phase_vector = compute_time_options(conf.fc, conf.K, conf.BW, np.array([TOA[l]]))
             if conf.channel_bandwidth == ChannelBWType.NARROWBAND.name:
                 aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(conf.Nr_x)).T
@@ -61,6 +61,7 @@ def compute_observations(TOA: List[float], AOA: List[float]):
 
 def get_2d_channel(bs_loc, ue_pos, scatterers):
     TOA, AOA = compute_gt_channel_parameters(bs_loc, ue_pos, scatterers)
+    print(f"Distance to user {TOA[0] * C}[m], TOA[us]: {round(TOA[0],3)}")
     y = compute_observations(TOA, AOA)
     channel_instance = Channel(scatterers=scatterers, y=y, TOA=TOA, AOA=AOA)
     return channel_instance

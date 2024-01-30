@@ -5,7 +5,7 @@ from python_code.utils.constants import DimensionType
 
 
 def create_scatter_points_2d(L: int):
-    scatterers = np.array([[20, 5], [30, -16], [50, -50]])
+    scatterers = np.array([[7, -5], [10, -6], [10, 3]])
     return scatterers[:L - 1]
 
 
@@ -23,7 +23,7 @@ def create_scatter_points(L: int):
 
 
 def create_bs_locs_2d(B: int):
-    bs_locs = np.array([[0, 5], [0, -5], [0, 50]])
+    bs_locs = np.array([[0, 0], [0, -5], [0, 50]])
     return bs_locs[:B]
 
 
