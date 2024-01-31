@@ -15,10 +15,9 @@ class AngleTimeEstimator2D:
         self.angle_estimator = AngleEstimator2D()
         self.time_estimator = TimeEstimator2D()
         self.angle_time_options = np.kron(self.angle_estimator._angle_options, self.time_estimator._time_options)
-        self.algorithm = ALGS_DICT[ALG_TYPE]
+        self.algorithm = ALGS_DICT[ALG_TYPE](2)
 
     def estimate(self, y):
-        # conf.K // (conf.BW * conf.T_res)
         indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.K,
                                                         basis_vectors=self.angle_time_options,
                                                         second_dim=len(self.time_estimator.times_dict))
@@ -34,11 +33,13 @@ class AngleTimeEstimator3D:
         self.angle_estimator = AngleEstimator3D()
         self.time_estimator = TimeEstimator3D()
         self.angle_time_options = np.kron(self.angle_estimator._angle_options, self.time_estimator._time_options)
-        self.algorithm = ALGS_DICT[ALG_TYPE]
+        self.algorithm = ALGS_DICT[ALG_TYPE](5)
 
     def estimate(self, y):
         indices, self._spectrum, L_hat = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.Nr_y * conf.K,
-                                                            basis_vectors=self.angle_time_options, do_one_calc=False)
+                                                            basis_vectors=self.angle_time_options,
+                                                            second_dim=len(self.angle_estimator.zoa_angles_dict),
+                                                            third_dim=len(self.time_estimator.times_dict))
         if len(indices) == 0:
             raise ValueError("No sources detected. Change hyperparameters.")
         angle_indices = indices // conf.T_res

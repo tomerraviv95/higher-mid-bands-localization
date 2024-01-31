@@ -49,7 +49,9 @@ def plot_time(estimator, estimation: Estimation):
 def plot_angle_time_2d(estimator, estimation: Estimation):
     fig = plt.figure()
     plt.contourf(estimator.time_estimator.times_dict, estimator.angle_estimator.aoa_angles_dict,
-                 estimator._spectrum.reshape(math.pi // conf.aoa_res, conf.T_res), cmap='magma')
+                 estimator._spectrum.reshape(len(estimator.angle_estimator.aoa_angles_dict),
+                                             len(estimator.time_estimator.times_dict), order='F'),
+                 map='magma')
     ax = plt.gca()
     ax.set_xlabel('TIME[us]')
     ax.set_ylabel('AOA[rad]')
