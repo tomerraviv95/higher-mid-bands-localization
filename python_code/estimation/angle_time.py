@@ -18,6 +18,8 @@ class AngleTimeEstimator2D:
         indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.K,
                                                         basis_vectors=self.angle_time_options,
                                                         second_dim=len(self.time_estimator.times_dict))
+        if len(indices) == 0:
+            indices = np.array([[0, 0]])
         self._aoa_indices = indices[:, 0]
         self._toa_indices = indices[:, 1]
         estimator = Estimation(AOA=self.angle_estimator.aoa_angles_dict[self._aoa_indices],
