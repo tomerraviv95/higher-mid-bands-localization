@@ -33,7 +33,7 @@ class AngleEstimator3D(AngleEstimator2D):
         self.zoa_angles_dict = np.arange(0, np.pi / 2, conf.zoa_res * np.pi / 180)
         self.calc_angle_options()
         self._angle_options = self._angle_options.reshape(conf.Nr_y * conf.Nr_x, -1).T
-        self.algorithm = ALGS_DICT[ALG_TYPE](10)
+        self.algorithm = ALGS_DICT[ALG_TYPE](5)
 
     def calc_angle_options(self):
         aoa_vector_ys = compute_angle_options(np.sin(self.aoa_angles_dict).reshape(-1, 1),
