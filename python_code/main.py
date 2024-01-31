@@ -6,9 +6,9 @@ from python_code.channel.bs_scatterers import create_bs_locs, create_scatter_poi
 from python_code.estimation.estimate_physical_parameters import estimate_physical_parameters
 from python_code.optimization import optimize_to_estimate_position
 from python_code.utils.constants import EstimatorType, DimensionType, C
+from memory_profiler import profile
 
 np.random.seed(conf.seed)
-
 
 def main():
     # bs locs of type [x,y]. x must be above the x-location of at least one BS.

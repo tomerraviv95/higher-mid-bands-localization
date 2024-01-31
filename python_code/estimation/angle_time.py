@@ -31,14 +31,16 @@ class AngleTimeEstimator3D:
     def __init__(self):
         self.angle_estimator = AngleEstimator3D()
         self.time_estimator = TimeEstimator3D()
-        self.angle_time_options = np.kron(self.angle_estimator._angle_options, self.time_estimator._time_options)
+        self.angle_time_options = np.kron(self.angle_estimator._angle_options.astype(np.complex64),
+                                          self.time_estimator._time_options.astype(np.complex64))
         self.algorithm = ALGS_DICT[ALG_TYPE](5)
 
     def estimate(self, y):
         indices, self._spectrum, L_hat = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.Nr_y * conf.K,
                                                             basis_vectors=self.angle_time_options,
                                                             second_dim=len(self.angle_estimator.zoa_angles_dict),
-                                                            third_dim=len(self.time_estimator.times_dict))
+                                                            third_dim=len(self.time_estimator.times_dict),
+                                                            batches=10)
         self._aoa_indices = indices[:, 0]
         self._zoa_indices = indices[:, 1]
         self._toa_indices = indices[:, 2]

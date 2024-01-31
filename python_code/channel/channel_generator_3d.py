@@ -31,9 +31,10 @@ def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
 
 def compute_observations(TOA: List[float], AOA: List[float], ZOA: List[float]):
     alpha = P_0 * np.sqrt(1 / 2) * (np.random.randn(conf.L) + np.random.randn(conf.L) * 1j)
+    Ns = conf.Nr_y * conf.Nr_x * conf.K
     # Generate the observation and beamformers
-    y = np.zeros((conf.Nr_y, conf.Nr_x, conf.K, conf.Ns), dtype=complex)
-    for ns in range(conf.Ns):
+    y = np.zeros((conf.Nr_y, conf.Nr_x, conf.K, Ns), dtype=complex)
+    for ns in range(Ns):
         # Generate channel
         h = np.zeros((conf.Nr_y, conf.Nr_x, conf.K), dtype=complex)
         for l in range(conf.L):

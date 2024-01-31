@@ -8,11 +8,18 @@ class CaponBeamforming:
         self.thresh = thresh
 
     def run(self, y: np.ndarray, basis_vectors: np.ndarray, n_elements: int, second_dim: int = None,
-            third_dim: int = None):
+            third_dim: int = None, batches=1):
         cov = np.cov(y.reshape(n_elements, -1), bias=True)
-        inv_cov = np.linalg.inv(cov)
-        inv_cov = inv_cov / np.linalg.norm(inv_cov)
-        norm_values = np.linalg.norm((basis_vectors.conj() @ inv_cov) * basis_vectors, axis=1)
+        cov = np.linalg.inv(cov)
+        cov = cov / np.linalg.norm(cov)
+        if batches == 1:
+            norm_values = np.linalg.norm((basis_vectors.conj() @ cov) * basis_vectors, axis=1)
+        else:
+            norm_values = np.zeros(basis_vectors.shape[0])
+            batch_size = basis_vectors.shape[0] // batches
+            for i in range(0, basis_vectors.shape[0], batch_size):
+                norm_values[i:i + batch_size] = np.linalg.norm((basis_vectors[i:i + batch_size].conj() @ cov) *
+                                                               basis_vectors[i:i + batch_size], axis=1)
         norm_values = 1 / norm_values
         # treat the spectrum as 1d if the second dim is None
         if second_dim is None:
