@@ -6,7 +6,7 @@ import numpy as np
 
 from python_code import conf
 from python_code.utils.basis_functions import compute_angle_options, create_wideband_aoa_mat, compute_time_options
-from python_code.utils.constants import C, ChannelBWType, P_0
+from python_code.utils.constants import C, ChannelBWType, P_0, DATA_COEF
 from python_code.utils.path_loss import compute_path_loss
 
 Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA", "ZOA"])
@@ -31,7 +31,7 @@ def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
 
 def compute_observations(TOA: List[float], AOA: List[float], ZOA: List[float]):
     alpha = P_0 * np.sqrt(1 / 2) * (np.random.randn(conf.L) + np.random.randn(conf.L) * 1j)
-    Ns = conf.Nr_y * conf.Nr_x * conf.K
+    Ns = conf.Nr_y * conf.Nr_x * conf.K * DATA_COEF
     # Generate the observation and beamformers
     y = np.zeros((conf.Nr_y, conf.Nr_x, conf.K, Ns), dtype=complex)
     for ns in range(Ns):

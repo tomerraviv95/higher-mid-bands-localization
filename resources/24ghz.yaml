@@ -10,7 +10,6 @@ Nr_y: 0  # number of RX n_elements in y.
 aoa_res: 1  # resolution in degrees for the azimuth dictionary
 zoa_res: 1  # resolution in degrees for the zenith dictionary
 T_res: 0.003  # number of elements in the TIME dictionary
-Ns: 5000  # number of transmitted pilot beams
 ue_pos: [18, 10]  # TX UE position
 sigma: 1  # noise standard deviation
 fc: 24000  # carrier frequency in MHz

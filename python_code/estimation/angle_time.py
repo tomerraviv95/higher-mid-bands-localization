@@ -6,8 +6,6 @@ from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
 from python_code.estimation.angle import AngleEstimator2D, AngleEstimator3D
 from python_code.estimation.time import TimeEstimator2D, TimeEstimator3D
 
-PROXIMITY_THRESH = 15
-
 
 class AngleTimeEstimator2D:
     def __init__(self):
@@ -33,14 +31,14 @@ class AngleTimeEstimator3D:
         self.time_estimator = TimeEstimator3D()
         self.angle_time_options = np.kron(self.angle_estimator._angle_options.astype(np.complex64),
                                           self.time_estimator._time_options.astype(np.complex64))
-        self.algorithm = ALGS_DICT[ALG_TYPE](5)
+        self.algorithm = ALGS_DICT[ALG_TYPE](2)
 
     def estimate(self, y):
         indices, self._spectrum, L_hat = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.Nr_y * conf.K,
                                                             basis_vectors=self.angle_time_options,
                                                             second_dim=len(self.angle_estimator.zoa_angles_dict),
                                                             third_dim=len(self.time_estimator.times_dict),
-                                                            batches=10)
+                                                            batches=5)
         self._aoa_indices = indices[:, 0]
         self._zoa_indices = indices[:, 1]
         self._toa_indices = indices[:, 2]

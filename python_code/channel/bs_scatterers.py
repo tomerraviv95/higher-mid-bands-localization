@@ -10,7 +10,7 @@ def create_scatter_points_2d(L: int):
 
 
 def create_scatter_points_3d(L: int):
-    scatterers = np.array([[7, -5, 4], [10, -16, 3], [5, -5, 8]])
+    scatterers = np.array([[7, -5, 4], [10, -6, 3], [5, -5, 8]])
     return scatterers[:L - 1]
 
 
