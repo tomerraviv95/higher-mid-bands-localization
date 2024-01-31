@@ -38,10 +38,10 @@ def plot_time(estimator, estimation: Estimation):
     fig = plt.figure()
     plt.plot(estimator.times_dict, estimator._spectrum, color="orange")
     plt.plot(estimation.TOA, estimator._spectrum[estimator._indices], 'ro')
-    plt.title('MUSIC for Delay Estimation')
+    plt.title('Spectrum for Delay Estimation')
     plt.xlabel('TIME[us]')
-    plt.ylabel('MUSIC coefficient')
-    plt.legend(['spectrum', 'Estimated delays'])
+    plt.ylabel('Spectrum coefficient')
+    plt.legend(['spectrum', 'estimated delays'])
     plt.savefig('delay.png', dpi=fig.dpi)
     plt.show()
 
