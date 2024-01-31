@@ -19,7 +19,7 @@ def main():
     else:
         assert len(conf.ue_pos) == 3
         print("Right handed 3D axes")
-    estimator_type = EstimatorType.ANGLE
+    estimator_type = EstimatorType.ANGLE_TIME
     bs_locs = create_bs_locs(conf.B)
     scatterers = create_scatter_points(conf.L)
     ue_pos = np.array(conf.ue_pos)
@@ -27,7 +27,7 @@ def main():
     print(estimator_type.name)
     print(f"Max distance supported by setup: {C / conf.BW * conf.K}[m]")
     # ------------------------------------- #
-    # Physical Parameters' Estimation Phase #
+    # Physical Parameters' Estimation Phasc9e #
     # ------------------------------------- #
     estimations = estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type)
     # must estimate both angle and time to estimate locations in this code version (theoretically you could use one)

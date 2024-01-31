@@ -16,7 +16,8 @@ class TimeEstimator2D:
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
     def estimate(self, y):
-        self._indices, self._spectrum, L_hat = self.algorithm.run(y=np.transpose(y, [1, 0, 2]), n_elements=conf.K,basis_vectors=self._time_options)
+        self._indices, self._spectrum, L_hat = self.algorithm.run(y=np.transpose(y, [1, 0, 2]), n_elements=conf.K,
+                                                                  basis_vectors=self._time_options)
         estimator = Estimation(TOA=self.times_dict[self._indices])
         return estimator
 
