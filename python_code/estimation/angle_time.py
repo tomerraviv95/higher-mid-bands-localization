@@ -5,7 +5,6 @@ from python_code.estimation import Estimation
 from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
 from python_code.estimation.angle import AngleEstimator2D, AngleEstimator3D
 from python_code.estimation.time import TimeEstimator2D, TimeEstimator3D
-from python_code.utils.peaks_filtering import filter_peaks, merge_three
 
 PROXIMITY_THRESH = 15
 
@@ -40,17 +39,9 @@ class AngleTimeEstimator3D:
                                                             basis_vectors=self.angle_time_options,
                                                             second_dim=len(self.angle_estimator.zoa_angles_dict),
                                                             third_dim=len(self.time_estimator.times_dict))
-        if len(indices) == 0:
-            raise ValueError("No sources detected. Change hyperparameters.")
-        angle_indices = indices // conf.T_res
-        aoa_indices = angle_indices // (conf.zoa_res)
-        zoa_indices = angle_indices % (conf.zoa_res)
-        toa_indices = indices % conf.T_res
-        merged = np.array(merge_three(aoa_indices, zoa_indices, toa_indices))
-        peaks = filter_peaks(merged, L_hat)
-        self._aoa_indices = peaks[:, 0]
-        self._zoa_indices = peaks[:, 1]
-        self._toa_indices = peaks[:, 2]
+        self._aoa_indices = indices[:, 0]
+        self._zoa_indices = indices[:, 1]
+        self._toa_indices = indices[:, 2]
         estimator = Estimation(AOA=self.angle_estimator.aoa_angles_dict[self._aoa_indices],
                                ZOA=self.angle_estimator.zoa_angles_dict[self._zoa_indices],
                                TOA=self.time_estimator.times_dict[self._toa_indices])
