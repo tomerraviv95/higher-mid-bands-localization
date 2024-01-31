@@ -9,8 +9,8 @@ plt.style.use('dark_background')
 
 if __name__ == "__main__":
     rmse_list = []
-    ue_x_positions = range(3, 15)
-    ue_y_positions = range(3, 15)
+    ue_x_positions = range(3, 7)
+    ue_y_positions = range(3, 7)
     for ue_pos_x in ue_x_positions:
         rmse_list.append([])
         for ue_pos_y in ue_y_positions:
@@ -20,10 +20,12 @@ if __name__ == "__main__":
             rmse = main()
             rmse_list[-1].append(rmse)
     rmse_array = np.round(np.array(rmse_list), 2).T
-    sns.heatmap(rmse_array, annot=True, linewidths=.5, vmin=0, vmax=2)
+    fig = plt.figure()
+    sns.heatmap(rmse_array, annot=True, linewidths=.5, vmin=0, vmax=1)
     ax = plt.gca()
     plt.xlabel('X location')
     plt.xticks(range(len(ue_x_positions)), ue_x_positions)
     plt.ylabel('Y location')
     plt.yticks(range(len(ue_y_positions)), ue_y_positions)
+    plt.savefig(f'plotting_frequency_{conf.fc}.png', dpi=fig.dpi)
     plt.show()
