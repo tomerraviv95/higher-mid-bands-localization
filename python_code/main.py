@@ -19,7 +19,7 @@ def main():
     else:
         assert len(conf.ue_pos) == 3
         print("Right handed 3D axes")
-    estimator_type = EstimatorType.ANGLE_TIME
+    estimator_type = EstimatorType.ANGLE
     bs_locs = create_bs_locs(conf.B)
     scatterers = create_scatter_points(conf.L)
     ue_pos = np.array(conf.ue_pos)

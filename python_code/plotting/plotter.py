@@ -1,3 +1,5 @@
+import math
+
 from matplotlib import pyplot as plt
 
 from python_code import conf
@@ -8,25 +10,27 @@ plt.style.use('dark_background')
 
 def plot_angle_2d(estimator, estimation: Estimation):
     fig = plt.figure()
-    plt.plot(estimator.angles_dict, estimator._spectrum, color="cyan")
+    plt.plot(estimator.aoa_angles_dict, estimator._spectrum, color="cyan")
     plt.plot(estimation.AOA, estimator._spectrum[estimator._indices], 'ro')
-    plt.title('MUSIC for AOA Estimation')
-    plt.xlabel('degree[rad]')
-    plt.ylabel('MUSIC coefficient')
-    plt.legend(['spectrum', 'Estimated AOAs'])
-    plt.savefig('AOA.png', dpi=fig.dpi)
+    plt.title('Spectrum for AOA Estimation')
+    plt.xlabel(f'Degree[rad]')
+    plt.ylabel('Spectrum coefficient')
+    plt.legend(['spectrum', 'estimated AOAs'])
+    plt.savefig('AOA_2d.png', dpi=fig.dpi)
     plt.show()
 
 
 def plot_angles_3d(estimator, estimation: Estimation):
     fig = plt.figure()
-    plt.contourf(estimator.aoa_angles_dict, estimator.zoa_angles_dict,
-                 estimator._spectrum.reshape(conf.zoa_res, conf.aoa_res, order='F'), cmap='magma')
-    plt.plot(estimation.AOA, estimation.ZOA, 'ro')
+    plt.contourf(estimator.zoa_angles_dict, estimator.aoa_angles_dict,
+                 estimator._spectrum.reshape(len(estimator.aoa_angles_dict), len(estimator.zoa_angles_dict),
+                                             order='F'),
+                 cmap='magma')
+    plt.plot(estimation.ZOA, estimation.AOA, 'ro')
     ax = plt.gca()
-    ax.set_xlabel('AOA[us]')
-    ax.set_ylabel('ZOA[rad]')
-    plt.savefig('AOA_and_ZOA.png', dpi=fig.dpi)
+    ax.set_ylabel('AOA[rad]')
+    ax.set_xlabel('ZOA[rad]')
+    plt.savefig('AOA_3d.png', dpi=fig.dpi)
     plt.show()
 
 
@@ -44,8 +48,8 @@ def plot_time(estimator, estimation: Estimation):
 
 def plot_angle_time_2d(estimator, estimation: Estimation):
     fig = plt.figure()
-    plt.contourf(estimator.time_estimator.times_dict, estimator.angle_estimator.angles_dict,
-                 estimator._spectrum.reshape(conf.aoa_res, conf.T_res), cmap='magma')
+    plt.contourf(estimator.time_estimator.times_dict, estimator.angle_estimator.aoa_angles_dict,
+                 estimator._spectrum.reshape(math.pi // conf.aoa_res, conf.T_res), cmap='magma')
     ax = plt.gca()
     ax.set_xlabel('TIME[us]')
     ax.set_ylabel('AOA[rad]')

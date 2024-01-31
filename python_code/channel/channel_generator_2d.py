@@ -1,5 +1,4 @@
 # Generate scatter points
-import math
 from collections import namedtuple
 from typing import List
 
@@ -7,14 +6,10 @@ import numpy as np
 
 from python_code import conf
 from python_code.utils.basis_functions import compute_time_options, compute_angle_options, create_wideband_aoa_mat
-from python_code.utils.constants import C, ChannelBWType, MAX_DIST, P_0
+from python_code.utils.constants import C, ChannelBWType, P_0
+from python_code.utils.path_loss import compute_path_loss
 
 Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA"])
-
-
-def compute_path_loss(toa):
-    loss_db = 20 * math.log10(toa) + 20 * math.log10(conf.fc) + 20 * math.log10(4 * math.pi)
-    return 10 ** (loss_db / 20)
 
 
 def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray):
@@ -61,7 +56,7 @@ def compute_observations(TOA: List[float], AOA: List[float]):
 
 def get_2d_channel(bs_loc, ue_pos, scatterers):
     TOA, AOA = compute_gt_channel_parameters(bs_loc, ue_pos, scatterers)
-    print(f"Distance to user {TOA[0] * C}[m], TOA[us]: {round(TOA[0],3)}")
+    print(f"Distance to user {TOA[0] * C}[m], TOA[us]: {round(TOA[0], 3)}")
     y = compute_observations(TOA, AOA)
     channel_instance = Channel(scatterers=scatterers, y=y, TOA=TOA, AOA=AOA)
     return channel_instance

@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 
 from python_code import conf
@@ -12,3 +14,6 @@ def get_channel(bs_loc, ue_pos, scatterers):
     else:
         bs_ue_channel = get_2d_channel(np.array(bs_loc), ue_pos, scatterers)
     return bs_ue_channel
+
+
+

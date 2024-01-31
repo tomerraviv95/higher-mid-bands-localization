@@ -5,7 +5,7 @@ from python_code.estimation import Estimation
 from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
 from python_code.estimation.angle import AngleEstimator2D, AngleEstimator3D
 from python_code.estimation.time import TimeEstimator2D, TimeEstimator3D
-from python_code.utils.peaks_filtering import merge_two, filter_peaks, merge_three
+from python_code.utils.peaks_filtering import filter_peaks, merge_three
 
 PROXIMITY_THRESH = 15
 
@@ -18,12 +18,13 @@ class AngleTimeEstimator2D:
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
     def estimate(self, y):
+        # conf.K // (conf.BW * conf.T_res)
         indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.K,
                                                         basis_vectors=self.angle_time_options,
-                                                        one_dimensional=False)
+                                                        second_dim=len(self.time_estimator.times_dict))
         self._aoa_indices = indices[:, 0]
         self._toa_indices = indices[:, 1]
-        estimator = Estimation(AOA=self.angle_estimator.angles_dict[self._aoa_indices],
+        estimator = Estimation(AOA=self.angle_estimator.aoa_angles_dict[self._aoa_indices],
                                TOA=self.time_estimator.times_dict[self._toa_indices])
         return estimator
 
