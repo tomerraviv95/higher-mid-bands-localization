@@ -2,16 +2,16 @@
 seed: 0 # run seed
 # System parameters
 dimensions: 'Two' # 'Two' or 'Three'
-L: 1  # number of paths, up to 5 (including LOS)
+L: 4  # number of paths, up to 5 (including LOS)
 B: 1 # number of BSs, up to 3 (including)
-K: 12   # number of subcarriers
+K: 96   # number of subcarriers
 Nr_x: 49 # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
 Nr_y: 0  # number of RX n_elements in y.
 aoa_res: 180  # number of elements in the AOA dictionary
 zoa_res: 90  # number of elements in the ZOA dictionary
-T_res: 25  # number of elements in the TIME dictionary
+T_res: 0.003  # number of elements in the TIME dictionary
 Ns: 1000  # number of transmitted pilot beams
-ue_pos: [5, 0]  # TX UE position
+ue_pos: [25, 27]  # TX UE position
 sigma: 1  # noise standard deviation
 fc: 24000  # carrier frequency in MHz
 BW: 400 # BW frequency in MHz

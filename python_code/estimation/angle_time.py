@@ -18,12 +18,13 @@ class AngleTimeEstimator2D:
         self.algorithm = ALGS_DICT[ALG_TYPE]
 
     def estimate(self, y):
-        indices, self._spectrum, L_hat = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.K,
-                                                            basis_vectors=self.angle_time_options)
-        aoa_indices = indices // conf.T_res
-        toa_indices = indices % conf.T_res
+        indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.K,
+                                                        basis_vectors=self.angle_time_options,
+                                                        one_dimensional=False)
+        aoa_indices = indices // self.time_estimator.times_dict.shape[0]
+        toa_indices = indices % self.time_estimator.times_dict.shape[0]
         merged = np.array(merge_two(aoa_indices, toa_indices))
-        peaks = filter_peaks(merged, L_hat)
+        peaks = filter_peaks(merged, conf.L)
         self._aoa_indices = peaks[:, 0]
         self._toa_indices = peaks[:, 1]
         estimator = Estimation(AOA=self.angle_estimator.angles_dict[self._aoa_indices],
