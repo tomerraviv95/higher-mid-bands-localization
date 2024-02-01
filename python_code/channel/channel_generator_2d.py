@@ -30,7 +30,7 @@ def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
     return TOA, AOA, POWER
 
 
-def compute_observations(POWER: List[float], TOA: List[float], AOA: List[float]):
+def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float]):
     Ns = conf.Nr_x * conf.K * DATA_COEF
     # Generate the observation and beamformers
     y = np.zeros((conf.Nr_x, conf.K, Ns), dtype=complex)
@@ -50,8 +50,7 @@ def compute_observations(POWER: List[float], TOA: List[float], AOA: List[float])
                 delay_aoa_matrix = wideband_aoa_mat * delays_phase_vector
             else:
                 raise ValueError("No such type of channel BW!")
-            channel_gain = alpha[l] / compute_path_loss(TOA[l])
-            h += F * channel_gain * delay_aoa_matrix
+            h += F * POWER * delay_aoa_matrix
         ## adding the white Gaussian noise
         noise = conf.sigma / np.sqrt(2) * (np.random.randn(conf.Nr_x, conf.K) + 1j * np.random.randn(conf.Nr_x, conf.K))
         y[:, :, ns] = h + noise

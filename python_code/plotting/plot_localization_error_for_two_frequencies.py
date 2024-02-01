@@ -9,8 +9,8 @@ plt.style.use('dark_background')
 
 if __name__ == "__main__":
     rmse_list = []
-    ue_x_positions = range(1, 20)
-    ue_y_positions = range(1, 20)
+    ue_x_positions = range(5, 15)
+    ue_y_positions = range(5, 15)
     for ue_pos_x in ue_x_positions:
         rmse_list.append([])
         for ue_pos_y in ue_y_positions:

@@ -5,6 +5,7 @@ import numpy as np
 from python_code import conf
 
 WALLS = np.array([[8, 8], [8, 12], [12, 12], [12, 8], [8, 8]])
+LOSS_FACTOR = {6000: 1.1, 24000: 100}
 
 
 def ccw(A, B, C):
@@ -19,7 +20,7 @@ def intersect(A, B, C, D):
 def calc_power(P0, bs_loc, ue_pos):
     for wall1, wall2 in zip(WALLS[:-1], WALLS[1:]):
         if intersect(bs_loc, ue_pos, wall1, wall2):
-            P0 /= 1000
+            P0 /= LOSS_FACTOR[conf.fc]
     return P0
 
 
