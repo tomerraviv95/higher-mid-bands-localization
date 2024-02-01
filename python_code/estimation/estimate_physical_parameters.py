@@ -31,7 +31,7 @@ def estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type, ba
             # estimate delay / AOA / ZOA parameters for the current bs
             estimation = estimator.estimate(bs_ue_channel.y)
             estimations.append(estimation)
-        estimation = combine_estimations(estimations)
+        estimation = combine_estimations(estimations, bands, estimator_type)
         print(f"BS #{i} - {bs_loc}")
         # print the angle result + graph only
         if estimator_type == EstimatorType.ANGLE:

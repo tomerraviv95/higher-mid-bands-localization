@@ -2,8 +2,6 @@ import math
 
 import numpy as np
 
-from python_code import conf
-
 WALLS = np.array([[8, 8], [8, 12], [12, 12], [12, 8], [8, 8]])
 LOSS_FACTOR = {6000: 1.1, 24000: 100}
 
