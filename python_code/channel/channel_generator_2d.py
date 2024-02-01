@@ -6,7 +6,7 @@ import numpy as np
 
 from python_code import conf
 from python_code.utils.basis_functions import compute_time_options, compute_angle_options, create_wideband_aoa_mat
-from python_code.utils.constants import C, ChannelBWType, INITIAL_POWER, DATA_COEF
+from python_code.utils.constants import C, ChannelBWType, DATA_COEF, P_0
 from python_code.utils.path_loss import compute_path_loss, calc_power
 
 Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA"])
@@ -19,10 +19,12 @@ def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
     POWER = [0 for _ in range(conf.L)]
     TOA[0] = np.linalg.norm(ue_pos - bs_loc) / C
     AOA[0] = np.arctan2(ue_pos[1] - bs_loc[1], ue_pos[0] - bs_loc[0])
+    INITIAL_POWER = P_0 * np.sqrt(1 / 2) * (np.random.randn(1) + np.random.randn(1) * 1j)
     POWER[0] = calc_power(INITIAL_POWER, bs_loc, ue_pos) / compute_path_loss(TOA[0])
     for l in range(1, conf.L):
         AOA[l] = np.arctan2(scatterers[l - 1, 1] - bs_loc[1], scatterers[l - 1, 0] - bs_loc[0])
         TOA[l] = (np.linalg.norm(bs_loc - scatterers[l - 1]) + np.linalg.norm(conf.ue_pos - scatterers[l - 1])) / C
+        INITIAL_POWER = P_0 * np.sqrt(1 / 2) * (np.random.randn(1) + np.random.randn(1) * 1j)
         POWER[l] = calc_power(calc_power(INITIAL_POWER, bs_loc, scatterers[l - 1]), scatterers[l - 1],
                               ue_pos) / compute_path_loss(TOA[l])
     # assert that toa are supported, must be smaller than largest distance divided by the speed
@@ -50,7 +52,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float])
                 delay_aoa_matrix = wideband_aoa_mat * delays_phase_vector
             else:
                 raise ValueError("No such type of channel BW!")
-            h += F * POWER * delay_aoa_matrix
+            h += F * POWER[l] * delay_aoa_matrix
         ## adding the white Gaussian noise
         noise = conf.sigma / np.sqrt(2) * (np.random.randn(conf.Nr_x, conf.K) + 1j * np.random.randn(conf.Nr_x, conf.K))
         y[:, :, ns] = h + noise

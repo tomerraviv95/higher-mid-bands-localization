@@ -14,7 +14,7 @@ class AngleEstimator2D:
     def __init__(self):
         self.aoa_angles_dict = np.arange(-np.pi / 2, np.pi / 2, conf.aoa_res * np.pi / 180)
         self._angle_options = compute_angle_options(np.sin(self.aoa_angles_dict), zoa=1, values=np.arange(conf.Nr_x))
-        self.algorithm = ALGS_DICT[ALG_TYPE](5)
+        self.algorithm = ALGS_DICT[ALG_TYPE](1.5)
 
     def estimate(self, y):
         self._indices, self._spectrum, _ = self.algorithm.run(y=y, basis_vectors=self._angle_options,
