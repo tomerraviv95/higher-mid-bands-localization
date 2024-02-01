@@ -26,7 +26,7 @@ def main():
     print(estimator_type.name)
     print(f"Max distance supported by setup: {C / conf.BW * conf.K}[m]")
     # ------------------------------------- #
-    # Physical Parameters' Estimation Phasc9e #
+    # Physical Parameters' Estimation Phase #
     # ------------------------------------- #
     estimations = estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type)
     # must estimate both angle and time to estimate locations in this code version (theoretically you could use one)

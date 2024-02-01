@@ -31,21 +31,21 @@ def optimize_to_estimate_position_2d(bs_locs, estimations):
             cost = abs(np.linalg.norm(ue - bs_locs[i]) / C - toa_values[i][0])
             costs.append(cost)
         # scatters constraints
-        for i in range(len(bs_locs)):
-            # aoa
-            for l, nlos_aoa in enumerate(aoa_values[i][1:]):
-                if l >= MAX_L:
-                    break
-                cost = abs(
-                    np.arctan2(scatterers[l][1] - bs_locs[i][1], scatterers[l][0] - bs_locs[i][0]) - nlos_aoa)
-                costs.append(cost)
-            # toa
-            for l, nlos_toa in enumerate(toa_values[i][1:]):
-                if l >= MAX_L:
-                    break
-                cost = abs((np.linalg.norm(bs_locs[i] - scatterers[l]) +
-                            np.linalg.norm(conf.ue_pos - scatterers[l])) / C - nlos_toa)
-                costs.append(cost)
+        # for i in range(len(bs_locs)):
+        #     # aoa
+        #     for l, nlos_aoa in enumerate(aoa_values[i][1:]):
+        #         if l >= MAX_L:
+        #             break
+        #         cost = abs(
+        #             np.arctan2(scatterers[l][1] - bs_locs[i][1], scatterers[l][0] - bs_locs[i][0]) - nlos_aoa)
+        #         costs.append(cost)
+        #     # toa
+        #     for l, nlos_toa in enumerate(toa_values[i][1:]):
+        #         if l >= MAX_L:
+        #             break
+        #         cost = abs((np.linalg.norm(bs_locs[i] - scatterers[l]) +
+        #                     np.linalg.norm(conf.ue_pos - scatterers[l])) / C - nlos_toa)
+        #         costs.append(cost)
         return costs
 
     toa_values, aoa_values = extract_measurements_from_estimations(bs_locs, estimations)

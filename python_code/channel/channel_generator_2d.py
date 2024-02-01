@@ -6,8 +6,8 @@ import numpy as np
 
 from python_code import conf
 from python_code.utils.basis_functions import compute_time_options, compute_angle_options, create_wideband_aoa_mat
-from python_code.utils.constants import C, ChannelBWType, P_0, DATA_COEF
-from python_code.utils.path_loss import compute_path_loss
+from python_code.utils.constants import C, ChannelBWType, INITIAL_POWER, DATA_COEF
+from python_code.utils.path_loss import compute_path_loss, calc_power
 
 Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA"])
 
@@ -16,18 +16,21 @@ def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
     # Compute Channel Parameters for L paths
     TOA = [0 for _ in range(conf.L)]
     AOA = [0 for _ in range(conf.L)]
+    POWER = [0 for _ in range(conf.L)]
     TOA[0] = np.linalg.norm(ue_pos - bs_loc) / C
     AOA[0] = np.arctan2(ue_pos[1] - bs_loc[1], ue_pos[0] - bs_loc[0])
+    POWER[0] = calc_power(INITIAL_POWER, bs_loc, ue_pos) / compute_path_loss(TOA[0])
     for l in range(1, conf.L):
         AOA[l] = np.arctan2(scatterers[l - 1, 1] - bs_loc[1], scatterers[l - 1, 0] - bs_loc[0])
         TOA[l] = (np.linalg.norm(bs_loc - scatterers[l - 1]) + np.linalg.norm(conf.ue_pos - scatterers[l - 1])) / C
+        POWER[l] = calc_power(calc_power(INITIAL_POWER, bs_loc, scatterers[l - 1]), scatterers[l - 1],
+                              ue_pos) / compute_path_loss(TOA[l])
     # assert that toa are supported, must be smaller than largest distance divided by the speed
     assert all([TOA[l] < conf.K / conf.BW for l in range(len(TOA))])
-    return TOA, AOA
+    return TOA, AOA, POWER
 
 
-def compute_observations(TOA: List[float], AOA: List[float]):
-    alpha = P_0 * np.sqrt(1 / 2) * (np.random.randn(conf.L) + np.random.randn(conf.L) * 1j)
+def compute_observations(POWER: List[float], TOA: List[float], AOA: List[float]):
     Ns = conf.Nr_x * conf.K * DATA_COEF
     # Generate the observation and beamformers
     y = np.zeros((conf.Nr_x, conf.K, Ns), dtype=complex)
@@ -56,8 +59,8 @@ def compute_observations(TOA: List[float], AOA: List[float]):
 
 
 def get_2d_channel(bs_loc, ue_pos, scatterers):
-    TOA, AOA = compute_gt_channel_parameters(bs_loc, ue_pos, scatterers)
-    print(f"Distance to user {TOA[0] * C}[m], TOA[us]: {round(TOA[0], 3)}")
-    y = compute_observations(TOA, AOA)
+    TOA, AOA, POWER = compute_gt_channel_parameters(bs_loc, ue_pos, scatterers)
+    print(f"Distance to user {TOA[0] * C}[m], TOA[us]: {round(TOA[0], 3)}, AOA to user {round(AOA[0], 3)}[rad]")
+    y = compute_observations(TOA, AOA, POWER)
     channel_instance = Channel(scatterers=scatterers, y=y, TOA=TOA, AOA=AOA)
     return channel_instance
