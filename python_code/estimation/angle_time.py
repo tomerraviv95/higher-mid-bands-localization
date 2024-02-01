@@ -5,17 +5,20 @@ from python_code.estimation import Estimation
 from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
 from python_code.estimation.angle import AngleEstimator2D, AngleEstimator3D
 from python_code.estimation.time import TimeEstimator2D, TimeEstimator3D
+from python_code.utils.bands_manipulation import Band
 
 
 class AngleTimeEstimator2D:
-    def __init__(self):
-        self.angle_estimator = AngleEstimator2D()
-        self.time_estimator = TimeEstimator2D()
+    def __init__(self, band: Band):
+        self.angle_estimator = AngleEstimator2D(band)
+        self.time_estimator = TimeEstimator2D(band)
         self.angle_time_options = np.kron(self.angle_estimator._angle_options, self.time_estimator._time_options)
         self.algorithm = ALGS_DICT[ALG_TYPE](1.5)
+        self.Nr_x = band.Nr_x
+        self.K = band.K
 
     def estimate(self, y):
-        indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.K,
+        indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=self.Nr_x * self.K,
                                                         basis_vectors=self.angle_time_options,
                                                         second_dim=len(self.time_estimator.times_dict))
         if len(indices) == 0:

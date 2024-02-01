@@ -1,15 +1,12 @@
 # Generate scatter points
-from collections import namedtuple
 from typing import List
 
 import numpy as np
 
 from python_code import conf
 from python_code.utils.basis_functions import compute_angle_options, create_wideband_aoa_mat, compute_time_options
-from python_code.utils.constants import C, ChannelBWType, P_0, DATA_COEF
+from python_code.utils.constants import C, ChannelBWType, P_0, DATA_COEF, Channel
 from python_code.utils.path_loss import compute_path_loss
-
-Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA", "ZOA"])
 
 
 def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray):

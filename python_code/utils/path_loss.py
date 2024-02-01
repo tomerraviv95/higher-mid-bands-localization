@@ -17,13 +17,13 @@ def intersect(A, B, C, D):
     return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
 
 
-def calc_power(P0, bs_loc, ue_pos):
+def calc_power(P0, bs_loc, ue_pos, fc):
     for wall1, wall2 in zip(WALLS[:-1], WALLS[1:]):
         if intersect(bs_loc, ue_pos, wall1, wall2):
-            P0 /= LOSS_FACTOR[conf.fc]
+            P0 /= LOSS_FACTOR[fc]
     return P0
 
 
-def compute_path_loss(toa):
-    loss_db = 20 * math.log10(toa) + 20 * math.log10(conf.fc) + 20 * math.log10(4 * math.pi)
+def compute_path_loss(toa, fc):
+    loss_db = 20 * math.log10(toa) + 20 * math.log10(fc) + 20 * math.log10(4 * math.pi)
     return 10 ** (loss_db / 20)
