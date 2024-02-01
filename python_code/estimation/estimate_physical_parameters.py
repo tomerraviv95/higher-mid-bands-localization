@@ -18,6 +18,7 @@ def estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type, ba
     estimations = []
     # for each bs
     for i, bs_loc in enumerate(bs_locs):
+        per_band_estimations = []
         # for each frequency sub-band
         for j, band in enumerate(bands):
             # generate the channel
@@ -30,8 +31,9 @@ def estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type, ba
             estimator = estimators[estimator_type][conf.dimensions](band)
             # estimate delay / AOA / ZOA parameters for the current bs
             estimation = estimator.estimate(bs_ue_channel.y)
-            estimations.append(estimation)
-        estimation = combine_estimations(estimations, bands, estimator_type)
+            per_band_estimations.append(estimation)
+        estimation = combine_estimations(per_band_estimations, bands, estimator_type)
+        estimations.append(estimation)
         print(f"BS #{i} - {bs_loc}")
         # print the angle result + graph only
         if estimator_type == EstimatorType.ANGLE:
