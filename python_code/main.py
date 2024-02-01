@@ -9,6 +9,9 @@ from python_code.utils.bands_manipulation import get_bands_from_conf
 from python_code.utils.constants import EstimatorType, DimensionType, C
 
 np.random.seed(conf.seed)
+estimations_strings_dict = {'angle': EstimatorType.ANGLE,
+                            'time': EstimatorType.TIME,
+                            'both': EstimatorType.ANGLE_TIME}
 
 
 def main():
@@ -20,7 +23,7 @@ def main():
     else:
         assert len(conf.ue_pos) == 3
         print("Right handed 3D axes")
-    estimator_type = EstimatorType.TIME
+    estimator_type = estimations_strings_dict[conf.est_type]
     bs_locs = create_bs_locs(conf.B)
     scatterers = create_scatter_points(conf.L)
     ue_pos = np.array(conf.ue_pos)
@@ -28,6 +31,7 @@ def main():
     print(f"UE: {ue_pos}, Scatterers: {[str(scatter) for scatter in scatterers]}")
     print(estimator_type.name)
     print(f"Max distance supported by setup: {max([C / band.BW * band.K for band in bands])}[m]")
+    print(f"Calculating from #{len(bands)} band")
     # ------------------------------------- #
     # Physical Parameters' Estimation Phase #
     # ------------------------------------- #

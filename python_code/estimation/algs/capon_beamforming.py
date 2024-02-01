@@ -27,13 +27,11 @@ class CaponBeamforming:
             return indices, norm_values, len(indices)
         elif third_dim is None:
             norm_values = norm_values.reshape(-1, second_dim)
-            labeled, ncomponents = label(norm_values > self.thresh,
-                                         structure=np.ones((3, 3), dtype=np.int))  # this defines the connection filter)
+            labeled, ncomponents = label(norm_values > self.thresh, structure=np.ones((3, 3), dtype=np.int))
         else:
             norm_values = norm_values.reshape(-1, second_dim, third_dim)
             labeled, ncomponents = label(norm_values > self.thresh,
-                                         structure=np.ones((3, 3, 3),
-                                                           dtype=np.int))  # this defines the connection filter)
+                                         structure=np.ones((3, 3, 3), dtype=np.int))
 
         def get_current_component(norm_values, component_indx):
             if third_dim is None:

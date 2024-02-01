@@ -56,7 +56,6 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
 
 def get_2d_channel(bs_loc, ue_pos, scatterers, band):
     TOA, AOA, POWER = compute_gt_channel_parameters(bs_loc, ue_pos, scatterers, band)
-    print(f"Distance to user {TOA[0] * C}[m], TOA[us]: {round(TOA[0], 3)}, AOA to user {round(AOA[0], 3)}[rad]")
     y = compute_observations(TOA, AOA, POWER, band)
     channel_instance = Channel(scatterers=scatterers, y=y, TOA=TOA, AOA=AOA, band=band, ZOA=None)
     return channel_instance
