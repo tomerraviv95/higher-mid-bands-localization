@@ -12,7 +12,7 @@ class TimeEstimator2D:
         self._time_options = compute_time_options(0, conf.K, conf.BW, values=self.times_dict)
         if self._time_options.shape[0] < self.times_dict.shape[0]:
             self.times_dict = self.times_dict[:self._time_options.shape[0]]
-        self.algorithm = ALGS_DICT[ALG_TYPE](1.5)
+        self.algorithm = ALGS_DICT[ALG_TYPE](1.25)
 
     def estimate(self, y):
         self._indices, self._spectrum, L_hat = self.algorithm.run(y=np.transpose(y, [1, 0, 2]), n_elements=conf.K,

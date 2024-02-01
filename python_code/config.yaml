@@ -5,12 +5,12 @@ dimensions: 'Two' # 'Two' or 'Three'
 L: 1  # number of paths, up to 5 (including LOS)
 B: 1 # number of BSs, up to 3 (including)
 K: 64 # number of subcarriers
-Nr_x: 32 # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
-Nr_y: 7 # number of RX n_elements in y.
+Nr_x: 24 # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
+Nr_y: 0 # number of RX n_elements in y.
 aoa_res: 1  # resolution in degrees for the azimuth dictionary
 zoa_res: 2  # resolution in degrees for the zenith dictionary
-T_res: 0.003  # number of elements in the TIME dictionary
-ue_pos: [ 10 , 8]  # TX UE position
+T_res: 0.001  # number of elements in the TIME dictionary
+ue_pos: [ 22, 10]  # TX UE position
 sigma: 1  # noise standard deviation
 fc: 24000  # carrier frequency in MHz
 BW: 400 # BW frequency in MHz

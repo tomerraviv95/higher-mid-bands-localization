@@ -12,7 +12,7 @@ class AngleTimeEstimator2D:
         self.angle_estimator = AngleEstimator2D()
         self.time_estimator = TimeEstimator2D()
         self.angle_time_options = np.kron(self.angle_estimator._angle_options, self.time_estimator._time_options)
-        self.algorithm = ALGS_DICT[ALG_TYPE](2)
+        self.algorithm = ALGS_DICT[ALG_TYPE](10)
 
     def estimate(self, y):
         indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.K,
@@ -33,7 +33,7 @@ class AngleTimeEstimator3D:
         self.time_estimator = TimeEstimator3D()
         self.angle_time_options = np.kron(self.angle_estimator._angle_options.astype(np.complex64),
                                           self.time_estimator._time_options.astype(np.complex64))
-        self.algorithm = ALGS_DICT[ALG_TYPE](2)
+        self.algorithm = ALGS_DICT[ALG_TYPE](1.5)
 
     def estimate(self, y):
         indices, self._spectrum, L_hat = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.Nr_y * conf.K,
