@@ -15,8 +15,9 @@ estimations_strings_dict = {'angle': EstimatorType.ANGLE,
 
 
 def main():
-    # bs locs of type [x,y,z]. x must be above the x-location of at least one BS.
-    # The array lies on the y-axis and points towards the x-axis.
+    # BS locs of type [x,y,z]. x must be above the x-location of at least one BS.
+    # In 2D - The array lies on the y-axis and points towards the x-axis.
+    # In 3D - The array lies on the x-axis and y-axis and points towards the z-axis.
     if conf.dimensions == DimensionType.Two.name:
         assert len(conf.ue_pos) == 2
         print("x-axis up, y-axis right")

@@ -16,11 +16,13 @@ class AngleEstimator2D:
 
     def __init__(self, band: Band):
         self.aoa_angles_dict = np.arange(-np.pi / 2, np.pi / 2, conf.aoa_res * np.pi / 180)
-        self._angle_options = compute_angle_options(np.sin(self.aoa_angles_dict), zoa=1, values=np.arange(band.Nr_x))
+        self._angle_options = compute_angle_options(np.sin(self.aoa_angles_dict), zoa=np.array(1),
+                                                    values=np.arange(band.Nr_x))
         self.Nr_x = band.Nr_x
         self.algorithm = ALGS_DICT[ALG_TYPE](1.5)
 
-    def estimate(self, y: List[np.ndarray]):
+    def estimate(self, y: List[np.ndarray]) -> Estimation:
+        # estimate the indices and spectrum using the chosen algorithm
         self._indices, self._spectrum, _ = self.algorithm.run(y=y, basis_vectors=self._angle_options,
                                                               n_elements=self.Nr_x)
         estimator = Estimation(AOA=self.aoa_angles_dict[self._indices])
@@ -47,7 +49,8 @@ class AngleEstimator3D(AngleEstimator2D):
         self._angle_options = (aoa_vector_xs.T[:, :, None] @ aoa_vector_ys.T[:, None, :]).T
 
     def estimate(self, y: np.ndarray):
-        indices, self._spectrum, L_hat = self.algorithm.run(y=y, basis_vectors=self._angle_options,
+        # estimate the indices and spectrum using the chosen algorithm
+        indices, self._spectrum, _ = self.algorithm.run(y=y, basis_vectors=self._angle_options,
                                                             n_elements=conf.Nr_y * conf.Nr_x,
                                                             second_dim=len(self.zoa_angles_dict))
         self._aoa_indices = indices[:, 0]
