@@ -15,7 +15,7 @@ estimations_strings_dict = {'angle': EstimatorType.ANGLE,
 
 
 def main():
-    # bs locs of type [x,y]. x must be above the x-location of at least one BS.
+    # bs locs of type [x,y,z]. x must be above the x-location of at least one BS.
     # The array lies on the y-axis and points towards the x-axis.
     if conf.dimensions == DimensionType.Two.name:
         assert len(conf.ue_pos) == 2
@@ -23,10 +23,10 @@ def main():
     else:
         assert len(conf.ue_pos) == 3
         print("Right handed 3D axes")
+    ue_pos = np.array(conf.ue_pos)
     estimator_type = estimations_strings_dict[conf.est_type]
     bs_locs = create_bs_locs(conf.B)
     scatterers = create_scatter_points(conf.L)
-    ue_pos = np.array(conf.ue_pos)
     bands = get_bands_from_conf()
     print(f"UE: {ue_pos}, Scatterers: {[str(scatter) for scatter in scatterers]}")
     print(estimator_type.name)

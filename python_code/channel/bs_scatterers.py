@@ -5,7 +5,7 @@ from python_code.utils.constants import DimensionType
 
 
 def create_scatter_points_2d(L: int):
-    scatterers = np.array([[15, 10], [10, 5], [12, 6]])
+    scatterers = np.array([[15, 12], [15, 14], [12, 14]])
     return scatterers[:L - 1]
 
 
@@ -16,10 +16,9 @@ def create_scatter_points_3d(L: int):
 
 def create_scatter_points(L: int):
     assert L > 0
-    if conf.dimensions == DimensionType.Three.name:
-        return create_scatter_points_3d(L)
-    else:
-        return create_scatter_points_2d(L)
+    create_scatter_funcs = {DimensionType.Three.name: create_scatter_points_3d(L),
+                            DimensionType.Two.name: create_scatter_points_2d(L)}
+    return create_scatter_funcs[conf.dimensions]
 
 
 def create_bs_locs_2d(B: int):
@@ -34,7 +33,6 @@ def create_bs_locs_3d(B: int):
 
 def create_bs_locs(B: int):
     assert B > 0
-    if conf.dimensions == DimensionType.Three.name:
-        return create_bs_locs_3d(B)
-    else:
-        return create_bs_locs_2d(B)
+    create_bs_funcs = {DimensionType.Three.name: create_bs_locs_3d(B),
+                       DimensionType.Two.name: create_bs_locs_2d(B)}
+    return create_bs_funcs[conf.dimensions]

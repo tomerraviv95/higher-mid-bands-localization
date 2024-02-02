@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-WALLS = np.array([[8, 8], [8, 12], [12, 12], [12, 8], [8, 8]])
+WALLS = np.array([[8, 11], [8, 15], [11, 15], [11, 11], [8, 11]])
 LOSS_FACTOR = {6000: 1.1, 24000: 100}
 
 
