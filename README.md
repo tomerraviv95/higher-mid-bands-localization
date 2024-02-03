@@ -29,14 +29,7 @@ Please cite our [paper](https://arxiv.org/abs/2305.07309), if the code is used f
 
 # Introduction
 
-This repository implements deep receivers, with a bunch of different improvements, for SISO and MIMO channels. 
-The deep receviers include the ViterbiNet equalizer and an RNN detector for the SISO case, and the DeepSIC receiver 
-as well as a fully connected black-box network for the MIMO case. 
-It includes the possibility of adding the communication drive augmentations of [my previous augmentations paper](https://arxiv.org/pdf/2209.01362.pdf),
-see [this github repo](https://github.com/tomerraviv95/data-augmentations-for-receivers) for the code implementation.
-From the training prespective, you can choose between joint training (the receiver is trained offline in a pre-test phase, using data simulated from multitude of channel realizations. 
-No additional training is done online in the test phase), online training (the receiver is trained online using the pilots batch at each time step) and meta-learning training taken
-from [my previous meta-learning paper](https://arxiv.org/pdf/2203.14359.pdf), code implementation for [siso](https://github.com/tomerraviv95/meta-viterbinet) and [mimo](https://github.com/tomerraviv95/meta-deepsic). In the paper we show that the gains from the different approaches add up individually over the two scenarios and a range of SNRs. 
+This work aims to bridge the gap for multi-frequency localization in the FR3 band. We suggest a multi-frequency localization algorithm that combines the beamforming spectrum across different sub-bands in FR3, compensating for errors in different frequencies by employing multiple ones, which results in a more robust estimation of the TOA and AOA parameters. This, in turn, results in a more robust localization of the UE, as compared to estimation and localization using a single frequency sub-band.
 
 # Folders Structure
 
