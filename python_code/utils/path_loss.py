@@ -17,6 +17,7 @@ def intersect(a: Tuple[float, float], b: Tuple[float, float], c: Tuple[float, fl
 
 
 def calc_power(P0: float, bs_loc: np.ndarray, ue_pos: np.ndarray, fc: float) -> float:
+    # decrease the power if the path propagates through a wall
     for wall1, wall2 in zip(WALLS[:-1], WALLS[1:]):
         if intersect(bs_loc, ue_pos, wall1, wall2):
             P0 /= LOSS_FACTOR[fc]
@@ -24,5 +25,6 @@ def calc_power(P0: float, bs_loc: np.ndarray, ue_pos: np.ndarray, fc: float) -> 
 
 
 def compute_path_loss(toa: float, fc: float) -> float:
+    # free path loss computation
     loss_db = 20 * math.log10(toa) + 20 * math.log10(fc) + 20 * math.log10(4 * math.pi)
     return 10 ** (loss_db / 20)
