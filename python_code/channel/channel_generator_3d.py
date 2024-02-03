@@ -4,7 +4,7 @@ from typing import List
 import numpy as np
 
 from python_code import conf
-from python_code.utils.basis_functions import compute_angle_options, create_wideband_aoa_mat, compute_time_options
+from python_code.utils.basis_functions import compute_angle_options, compute_time_options
 from python_code.utils.constants import C, ChannelBWType, DATA_COEF, Channel, P_0
 from python_code.utils.path_loss import compute_path_loss
 
@@ -46,9 +46,6 @@ def compute_observations(TOA: List[float], AOA: List[float], ZOA: List[float]):
                 delay_aoa_matrix = aoa_matrix @ delays_phase_vector
             elif conf.channel_bandwidth == ChannelBWType.WIDEBAND.name:
                 raise ValueError("Wideband is currently no supported!!")
-                wideband_aoa_mat = create_wideband_aoa_mat(np.array([AOA[l]]), conf.K, conf.BW, conf.fc, conf.Nr,
-                                                           stack_axis=1)
-                delay_aoa_matrix = wideband_aoa_mat * delays_phase_vector
             else:
                 raise ValueError("No such type of channel BW!")
             channel_gain = alpha[l] / compute_path_loss(TOA[l])
