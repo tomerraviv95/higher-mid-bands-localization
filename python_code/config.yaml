@@ -12,7 +12,7 @@ BW: [ 100 ] # BW frequency in MHz
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # beamforming parameters
-est_type: 'angle' # 'angle','time','both'
+est_type: 'time' # 'angle','time','both'
 aoa_res: 1.5  # resolution in degrees for the azimuth dictionary
 zoa_res: 2  # resolution in degrees for the zenith dictionary
 T_res: 0.002  # number of elements in the TIME dictionary
