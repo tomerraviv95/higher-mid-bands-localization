@@ -40,7 +40,7 @@ def optimize_to_estimate_position_2d(bs_locs: np.ndarray, estimations: List[Esti
 
     # extract the estimated parameters for each bs
     toa_values, aoa_values, bs_list = extract_measurements_from_estimations(bs_locs, estimations)
-    # LOS computation of location in case of angle and time estimations, or more than one BS/LOS path
+    # LOS computation of location in case of angle and time estimations
     bs_locs = np.array(bs_list)
     initial_ue_loc = np.array([[0, 0]])
     initial_scatterers = np.zeros([MAX_L, 2])
