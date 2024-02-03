@@ -59,7 +59,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
                 aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(band.Nr_x)).T
                 delay_aoa_matrix = np.matmul(aoa_vector, delays_phase_vector)
             elif conf.channel_bandwidth == ChannelBWType.WIDEBAND.name:
-                raise ValueError("Wideband is currently no supported!!")
+                raise ValueError("Wideband is currently not supported!!")
             else:
                 raise ValueError("No such type of channel BW!")
             # add for each path
