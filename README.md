@@ -69,61 +69,35 @@ You can control the simulated setup via the hyperparameters in the config:
 * seed - set random seed for the current run, e.g. 0. For the sake of reproducibility. 
 * plot_estimation_results - boolean. Whether to plot the beamforming spectrum along with the peaks.
 
-### detectors
+### channel
 
-The backbone detectors and their respective training: ViterbiNet, DeepSIC, Meta-ViterbiNet, Meta-DeepSIC, RNN BlackBox and FC BlackBox. The meta and non-meta detectors have slightly different API so they are seperated in the trainer class below. The meta variation has to receive the parameters of the original architecture for the training. The trainers are wrappers for the training and evaluation of the detectors. Trainer holds the training, sequential evaluation of pilot + info blocks. It also holds the main function 'eval' that trains the detector and evaluates it, returning a list of coded ber/ser per block. The train and test dataloaders are also initialized by the trainer. Each trainer is executable by running the 'evaluate.py' script after adjusting the config.yaml hyperparameters and choosing the desired method.
+Contains the scripts to generate the channel observations Y. For each UE and BS pair, we can calculate the parameters for each of the L paths, including its channel gain, TOA, AOA and ZOA if in 3d. Then, Y can be calculated an in the paper. The 2d and 3d case are similar. The BSs and scattering objects locations could be found in the 3rd script, allowing you to alter their current locations / add more as you wish.
 
-### plotters
+### estimation
 
-Features main plotting tools for the paper:
+Contains the time / angle / time and angle estimators. In each one we simply create the relevant beamforming basis vectors (a.k.a the dictionary) and call to the relevant algorithm that finds a number of relevant vectors, based on the specific algorithm. The algorithms are either the Capon beamformer or MUSIC. Note that MUSIC is implemented only for the 1d case. The main script is estimate_physical_parameters.py that estimates the parameters for each BS based on the multiple avialable sub-bands. The combination of the bands is found in the estimations_combining script, while a basic printer for each estimator's results (and spectrums if plot_estimation_results is True) is found at estimations_printer.
 
-* plotter_main - main plotting script used to get the figures in the paper. Based on the chosen PlotType enum loads the relevant config and runs the experiment.
-* plotter_config - holds a mapping from the PlotType enum to the experiment's hyperparameters and setup.
-* plotter_utils - colors, markers and linestyles for all evaluated methods, and the main plotting functions.
-* plotter_methods - additional methods used for plotting.
+### optimization
+
+Contains the optimization scripts for either the 2d or 3d case. Note that we neglect the NLOS parameters, assuming only LOS conditions, thus we can take the minimal TOA term as the LOS component (along with its angle) and estimate the UE based on these measurements from each BS.
+
+### plotting
+
+Features main plotting tools for the paper. Also, holds the spectrum plotting scripts for each time/angle/both estimators. 
 
 ### utils
 
-Extra utils for pickle manipulations and tensor reshaping; calculating the accuracy over FER and BER; several constants; and the config singleton class.
-The config works by the [singleton design pattern](https://en.wikipedia.org/wiki/Singleton_pattern). Check the link if unfamiliar. 
+Holds additional utils that do not belong to only a single module from the above: 
 
-The config is accessible from every module in the package, featuring the next parameters:
-1. seed - random number generator seed. Integer.
-2. channel_type - run either siso or mimo setup. Values in the set of ['SISO','MIMO']. String.
-3. channel_model - chooses the channel taps values, either synthetic or based on COST2100. String in the set ['Cost2100','Synthetic'].
-4. detector_type - selects the training + architecture to run. Short description of each option: 
-* 'joint_black_box - Joint training of the black-box fully connected detector in the MIMO case.
-* 'online_black_box' - Online training of the black-box fully connected detector in the MIMO case.
-* 'joint_deepsic' - Joint training of the DeepSIC detector in the MIMO case.
-* 'online_deepsic' - Online training of the DeepSIC detector in the MIMO case.
-* 'meta_deepsic' - Online meta-training of the DeepSIC detector in the MIMO case.
-* 'joint_rnn' - Joint training of the RNN detector in the SISO case.
-* 'online_rnn' - online training of the RNN detector in the SISO case.
-* 'joint_viterbinet' - Joint training of the ViterbiNet equalizer in the SISO case.
-* 'online_viterbinet' - Online training of the ViterbiNet equalizer in the SISO case.
-* 'meta_viterbinet' - Online meta-training of the ViterbiNet equalizer in the SISO case.
-5. linear - whether to apply non-linear tanh at the channel output, not used in the paper but still may be applied. Bool.
-6.fading_in_channel - whether to use fading. Relevant only to the synthetic channel. Boolean flag.
-7. snr - signal-to-noise ratio, determines the variance properties of the noise, in dB. Float.
-8. modulation_type - either 'BPSK' or 'QPSK', string.
-9. memory_length - siso channel hyperparameter, integer.
-10. n_user - mimo channel hyperparameter, number of transmitting devices. Integer.
-11. n_ant - mimo channel hyperparameter, number of receiving devices. Integer.
-12. block_length - number of coherence block bits, total size of pilot + data. Integer.
-13. pilot_size - number of pilot bits. Integer.
-14. blocks_num - number of blocks in the tranmission. Integer.
-15. loss_type - 'CrossEntropy', could be altered to other types 'BCE' or 'MSE'.
-16. optimizer_type - 'Adam', could be altered to other types 'RMSprop' or 'SGD'.
-17. joint_block_length - joint training hyperparameter. Offline training block length. Integer.
-18. joint_pilot_size - joint training hyperparameter. Offline training pilots block length. Integer.
-19. joint_blocks_num - joint training hyperparameter. Number of blocks to train on offline. Integer.
-20. joint_snrs - joint training hyperparameter. Number of SNRs to traing from offline. List of float values.
-21. aug_type - what augmentations to use. leave empty list for no augmentations, or add whichever of the following you like: ['geometric_augmenter','translation_augmenter','rotation_augmenter']
-22. online_repeats_n - if using augmentations, adds this factor times the number of pilots to the training batch. Leave at 0 if not using augmentations, if using augmentations try integer values in 2-5.
+* bands_manipulation - aggregate all the sub-bands hyperparameters, such as its BW, carrier frequency and number of antennas, into a single placeholder.
+* basis_functions - create the phase vector for either delay or the AOA and ZOA. It is used both for the channel generation and for the beamforming estimators.
+* config_singleton - the config singleton class is defined [singleton design pattern](https://en.wikipedia.org/wiki/Singleton_pattern).
+* constants - some global constants such as the speed of light, and several Enums used across the simulation.
+* path_loss - defining some concrete buildings (walls) in the simulation to create a sense of an urban environment. 
 
 ## resources
 
-Keeps the COST channel coefficients vectors. Also holds config runs for the paper's numerical comparisons figures.
+Keeps several configs for example, used either in the 2d or 3d cases.
 
 ## dir_definitions 
 
@@ -135,9 +109,7 @@ To execute the code, first download and install Git, Anaconda and PyCharm.
 
 Then install the environment, follow the installation setup below. 
 
-At last, open PyCharm in the root directory. You may run either the trainers or one of the plotters.
-
-This code was simulated with GeForce RTX 3060 with CUDA 12. 
+At last, open PyCharm in the root directory. You may run either the main or one of the plotters.
 
 ## Environment Installation
 
