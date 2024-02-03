@@ -49,25 +49,25 @@ You can control the simulated setup via the hyperparameters in the config:
 
 * dimensions - number of dimensions in the simulation. Either 'Two' or 'Three'.
 * ue_pos - the 2d/3d position of the ue. For example, [10,10] in 2d.
-L: 2  # number of paths, up to 5 (including LOS)
-B: 1 # number of BSs, up to 3 (including)
-K: [ 12 ] # number of subcarriers
-Nr_x: [ 12 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
-Nr_y: [ 1 ] # number of RX n_elements in y.
-sigma: 1  # noise standard deviation
-fc: [ 6000 ]  # carrier frequency in MHz
-BW: [ 100 ] # BW frequency in MHz
-channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
+* L - number of paths in the simulation, including LOS. You need to introduce additional scattering objects if you wish to have more than 5 paths.
+* B - number of BSs by which localization is done.  You need to introduce additional ones in the bs script if you wish to have more than 3.
+* K - number of subcarriers per sub-bands. A list with the number per sub-bands, e.g. [ 12 , 48 ] for two bands.
+* Nr_x - number of antenna n_elements in the ULA for the 2d simulation, and the number of elements on the x plane URA for 3d simulation. Can handle a list of multiple sub-bands, e.g. [ 8 , 32 ]. 
+* Nr_y - number of antennas on the y plane for the 3d simulation. For 2d - leave as 1. Can handle a list of multiple sub-bands, e.g. [ 8 , 32 ]. 
+* sigma - the complex noise standard deviation value, e.g. a scalar 1.
+* fc - list of carrier frequencies in MHz for each sub-band, e.g. [ 6000 , 24000 ].
+* BW -  bandwidth of the sub-band in MHz, e.g. [ 100 , 400 ].
+* channel_bandwidth - if the spatial bandwidth effect is present or not. Either 'NARROWBAND' or 'WIDEBAND'.
 
-# beamforming parameters
-est_type: 'time' # 'angle','time','both'
-aoa_res: 1.5  # resolution in degrees for the azimuth dictionary
-zoa_res: 2  # resolution in degrees for the zenith dictionary
-T_res: 0.002  # number of elements in the TIME dictionary
+#### beamforming parameters
+* est_type - what parameters should be estimated from the signal. 'time' for toa only, 'angle' for aoa (and zoa in 3d case), or 'both' for both angle and time.
+* aoa_res - resolution in degrees for the azimuth dictionary, e.g. 1.5.
+* zoa_res - resolution in degrees for the zenith dictionary, e.g. 2.
+* T_res - resolution in mu seconds in the time dictionary.e.g. 0.002.
 
-# general
-seed: 0 # run seed
-plot_estimation_results: False # either True or False
+#### general
+* seed - set random seed for the current run, e.g. 0. For the sake of reproducibility. 
+* plot_estimation_results - boolean. Whether to plot the beamforming spectrum along with the peaks.
 
 ### detectors
 
