@@ -17,10 +17,11 @@ class AngleTimeEstimator2D:
         self.Nr_x = band.Nr_x
         self.K = band.K
 
-    def estimate(self, y):
+    def estimate(self, y: np.ndarray) -> Estimation:
         indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=self.Nr_x * self.K,
                                                         basis_vectors=self.angle_time_options,
                                                         second_dim=len(self.time_estimator.times_dict))
+        # if no peaks found - return an empty estimation
         if len(indices) == 0:
             return Estimation(AOA=None, TOA=None)
         self._aoa_indices = indices[:, 0]
@@ -38,7 +39,7 @@ class AngleTimeEstimator3D:
                                           self.time_estimator._time_options.astype(np.complex64))
         self.algorithm = ALGS_DICT[ALG_TYPE](1.5)
 
-    def estimate(self, y):
+    def estimate(self, y: np.ndarray) -> Estimation:
         indices, self._spectrum, L_hat = self.algorithm.run(y=y, n_elements=conf.Nr_x * conf.Nr_y * conf.K,
                                                             basis_vectors=self.angle_time_options,
                                                             second_dim=len(self.angle_estimator.zoa_angles_dict),

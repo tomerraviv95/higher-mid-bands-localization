@@ -31,6 +31,7 @@ def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
 
 
 def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float], band: Band):
+    # make sure to have enough samples such that the covariance matrix is full rank
     Ns = band.Nr_x * band.K * DATA_COEF
     # Generate the observation and beamformers
     y = np.zeros((band.Nr_x, band.K, Ns), dtype=complex)
@@ -54,8 +55,11 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     return y
 
 
-def get_2d_channel(bs_loc, ue_pos, scatterers, band):
+def get_2d_channel(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray, band: Band) -> Channel:
+    # compute the parameters for each of the L paths
     TOA, AOA, POWER = compute_gt_channel_parameters(bs_loc, ue_pos, scatterers, band)
+    # compute the channel observations based on the above paths
     y = compute_observations(TOA, AOA, POWER, band)
+    # save results for easy access in a namedtuple
     channel_instance = Channel(scatterers=scatterers, y=y, TOA=TOA, AOA=AOA, band=band, ZOA=None)
     return channel_instance

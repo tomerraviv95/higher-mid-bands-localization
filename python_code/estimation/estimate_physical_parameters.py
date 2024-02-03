@@ -1,10 +1,16 @@
+from typing import List
+
+import numpy as np
+
 from python_code import conf
 from python_code.channel import get_channel
+from python_code.estimation import Estimation
 from python_code.estimation.angle import AngleEstimator3D, AngleEstimator2D
 from python_code.estimation.angle_time import AngleTimeEstimator2D, AngleTimeEstimator3D
 from python_code.estimation.estimations_combining import combine_estimations
-from python_code.estimation.estimations_printer import aoa_time_printer, time_printer, angle_printer
+from python_code.estimation.estimations_printer import printer_main
 from python_code.estimation.time import TimeEstimator2D, TimeEstimator3D
+from python_code.utils.bands_manipulation import Band
 from python_code.utils.constants import EstimatorType, DimensionType, C
 
 estimators = {
@@ -14,7 +20,8 @@ estimators = {
                                DimensionType.Two.name: AngleTimeEstimator2D}}
 
 
-def estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type, bands):
+def estimate_physical_parameters(ue_pos: np.ndarray, bs_locs: np.ndarray, scatterers: np.ndarray,
+                                 estimator_type: EstimatorType, bands: List[Band]) -> List[Estimation]:
     estimations = []
     # for each bs
     for i, bs_loc in enumerate(bs_locs):
@@ -32,18 +39,9 @@ def estimate_physical_parameters(ue_pos, bs_locs, scatterers, estimator_type, ba
             # estimate delay / AOA / ZOA parameters for the current bs
             estimation = estimator.estimate(bs_ue_channel.y)
             per_band_estimations.append(estimation)
+        # combine the estimations from the different bands together
         estimation = combine_estimations(per_band_estimations, bands, estimator_type)
         estimations.append(estimation)
         print(f"BS #{i} - {bs_loc}")
-        # print the angle result + graph only
-        if estimator_type == EstimatorType.ANGLE:
-            angle_printer(bs_ue_channel, estimation, estimator)
-        # print the delay result + graph only
-        elif estimator_type == EstimatorType.TIME:
-            time_printer(bs_ue_channel, estimation, estimator)
-        # print the angle + delay, result + graph only
-        elif estimator_type == EstimatorType.ANGLE_TIME:
-            aoa_time_printer(bs_ue_channel, estimation, estimator)
-        else:
-            raise ValueError("No such estimator type exists!!")
+        printer_main(bs_ue_channel, estimation, estimator, estimator_type)
     return estimations

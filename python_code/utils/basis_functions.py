@@ -1,11 +1,11 @@
 import numpy as np
 
 
-def array_response_vector(var_array):
+def array_response_vector(var_array: np.ndarray) -> np.ndarray:
     return np.exp(-2j * np.pi * var_array)
 
 
-def compute_time_options(fc, K, BW, values):
+def compute_time_options(fc: float, K: int, BW: float, values: np.ndarray) -> np.ndarray:
     time_basis_vector = np.linspace(fc - BW / 2, fc + BW / 2, K)
     combination = np.dot(values.reshape(-1, 1), time_basis_vector.reshape(1, -1))
     array_response_combination = array_response_vector(combination)
@@ -17,7 +17,7 @@ def compute_time_options(fc, K, BW, values):
     return array_response_combination
 
 
-def compute_angle_options(aoa, zoa, values):
+def compute_angle_options(aoa: np.ndarray, zoa: np.ndarray, values: np.ndarray):
     aoa_zoa_combination = np.kron(aoa, zoa)
     combination = np.dot(aoa_zoa_combination.reshape(-1, 1), values.reshape(1, -1))
     return array_response_vector(combination / 2)

@@ -1,13 +1,18 @@
+from typing import List, Tuple
+
 import numpy as np
 from scipy.optimize import least_squares
 
+from python_code.estimation import Estimation
 from python_code.utils.constants import C
 
 MAX_L = 5
 
 
-def extract_measurements_from_estimations(bs_locs, estimations):
+def extract_measurements_from_estimations(bs_locs: np.ndarray, estimations: List[Estimation]) -> Tuple[
+    List[float], List[float], List[np.ndarray]]:
     # extract the toa and aoa measurements for each bs, sorting them such that the LOS is first
+    # if there isn't even a single measurement for the BS then don't add the bs to the list
     toa_values, aoa_values, bs_list = [], [], []
     for i in range(len(bs_locs)):
         if estimations[i].TOA is not None and estimations[i].AOA is not None:
@@ -19,8 +24,8 @@ def extract_measurements_from_estimations(bs_locs, estimations):
     return toa_values, aoa_values, bs_list
 
 
-def optimize_to_estimate_position_2d(bs_locs, estimations):
-    def cost_func_2d(x0):
+def optimize_to_estimate_position_2d(bs_locs: np.ndarray, estimations: List[Estimation]) -> np.ndarray:
+    def cost_func_2d(x0: np.ndarray) -> List[float]:
         ue, scatterers = x0[:2], x0[2:].reshape(-1, 2)
         costs = []
         # LOS AOA constraints
@@ -33,12 +38,14 @@ def optimize_to_estimate_position_2d(bs_locs, estimations):
             costs.append(cost)
         return costs
 
+    # extract the estimated parameters for each bs
     toa_values, aoa_values, bs_list = extract_measurements_from_estimations(bs_locs, estimations)
     # LOS computation of location in case of angle and time estimations, or more than one BS/LOS path
     bs_locs = np.array(bs_list)
     initial_ue_loc = np.array([[0, 0]])
     initial_scatterers = np.zeros([MAX_L, 2])
     x0 = np.concatenate([initial_ue_loc, initial_scatterers]).reshape(-1)
+    # estimate the UE using least squares
     res = least_squares(cost_func_2d, x0).x
     est_ue_pos, est_scatterers = res[:2], res[2:].reshape(-1, 2)
     return est_ue_pos

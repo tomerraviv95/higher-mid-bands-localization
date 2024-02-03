@@ -20,7 +20,7 @@ class AngleEstimator2D:
         self.Nr_x = band.Nr_x
         self.algorithm = ALGS_DICT[ALG_TYPE](1.5)
 
-    def estimate(self, y: List[np.ndarray]):
+    def estimate(self, y: List[np.ndarray]) -> Estimation:
         self._indices, self._spectrum, _ = self.algorithm.run(y=y, basis_vectors=self._angle_options,
                                                               n_elements=self.Nr_x)
         estimator = Estimation(AOA=self.aoa_angles_dict[self._indices])
@@ -32,8 +32,8 @@ class AngleEstimator3D(AngleEstimator2D):
     Angles Estimator for the AOA and the ZOA
     """
 
-    def __init__(self):
-        super(AngleEstimator3D, self).__init__()
+    def __init__(self, band: Band):
+        super(AngleEstimator3D, self).__init__(band)
         self.zoa_angles_dict = np.arange(0, np.pi / 2, conf.zoa_res * np.pi / 180)
         self.calc_angle_options()
         self._angle_options = self._angle_options.reshape(conf.Nr_y * conf.Nr_x, -1).T
@@ -46,10 +46,10 @@ class AngleEstimator3D(AngleEstimator2D):
                                               np.cos(self.zoa_angles_dict), np.arange(conf.Nr_x)).T
         self._angle_options = (aoa_vector_xs.T[:, :, None] @ aoa_vector_ys.T[:, None, :]).T
 
-    def estimate(self, y: np.ndarray):
-        indices, self._spectrum, L_hat = self.algorithm.run(y=y, basis_vectors=self._angle_options,
-                                                            n_elements=conf.Nr_y * conf.Nr_x,
-                                                            second_dim=len(self.zoa_angles_dict))
+    def estimate(self, y: np.ndarray) -> Estimation:
+        indices, self._spectrum, _ = self.algorithm.run(y=y, basis_vectors=self._angle_options,
+                                                        n_elements=conf.Nr_y * conf.Nr_x,
+                                                        second_dim=len(self.zoa_angles_dict))
         self._aoa_indices = indices[:, 0]
         self._zoa_indices = indices[:, 1]
         estimation = Estimation(AOA=self.aoa_angles_dict[self._aoa_indices],

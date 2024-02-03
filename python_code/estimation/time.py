@@ -16,7 +16,7 @@ class TimeEstimator2D:
         self.K = band.K
         self.algorithm = ALGS_DICT[ALG_TYPE](1.25)
 
-    def estimate(self, y: np.ndarray):
+    def estimate(self, y: np.ndarray) -> Estimation:
         self._indices, self._spectrum, L_hat = self.algorithm.run(y=np.transpose(y, [1, 0, 2]), n_elements=self.K,
                                                                   basis_vectors=self._time_options)
         estimator = Estimation(TOA=self.times_dict[self._indices])
@@ -27,7 +27,7 @@ class TimeEstimator3D(TimeEstimator2D):
     def __init__(self):
         super(TimeEstimator3D, self).__init__()
 
-    def estimate(self, y):
+    def estimate(self, y: np.ndarray) -> Estimation:
         self._indices, self._spectrum, L_hat = self.algorithm.run(y=np.transpose(y, [2, 0, 1, 3]), n_elements=conf.K,
                                                                   basis_vectors=self._time_options)
         estimator = Estimation(TOA=self.times_dict[self._indices])
