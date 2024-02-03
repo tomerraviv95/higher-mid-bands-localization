@@ -33,21 +33,41 @@ This work aims to bridge the gap for multi-frequency localization in the FR3 ban
 
 # Folders Structure
 
-*Main Run* - Run the evaluate.py script  after choosing approriate hyperparameters and setup in the config.yaml to run the eval.
-
 ## python_code 
 
-The python simulations of the simplified communication chain: symbols generation, channel transmission and detection.
+The python simulations of the simulated setup, including: channel generation, parameters estimation and least squares optimization to locate the UE.
 
-### augmentations
+### main
 
-The proposed augmentations scheme suggested in [my previous augmentations paper](https://arxiv.org/pdf/2209.01362.pdf),
-see [this github repo](https://github.com/tomerraviv95/data-augmentations-for-receivers) for the code implementation.
+This is the main script. It runs the generation of the channel observations at each base station as in the equations in the paper. Then, it performs the parameters estimations, including the TOA, AOA and ZOA parameters. Finally, if enough parameters are available, it can localize the user by solving the least squares problem.
 
-### channel 
+### config 
 
-Includes all relevant channel functions and classes. The class in "channel_dataset.py" implements the main class for aggregating pairs of (transmitted,received) samples. 
-In "channel.py", the SISO and MIMO channels are implemented. "channel_estimation.py" is for the calculation of the h values. Lastly, the channel BPSK/QPSK modulators lies in "channel_modulator.py".
+You can control the simulated setup via the hyperparameters in the config:
+
+#### System parameters
+
+* dimensions - number of dimensions in the simulation. Either 'Two' or 'Three'.
+* ue_pos - the 2d/3d position of the ue. For example, [10,10] in 2d.
+L: 2  # number of paths, up to 5 (including LOS)
+B: 1 # number of BSs, up to 3 (including)
+K: [ 12 ] # number of subcarriers
+Nr_x: [ 12 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
+Nr_y: [ 1 ] # number of RX n_elements in y.
+sigma: 1  # noise standard deviation
+fc: [ 6000 ]  # carrier frequency in MHz
+BW: [ 100 ] # BW frequency in MHz
+channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
+
+# beamforming parameters
+est_type: 'time' # 'angle','time','both'
+aoa_res: 1.5  # resolution in degrees for the azimuth dictionary
+zoa_res: 2  # resolution in degrees for the zenith dictionary
+T_res: 0.002  # number of elements in the TIME dictionary
+
+# general
+seed: 0 # run seed
+plot_estimation_results: False # either True or False
 
 ### detectors
 
