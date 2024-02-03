@@ -1,10 +1,10 @@
-*"A man, remember, whether rich or poor, should do something in this world. No one can find happiness without work."* 
+*"Strength lies in differences, not in similarities."* 
 
---The Adventures of Pinocchio (by Carlo Collodi).
+--Stephen R. Covey.
 
-# Adaptive and Flexible Model-Based AI for Deep Receivers in Dynamic Channels
+# Multi-Frequency Localization in the FR3 band
 
-Python repository for the magazine paper "Adaptive and Flexible Model-Based AI for Deep Receivers in Dynamic Channels".
+Python repository for the paper "Multi-Frequency Localization in the FR3 band".
 
 Please cite our [paper](https://arxiv.org/abs/2305.07309), if the code is used for publishing research. 
 
@@ -13,11 +13,12 @@ Please cite our [paper](https://arxiv.org/abs/2305.07309), if the code is used f
 - [Introduction](#introduction)
 - [Folders Structure](#folders-structure)
   * [python_code](#python_code)
-    + [augmentations](#augmentations)
+    + [main](#main)
+    + [config](#config)
     + [channel](#channel)
-    + [detectors](#detectors)
-    + [plotters](#plotters)
-    + [trainers](#trainers)
+    + [estimation](#estimation)
+    + [optimization](#optimization)
+    + [plotting](#plotting)
     + [utils](#utils)
   * [resources](#resources)
   * [dir_definitions](#dir_definitions)
