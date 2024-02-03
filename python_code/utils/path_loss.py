@@ -1,4 +1,5 @@
 import math
+from typing import Tuple
 
 import numpy as np
 
@@ -6,22 +7,22 @@ WALLS = np.array([[8, 11], [8, 15], [11, 15], [11, 11], [8, 11]])
 LOSS_FACTOR = {6000: 1.1, 24000: 100}
 
 
-def ccw(A, B, C):
-    return (C[1] - A[1]) * (B[0] - A[0]) > (B[1] - A[1]) * (C[0] - A[0])
+def ccw(a: Tuple[float, float], b: Tuple[float, float], c: Tuple[float, float]) -> bool:
+    return (c[1] - a[1]) * (b[0] - a[0]) > (b[1] - a[1]) * (c[0] - a[0])
 
 
 # Return true if line segments AB and CD intersect
-def intersect(A, B, C, D):
-    return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
+def intersect(a: Tuple[float, float], b: Tuple[float, float], c: Tuple[float, float], d: Tuple[float, float]) -> bool:
+    return ccw(a, c, d) != ccw(b, c, d) and ccw(a, b, c) != ccw(a, b, d)
 
 
-def calc_power(P0, bs_loc, ue_pos, fc):
+def calc_power(P0: float, bs_loc: np.ndarray, ue_pos: np.ndarray, fc: float) -> float:
     for wall1, wall2 in zip(WALLS[:-1], WALLS[1:]):
         if intersect(bs_loc, ue_pos, wall1, wall2):
             P0 /= LOSS_FACTOR[fc]
     return P0
 
 
-def compute_path_loss(toa, fc):
+def compute_path_loss(toa: float, fc: float) -> float:
     loss_db = 20 * math.log10(toa) + 20 * math.log10(fc) + 20 * math.log10(4 * math.pi)
     return 10 ** (loss_db / 20)
