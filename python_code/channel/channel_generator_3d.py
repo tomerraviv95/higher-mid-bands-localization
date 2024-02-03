@@ -35,7 +35,7 @@ def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
         POWER[l] = calc_power(calc_power(initial_power, bs_loc[:2], scatterers[l - 1][:2], band.fc),
                               scatterers[l - 1][:2], ue_pos[:2], band.fc) / compute_path_loss(TOA[l], band.fc)
     # assert that toa are supported, must be smaller than largest distance divided by the speed
-    assert all([TOA[l] < conf.K / conf.BW for l in range(len(TOA))])
+    assert all([TOA[l] < band.K / band.BW for l in range(len(TOA))])
     return TOA, AOA, ZOA, POWER
 
 

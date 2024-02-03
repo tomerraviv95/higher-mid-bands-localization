@@ -41,7 +41,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     Compute the channel observations based on the band's parameters, and L TOAs, AOAs and POWERs
     """
     # For the covariance to have full rank we need to have enough samples, strictly more than the dimensions
-    Ns = band.Nr_x * band.K * DATA_COEF
+    Ns = int(band.Nr_x * band.K * DATA_COEF)
     # Initialize the observations and beamformers
     y = np.zeros((band.Nr_x, band.K, Ns), dtype=complex)
     # Generate multiple samples
