@@ -35,7 +35,7 @@ def combine_estimations(estimations: List[Estimation], bands: List[Band], estima
             for i in range(len(estimation.AOA)):
                 aoa = estimation.AOA[i]
                 toa = estimation.TOA[i]
-                if estimation.ZOA:
+                if estimation.ZOA is not None:
                     zoa = estimation.ZOA[i]
                 else:
                     zoa = None

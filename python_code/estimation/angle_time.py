@@ -32,6 +32,9 @@ class AngleTimeEstimator2D:
         return estimator
 
 
+coef_per_frequencies_dict = {6000: 10, 24000: 1.5}
+
+
 class AngleTimeEstimator3D:
     def __init__(self, band: Band):
         self.angle_estimator = AngleEstimator3D(band)
@@ -40,11 +43,13 @@ class AngleTimeEstimator3D:
         mat2 = self.time_estimator._time_options.astype(np.complex64)
         tensor1 = torch.tensor(mat1, dtype=torch.cfloat).to(DEVICE)
         tensor2 = torch.tensor(mat2, dtype=torch.cfloat).to(DEVICE)
-        def angle_time_options_func(batch_ind:int):
-            sub_tensor1 = tensor1[batch_ind].reshape(1,-1)
-            return torch.kron(sub_tensor1.contiguous(),tensor2.contiguous()), tensor1.shape[0]
+
+        def angle_time_options_func(batch_ind: int):
+            sub_tensor1 = tensor1[batch_ind].reshape(1, -1)
+            return torch.kron(sub_tensor1.contiguous(), tensor2.contiguous()), tensor1.shape[0]
+
         self.angle_time_options = angle_time_options_func
-        self.algorithm = ALGS_DICT[ALG_TYPE](10)
+        self.algorithm = ALGS_DICT[ALG_TYPE](coef_per_frequencies_dict[band.fc])
         self.batches = self.time_estimator._time_options.shape[0]
 
     def estimate(self, y: np.ndarray) -> Estimation:

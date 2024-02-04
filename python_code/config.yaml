@@ -3,12 +3,12 @@ dimensions: 'Three' # 'Two' or 'Three'
 ue_pos: [ 10 , 10 , 0 ]  # TX UE position
 L: 4  # number of paths, up to 5 (including LOS)
 B: 1 # number of BSs, up to 3 (including)
-K: [ 48 ] # number of subcarriers
-Nr_x: [ 7 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
-Nr_y: [ 7 ] # number of RX n_elements in y.
+K: [ 12 , 48 ] # number of subcarriers
+Nr_x: [ 3 , 7 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
+Nr_y: [ 3 , 7 ] # number of RX n_elements in y.
 sigma: 1  # noise standard deviation
-fc: [ 24000 ]  # carrier frequency in MHz
-BW: [ 400 ] # BW frequency in MHz
+fc: [ 6000 , 24000 ]  # carrier frequency in MHz
+BW: [ 100 , 400 ] # BW frequency in MHz
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # beamforming parameters
