@@ -1,6 +1,11 @@
+import jax
+import jax.numpy as jnp
 import numpy as np
 import scipy.signal
+import torch
 from scipy.ndimage.measurements import label
+
+from python_code import DEVICE
 
 
 class CaponBeamforming:
@@ -14,7 +19,7 @@ class CaponBeamforming:
         self.thresh = thresh
 
     def run(self, y: np.ndarray, basis_vectors: np.ndarray, n_elements: int, second_dim: int = None,
-            third_dim: int = None, batches=1):
+            third_dim: int = None, use_gpu=False):
         """
         y is channel observations
         basis vectors are the set of beamforming vectors in the dictionary
@@ -30,7 +35,7 @@ class CaponBeamforming:
         cov = np.linalg.inv(cov)
         cov = cov / np.linalg.norm(cov)
         # compute the Capon spectrum values for each basis vector
-        norm_values = self._compute_capon_spectrum(basis_vectors, batches, cov)
+        norm_values = self._compute_capon_spectrum(basis_vectors, use_gpu, cov)
         # treat the spectrum as 1d if the second dim is None
         if second_dim is None:
             indices, _ = scipy.signal.find_peaks(norm_values, height=self.thresh)
@@ -38,12 +43,12 @@ class CaponBeamforming:
         # treat the spectrum as 2d if the third dim is None
         elif third_dim is None:
             norm_values = norm_values.reshape(-1, second_dim)
-            labeled, ncomponents = label(norm_values > self.thresh, structure=np.ones((3, 3), dtype=np.int))
+            labeled, ncomponents = label(norm_values > self.thresh, structure=np.ones((3, 3), dtype=int))
         # treat the spectrum as 3d
         else:
             norm_values = norm_values.reshape(-1, second_dim, third_dim)
             labeled, ncomponents = label(norm_values > self.thresh,
-                                         structure=np.ones((3, 3, 3), dtype=np.int))
+                                         structure=np.ones((3, 3, 3), dtype=int))
 
         def get_current_component(norm_values, component_indx):
             if third_dim is None:
@@ -67,16 +72,16 @@ class CaponBeamforming:
             indices.append(ind)
         return np.array(indices), norm_values, len(indices)
 
-    def _compute_capon_spectrum(self, basis_vectors: np.ndarray, batches: int, cov: np.ndarray):
-        # compute with a single batch - no memory issues
-        if batches == 1:
+    def _compute_capon_spectrum(self, basis_vectors: np.ndarray, use_gpu: bool, cov: np.ndarray):
+        # compute with cpu - no cpu/memory issues
+        if not use_gpu:
             norm_values = np.linalg.norm((basis_vectors.conj() @ cov) * basis_vectors, axis=1)
-        # do batched computations to avoid memory crash
+            norm_values = 1 / norm_values
+        # do calculations on GPU - much faster for big matrices
         else:
-            norm_values = np.zeros(basis_vectors.shape[0])
-            batch_size = basis_vectors.shape[0] // batches
-            for i in range(0, basis_vectors.shape[0], batch_size):
-                norm_values[i:i + batch_size] = np.linalg.norm((basis_vectors[i:i + batch_size].conj() @ cov) *
-                                                               basis_vectors[i:i + batch_size], axis=1)
-        norm_values = 1 / norm_values
+            cov_mat = torch.tensor(cov, dtype=torch.cfloat).to(DEVICE)
+            del cov
+            norm_values = torch.linalg.norm(torch.matmul(basis_vectors.conj(), cov_mat) * basis_vectors, axis=1)
+            del basis_vectors
+            norm_values = (1 / norm_values).cpu().numpy()
         return norm_values

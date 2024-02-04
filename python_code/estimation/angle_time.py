@@ -1,5 +1,7 @@
 import numpy as np
+import torch
 
+from python_code import DEVICE
 from python_code.estimation import Estimation
 from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
 from python_code.estimation.angle import AngleEstimator2D, AngleEstimator3D
@@ -34,18 +36,19 @@ class AngleTimeEstimator3D:
     def __init__(self, band: Band):
         self.angle_estimator = AngleEstimator3D(band)
         self.time_estimator = TimeEstimator3D(band)
-        print(111)
-        self.angle_time_options = np.kron(self.angle_estimator._angle_options.astype(np.complex64),
-                                          self.time_estimator._time_options.astype(np.complex64))
-        print(222)
+        mat1 = self.angle_estimator._angle_options.astype(np.complex64)
+        mat2 = self.time_estimator._time_options.astype(np.complex64)
+        self.angle_time_options = torch.tensor(np.kron(mat1, mat2), dtype=torch.cfloat).to(DEVICE)
         self.algorithm = ALGS_DICT[ALG_TYPE](10)
+        self.batches = self.time_estimator._time_options.shape[0]
 
     def estimate(self, y: np.ndarray) -> Estimation:
         n_elements = self.angle_estimator.Nr_x * self.angle_estimator.Nr_y * self.time_estimator.K
         self.indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=n_elements,
                                                              basis_vectors=self.angle_time_options,
                                                              second_dim=len(self.angle_estimator.zoa_angles_dict),
-                                                             third_dim=len(self.time_estimator.times_dict), batches=10)
+                                                             third_dim=len(self.time_estimator.times_dict),
+                                                             use_gpu=True)
         # if no peaks found - return an empty estimation
         if len(self.indices) == 0:
             return Estimation()
