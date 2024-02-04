@@ -78,8 +78,13 @@ class CaponBeamforming:
         # do calculations on GPU - much faster for big matrices
         else:
             cov_mat = torch.tensor(cov, dtype=torch.cfloat).to(DEVICE)
-            del cov
-            norm_values = torch.linalg.norm(torch.matmul(basis_vectors.conj(), cov_mat) * basis_vectors, axis=1)
-            del basis_vectors
-            norm_values = (1 / norm_values).cpu().numpy()
+            res0, max_batches = basis_vectors(batch_ind=0)
+            batch_size = res0.shape[0]
+            norm_values = torch.zeros(batch_size * max_batches, dtype=torch.float).to(DEVICE)
+            for i in range(max_batches):
+                cur_basis_vectors = basis_vectors(batch_ind=i)[0]
+                norm_values[i*batch_size:(i+1)*batch_size] = torch.linalg.norm(torch.matmul(cur_basis_vectors.conj(), cov_mat)
+                                                                * cur_basis_vectors, dim=1)
+
+            norm_values = (1 / norm_values).cpu().numpy().astype(float)
         return norm_values

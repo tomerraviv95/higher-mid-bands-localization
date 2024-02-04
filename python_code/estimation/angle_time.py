@@ -38,7 +38,12 @@ class AngleTimeEstimator3D:
         self.time_estimator = TimeEstimator3D(band)
         mat1 = self.angle_estimator._angle_options.astype(np.complex64)
         mat2 = self.time_estimator._time_options.astype(np.complex64)
-        self.angle_time_options = torch.tensor(np.kron(mat1, mat2), dtype=torch.cfloat).to(DEVICE)
+        tensor1 = torch.tensor(mat1, dtype=torch.cfloat).to(DEVICE)
+        tensor2 = torch.tensor(mat2, dtype=torch.cfloat).to(DEVICE)
+        def func(batch_ind):
+            sub_tensor1 = tensor1[batch_ind].reshape(1,-1)
+            return torch.kron(sub_tensor1.contiguous(),tensor2.contiguous()), tensor1.shape[0]
+        self.angle_time_options = func
         self.algorithm = ALGS_DICT[ALG_TYPE](10)
         self.batches = self.time_estimator._time_options.shape[0]
 
