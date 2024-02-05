@@ -37,7 +37,7 @@ class AngleEstimator3D(AngleEstimator2D):
     def _multiband_constructor(self, bands: List[Band]):
         self.n_elements = [band.Nr_y * band.Nr_x for band in bands]
         self._angle_options = [self.calc_angle_options(band.Nr_x, band.Nr_y) for band in bands]
-        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](coef_per_frequencies_dict[bands[0].fc])
+        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](coef_per_frequencies_dict[bands[-1].fc])
 
     def estimate(self, y: Union[np.ndarray, List[np.ndarray]]) -> Estimation:
         self._indices, self._spectrum, _ = self.algorithm.run(y=y, basis_vectors=self._angle_options,
