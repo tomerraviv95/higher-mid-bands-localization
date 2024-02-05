@@ -18,7 +18,7 @@ class MultiBandCaponBeamforming(CaponBeamforming):
         """
         To be completed
         """
-        norm_values = 0
+        norm_values = np.zeros(basis_vectors[0].shape[0])
         for i in range(len(y)):
             # compute inverse covariance matrix
             cov = self._compute_cov(n_elements[i], y[i])

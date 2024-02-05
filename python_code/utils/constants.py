@@ -33,5 +33,5 @@ class DimensionType(Enum):
 
 
 class BandType(Enum):
-    SINGLE = 'single'
-    MULTI = 'multi'
+    SINGLE = 'SINGLE'
+    MULTI = 'MULTI'
