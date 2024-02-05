@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 import numpy as np
 
@@ -36,7 +36,7 @@ class TimeEstimator2D:
         self.K = [band.K for band in bands]
         self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](1.25)
 
-    def estimate(self, y: np.ndarray) -> Estimation:
+    def estimate(self, y: Union[np.ndarray, List[np.ndarray]]) -> Estimation:
         if self.multi_band:
             y = [np.transpose(y_single, [1, 0, 2]) for y_single in y]
         else:

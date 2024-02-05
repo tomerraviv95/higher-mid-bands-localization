@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 import numpy as np
 
@@ -26,7 +26,7 @@ class AngleTimeEstimator2D:
             self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE](coef_per_frequencies_dict[bands[0].fc])
             self.n_elements = bands[0].Nr_x * bands[0].K
 
-    def estimate(self, y: np.ndarray) -> Estimation:
+    def estimate(self, y: Union[np.ndarray, List[np.ndarray]]) -> Estimation:
         self.indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=self.n_elements,
                                                              basis_vectors=self.angle_time_options,
                                                              second_dim=len(self.time_estimator.times_dict))
