@@ -8,6 +8,8 @@ P_0 = 10 ** 4  # initial transmission power in watt
 
 Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA", "ZOA", "band"])
 
+Estimation = namedtuple("Estimation", ["AOA", "TOA", "ZOA"], defaults=(None,) * 3)
+
 
 class EstimatorType(Enum):
     ANGLE = 'ANGLE'
@@ -28,3 +30,8 @@ class AlgType(Enum):
 class DimensionType(Enum):
     Two = 'Two'
     Three = 'Three'
+
+
+class BandType(Enum):
+    SINGLE = 'SINGLE'
+    MULTI = 'MULTI'

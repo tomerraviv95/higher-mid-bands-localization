@@ -1,10 +1,9 @@
 import numpy as np
 
 from python_code import conf
-from python_code.estimation import Estimation
 from python_code.optimization.position_optimizer_2d import optimize_to_estimate_position_2d
 from python_code.optimization.position_optimizer_3d import optimize_to_estimate_position_3d
-from python_code.utils.constants import DimensionType
+from python_code.utils.constants import DimensionType, Estimation
 
 
 def optimize_to_estimate_position(bs_locs: np.ndarray, estimation: Estimation) -> np.ndarray:

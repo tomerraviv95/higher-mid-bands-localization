@@ -1,4 +1,4 @@
-# System parameters
+# System parameters_2d
 dimensions: 'Two' # 'Two' or 'Three'
 ue_pos: [ 10 , 10 ]  # TX UE position
 L: 1  # number of paths, up to 5 (including LOS)
@@ -6,14 +6,14 @@ B: 1 # number of BSs, up to 3 (including)
 sigma: 1  # noise standard deviation
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
-# Bands parameters
+# Bands parameters_2d
 K: [ 24 ] # number of subcarriers
 Nr_x: [ 24 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
 Nr_y: [ 1 ] # number of RX n_elements in y.
 fc: [ 6000 ]  # carrier frequency in MHz
 BW: [ 200 ] # BW frequency in MHz
 
-# beamforming parameters
+# beamforming parameters_2d
 est_type: 'both' # 'angle','time','both'
 aoa_res: 1.5  # resolution in degrees for the azimuth dictionary
 zoa_res: 2  # resolution in degrees for the zenith dictionary

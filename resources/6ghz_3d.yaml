@@ -1,4 +1,4 @@
-# System parameters
+# System parameters_2d
 dimensions: 'Three' # 'Two' or 'Three'
 ue_pos: [ 10 , 10 , 0 ]  # TX UE position
 L: 4  # number of paths, up to 5 (including LOS)
@@ -11,7 +11,7 @@ fc: [ 6000 ]  # carrier frequency in MHz
 BW: [ 100 ] # BW frequency in MHz
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
-# beamforming parameters
+# beamforming parameters_2d
 est_type: 'both' # 'angle','time','both'
 aoa_res: 1.5  # resolution in degrees for the azimuth dictionary
 zoa_res: 2  # resolution in degrees for the zenith dictionary

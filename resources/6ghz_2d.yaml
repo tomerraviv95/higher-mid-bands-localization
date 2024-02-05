@@ -1,6 +1,6 @@
 # general
 seed: 0 # run seed
-# System parameters
+# System parameters_2d
 est_type: 'both' # 'angle','time','both'
 dimensions: 'Two' # 'Two' or 'Three'
 L: 4  # number of paths, up to 5 (including LOS)

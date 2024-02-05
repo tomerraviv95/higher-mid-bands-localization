@@ -1,7 +1,6 @@
 from matplotlib import pyplot as plt
 
-from python_code.estimation.angle_time import Estimation
-from python_code.utils.constants import Channel, C
+from python_code.utils.constants import Channel, C, Estimation
 
 plt.style.use('dark_background')
 
@@ -70,6 +69,7 @@ def plot_angle_time_3d(estimator, estimation: Estimation):
     ax.set_zlabel('ZOA[rad]')
     plt.savefig('AOA_ZOA_and_delay_est.png', dpi=fig.dpi)
     plt.show()
+
 
 def print_channel(bs_ue_channel: Channel):
     if bs_ue_channel.ZOA is not None:

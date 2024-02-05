@@ -13,9 +13,9 @@ from python_code.utils.path_loss import compute_path_loss, calc_power
 def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray, band: Band) -> Tuple[
     List[float], List[float], List[float]]:
     """"
-    Computes the parameters for each path. Each path includes the toa, aoa and power.
+    Computes the parameters_2d for each path. Each path includes the toa, aoa and power.
     """
-    # Initialize the channel parameters for L paths
+    # Initialize the channel parameters_2d for L paths
     TOA = [0 for _ in range(conf.L)]
     AOA = [0 for _ in range(conf.L)]
     POWER = [0 for _ in range(conf.L)]
@@ -38,7 +38,7 @@ def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
 
 def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float], band: Band) -> np.ndarray:
     """"
-    Compute the channel observations based on the band's parameters, and L TOAs, AOAs and POWERs
+    Compute the channel observations based on the band's parameters_2d, and L TOAs, AOAs and POWERs
     """
     # For the covariance to have full rank we need to have enough samples, strictly more than the dimensions
     Ns = int(band.Nr_x * band.K * DATA_COEF)
@@ -72,7 +72,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
 
 
 def get_2d_channel(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray, band: Band) -> Channel:
-    # compute the parameters for each of the L paths
+    # compute the parameters_2d for each of the L paths
     TOA, AOA, POWER = compute_gt_channel_parameters(bs_loc, ue_pos, scatterers, band)
     # compute the channel observations based on the above paths
     y = compute_observations(TOA, AOA, POWER, band)

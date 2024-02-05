@@ -2,9 +2,8 @@ from typing import List
 
 import numpy as np
 
-from python_code.estimation import Estimation
 from python_code.utils.bands_manipulation import Band
-from python_code.utils.constants import EstimatorType
+from python_code.utils.constants import EstimatorType, Estimation
 
 
 def combine_estimations(estimations: List[Estimation], bands: List[Band], estimator_type: EstimatorType) -> Estimation:

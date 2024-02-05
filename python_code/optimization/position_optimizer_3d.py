@@ -3,8 +3,7 @@ from typing import List, Tuple
 import numpy as np
 from scipy.optimize import least_squares
 
-from python_code.estimation import Estimation
-from python_code.utils.constants import C
+from python_code.utils.constants import C, Estimation
 
 MAX_L = 5
 
@@ -44,7 +43,7 @@ def optimize_to_estimate_position_3d(bs_locs: np.ndarray, estimations: List[Esti
             costs.append(cost)
         return costs
 
-    # extract the estimated parameters for each bs
+    # extract the estimated parameters_2d for each bs
     aoa_values, zoa_values, toa_values, bs_list = extract_measurements_from_estimations(bs_locs, estimations)
     # LOS computation of location in case of angle and time estimations
     bs_locs = np.array(bs_list)

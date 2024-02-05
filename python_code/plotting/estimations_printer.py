@@ -1,10 +1,9 @@
 import numpy as np
 
 from python_code import conf
-from python_code.estimation import Estimation
 from python_code.plotting.plotter import plot_angle_time_2d, plot_angle_time_3d, plot_time, plot_angle_2d, \
     plot_angles_3d
-from python_code.utils.constants import DimensionType, EstimatorType
+from python_code.utils.constants import DimensionType, EstimatorType, Estimation
 
 
 def angle_printer(bs_ue_channel: np.ndarray, estimation: Estimation, estimator):
