@@ -1,15 +1,17 @@
 # System parameters
-dimensions: 'Three' # 'Two' or 'Three'
-ue_pos: [ 10 , 10 , 0 ]  # TX UE position
+dimensions: 'Two' # 'Two' or 'Three'
+ue_pos: [ 10 , 10 ]  # TX UE position
 L: 4  # number of paths, up to 5 (including LOS)
 B: 1 # number of BSs, up to 3 (including)
-K: [ 12 ] # number of subcarriers
-Nr_x: [ 3 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
-Nr_y: [ 3 ] # number of RX n_elements in y.
 sigma: 1  # noise standard deviation
-fc: [ 6000 ]  # carrier frequency in MHz
-BW: [ 100 ] # BW frequency in MHz
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
+
+# Bands parameters
+K: [ 22 ] # number of subcarriers
+Nr_x: [ 12 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
+Nr_y: [ 1 ] # number of RX n_elements in y.
+fc: [ 6000 ]  # carrier frequency in MHz
+BW: [ 200 ] # BW frequency in MHz
 
 # beamforming parameters
 est_type: 'both' # 'angle','time','both'

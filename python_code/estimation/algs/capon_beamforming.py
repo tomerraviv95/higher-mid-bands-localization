@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import numpy as np
 import scipy.signal
 import torch
@@ -29,11 +31,40 @@ class CaponBeamforming:
         return a tuple of the [max_indices, spectrum, L_hat] where L_hat is the estimated number of paths
         """
         # compute inverse covariance matrix
+        cov = self._compute_cov(n_elements, y)
+        # compute the Capon spectrum values for each basis vector
+        norm_values = self._compute_capon_spectrum(basis_vectors, use_gpu, cov)
+        # finally find the peaks in the spectrum
+        return self.find_peaks_in_spectrum(norm_values, second_dim, third_dim)
+
+    def _compute_cov(self, n_elements:int, y:np.ndarray):
         cov = np.cov(y.reshape(n_elements, -1), bias=True)
         cov = np.linalg.inv(cov)
         cov = cov / np.linalg.norm(cov)
-        # compute the Capon spectrum values for each basis vector
-        norm_values = self._compute_capon_spectrum(basis_vectors, use_gpu, cov)
+        return cov
+
+    def _compute_capon_spectrum(self, basis_vectors: np.ndarray, use_gpu: bool, cov: np.ndarray):
+        # compute with cpu - no cpu/memory issues
+        if not use_gpu:
+            norm_values = np.linalg.norm((basis_vectors.conj() @ cov) * basis_vectors, axis=1)
+            norm_values = 1 / norm_values
+        # do calculations on GPU - much faster for big matrices
+        else:
+            cov_mat = torch.tensor(cov, dtype=torch.cfloat).to(DEVICE)
+            res0, max_batches = basis_vectors(batch_ind=0)
+            batch_size = res0.shape[0]
+            norm_values = torch.zeros(batch_size * max_batches, dtype=torch.float).to(DEVICE)
+            for i in range(max_batches):
+                cur_basis_vectors = basis_vectors(batch_ind=i)[0]
+                norm_values[i * batch_size:(i + 1) * batch_size] = torch.linalg.norm(
+                    torch.matmul(cur_basis_vectors.conj(), cov_mat)
+                    * cur_basis_vectors, dim=1)
+
+            norm_values = (1 / norm_values).cpu().numpy().astype(float)
+        return norm_values
+
+    def find_peaks_in_spectrum(self, norm_values: np.ndarray, second_dim: int, third_dim: int) -> Tuple[
+        np.ndarray, np.ndarray, int]:
         # treat the spectrum as 1d if the second dim is None
         if second_dim is None:
             indices, _ = scipy.signal.find_peaks(norm_values, height=self.thresh)
@@ -69,22 +100,3 @@ class CaponBeamforming:
             # add the corresponding index of the maximum value
             indices.append(ind)
         return np.array(indices), norm_values, len(indices)
-
-    def _compute_capon_spectrum(self, basis_vectors: np.ndarray, use_gpu: bool, cov: np.ndarray):
-        # compute with cpu - no cpu/memory issues
-        if not use_gpu:
-            norm_values = np.linalg.norm((basis_vectors.conj() @ cov) * basis_vectors, axis=1)
-            norm_values = 1 / norm_values
-        # do calculations on GPU - much faster for big matrices
-        else:
-            cov_mat = torch.tensor(cov, dtype=torch.cfloat).to(DEVICE)
-            res0, max_batches = basis_vectors(batch_ind=0)
-            batch_size = res0.shape[0]
-            norm_values = torch.zeros(batch_size * max_batches, dtype=torch.float).to(DEVICE)
-            for i in range(max_batches):
-                cur_basis_vectors = basis_vectors(batch_ind=i)[0]
-                norm_values[i*batch_size:(i+1)*batch_size] = torch.linalg.norm(torch.matmul(cur_basis_vectors.conj(), cov_mat)
-                                                                * cur_basis_vectors, dim=1)
-
-            norm_values = (1 / norm_values).cpu().numpy().astype(float)
-        return norm_values
