@@ -20,7 +20,7 @@ def combine_estimations(estimations: List[Estimation], bands: List[Band], estima
         AOA, ZOA = None, None
 
     if estimator_type == EstimatorType.TIME:
-        # take the time
+        # take the time part only
         max_time_separation_band_ind = np.argmax(np.array([band.BW / band.K for band in bands]))
         TOA = estimations[max_time_separation_band_ind].TOA
     else:
