@@ -11,7 +11,7 @@ from python_code.plotting.plotter import print_channel
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.constants import EstimatorType, Channel, Estimation
 
-BANDS_ESTIMATION = 'SEPARATE'  # 'SEPARATE','SIMULTANEOUS'
+BANDS_ESTIMATION = 'SIMULTANEOUS'  # 'SEPARATE','SIMULTANEOUS'
 
 
 def estimate_physical_parameters(ue_pos: np.ndarray, bs_locs: np.ndarray, scatterers: np.ndarray,

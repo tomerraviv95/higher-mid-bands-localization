@@ -37,7 +37,7 @@ class CaponBeamforming:
         # finally find the peaks in the spectrum
         return self.find_peaks_in_spectrum(norm_values, second_dim, third_dim)
 
-    def _compute_cov(self, n_elements:int, y:np.ndarray):
+    def _compute_cov(self, n_elements: int, y: np.ndarray):
         cov = np.cov(y.reshape(n_elements, -1), bias=True)
         cov = np.linalg.inv(cov)
         cov = cov / np.linalg.norm(cov)
