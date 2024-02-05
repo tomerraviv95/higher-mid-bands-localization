@@ -41,14 +41,20 @@ class AngleTimeEstimator3D:
         self.time_estimator = TimeEstimator3D(band)
         mat1 = self.angle_estimator._angle_options.astype(np.complex64)
         mat2 = self.time_estimator._time_options.astype(np.complex64)
-        tensor1 = torch.tensor(mat1, dtype=torch.cfloat).to(DEVICE)
-        tensor2 = torch.tensor(mat2, dtype=torch.cfloat).to(DEVICE)
+        # if a GPU is available, perform the calculations for it. Note that it is imperative
+        # for the 3d case, otherwise expect memory crash on computer with 16/32 GB RAM.
+        if torch.cuda.is_available():
+            tensor1 = torch.tensor(mat1, dtype=torch.cfloat).to(DEVICE)
+            tensor2 = torch.tensor(mat2, dtype=torch.cfloat).to(DEVICE)
 
-        def angle_time_options_func(batch_ind: int):
-            sub_tensor1 = tensor1[batch_ind].reshape(1, -1)
-            return torch.kron(sub_tensor1.contiguous(), tensor2.contiguous()), tensor1.shape[0]
+            def angle_time_options_func(batch_ind: int):
+                sub_tensor1 = tensor1[batch_ind].reshape(1, -1)
+                return torch.kron(sub_tensor1.contiguous(), tensor2.contiguous()), tensor1.shape[0]
 
-        self.angle_time_options = angle_time_options_func
+            self.angle_time_options = angle_time_options_func
+        else:
+            # perform calculations on CPU and RAM
+            self.angle_time_options = np.kron(mat1, mat2)
         self.algorithm = ALGS_DICT[ALG_TYPE](coef_per_frequencies_dict[band.fc])
         self.batches = self.time_estimator._time_options.shape[0]
 
@@ -58,7 +64,7 @@ class AngleTimeEstimator3D:
                                                              basis_vectors=self.angle_time_options,
                                                              second_dim=len(self.angle_estimator.zoa_angles_dict),
                                                              third_dim=len(self.time_estimator.times_dict),
-                                                             use_gpu=True)
+                                                             use_gpu=torch.cuda.is_available())
         # if no peaks found - return an empty estimation
         if len(self.indices) == 0:
             return Estimation()
