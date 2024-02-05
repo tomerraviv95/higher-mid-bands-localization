@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 
 from python_code.estimation.angle_time import Estimation
+from python_code.utils.constants import Channel, C
 
 plt.style.use('dark_background')
 
@@ -69,3 +70,12 @@ def plot_angle_time_3d(estimator, estimation: Estimation):
     ax.set_zlabel('ZOA[rad]')
     plt.savefig('AOA_ZOA_and_delay_est.png', dpi=fig.dpi)
     plt.show()
+
+def print_channel(bs_ue_channel: Channel):
+    if bs_ue_channel.ZOA is not None:
+        zoa_string = f", ZOA[rad]: {round(bs_ue_channel.ZOA[0], 3)}"
+    else:
+        zoa_string = ""
+    print(f"Distance to user {bs_ue_channel.TOA[0] * C}[m], "
+          f"TOA[us]: {round(bs_ue_channel.TOA[0], 3)}, "
+          f"AOA[rad]: {round(bs_ue_channel.AOA[0], 3)}" + zoa_string)

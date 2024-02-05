@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 
@@ -10,8 +10,9 @@ from python_code.estimation.angle_time import AngleTimeEstimator2D, AngleTimeEst
 from python_code.estimation.estimations_combining import combine_estimations
 from python_code.estimation.estimations_printer import printer_main
 from python_code.estimation.time import TimeEstimator2D, TimeEstimator3D
+from python_code.plotting.plotter import print_channel
 from python_code.utils.bands_manipulation import Band
-from python_code.utils.constants import EstimatorType, DimensionType, C
+from python_code.utils.constants import EstimatorType, DimensionType, Channel
 
 estimators = {
     EstimatorType.ANGLE: {DimensionType.Three.name: AngleEstimator3D, DimensionType.Two.name: AngleEstimator2D},
@@ -25,23 +26,27 @@ def estimate_physical_parameters(ue_pos: np.ndarray, bs_locs: np.ndarray, scatte
     estimations = []
     # for each bs
     for i, bs_loc in enumerate(bs_locs):
-        per_band_estimations = []
-        # for each frequency sub-band
-        for j, band in enumerate(bands):
-            # generate the channel
-            bs_ue_channel = get_channel(bs_loc, ue_pos, scatterers, band)
-            if j == 0:
-                print(f"Distance to user {bs_ue_channel.TOA[0] * C}[m], "
-                      f"TOA[us]: {round(bs_ue_channel.TOA[0], 3)}, "
-                      f"AOA to user {round(bs_ue_channel.AOA[0], 3)}[rad]")
-            # choose the estimator based on the desired type
-            estimator = estimators[estimator_type][conf.dimensions](band)
-            # estimate delay / AOA / ZOA parameters for the current bs
-            estimation = estimator.estimate(bs_ue_channel.y)
-            per_band_estimations.append(estimation)
-        # combine the estimations from the different bands together
-        estimation = combine_estimations(per_band_estimations, bands, estimator_type)
+        bs_ue_channel, estimation, estimator = estimate_per_band(bands, bs_loc, estimator_type, scatterers, ue_pos)
         estimations.append(estimation)
         print(f"BS #{i} - {bs_loc}")
         printer_main(bs_ue_channel, estimation, estimator, estimator_type)
     return estimations
+
+
+def estimate_per_band(bands: List[Band], bs_loc: np.ndarray, estimator_type: EstimatorType, scatterers: np.ndarray,
+                      ue_pos: np.ndarray) -> Tuple[Channel, Estimation, object]:
+    per_band_estimations = []
+    # for each frequency sub-band
+    for j, band in enumerate(bands):
+        # generate the channel
+        bs_ue_channel = get_channel(bs_loc, ue_pos, scatterers, band)
+        if j == 0:
+            print_channel(bs_ue_channel)
+        # choose the estimator based on the desired type
+        estimator = estimators[estimator_type][conf.dimensions](band)
+        # estimate delay / AOA / ZOA parameters for the current bs
+        estimation = estimator.estimate(bs_ue_channel.y)
+        per_band_estimations.append(estimation)
+    # combine the estimations from the different bands together
+    estimation = combine_estimations(per_band_estimations, bands, estimator_type)
+    return bs_ue_channel, estimation, estimator
