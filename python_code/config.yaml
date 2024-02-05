@@ -18,6 +18,7 @@ est_type: 'both' # 'angle','time','both'
 aoa_res: 1.5  # resolution in degrees for the azimuth dictionary
 zoa_res: 2  # resolution in degrees for the zenith dictionary
 T_res: 0.002  # number of elements in the TIME dictionary
+band_type: 'multi' # 'single' or 'multi'
 
 # general
 seed: 0 # run seed
