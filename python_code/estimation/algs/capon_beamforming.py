@@ -38,7 +38,7 @@ class CaponBeamforming:
         return self.find_peaks_in_spectrum(norm_values, second_dim, third_dim)
 
     def _compute_cov(self, n_elements: int, y: np.ndarray):
-        cov = np.cov(y.reshape(n_elements, -1), bias=True)
+        cov = np.cov(y.reshape(n_elements, -1))
         cov = np.linalg.inv(cov)
         cov = cov / np.linalg.norm(cov)
         return cov
@@ -59,9 +59,14 @@ class CaponBeamforming:
                 norm_values[i * batch_size:(i + 1) * batch_size] = torch.linalg.norm(
                     torch.matmul(cur_basis_vectors.conj(), cov_mat)
                     * cur_basis_vectors, dim=1)
-
             norm_values = (1 / norm_values).cpu().numpy().astype(float)
         return norm_values
+
+    @staticmethod
+    def get_current_component(norm_values: np.ndarray, component_indx: np.ndarray, third_dim: int):
+        if third_dim is None:
+            return norm_values[component_indx[0]][component_indx[1]]
+        return norm_values[component_indx[0]][component_indx[1]][component_indx[2]]
 
     def find_peaks_in_spectrum(self, norm_values: np.ndarray, second_dim: int, third_dim: int) -> Tuple[
         np.ndarray, np.ndarray, int]:
@@ -79,11 +84,6 @@ class CaponBeamforming:
             labeled, ncomponents = label(norm_values > self.thresh,
                                          structure=np.ones((3, 3, 3), dtype=int))
 
-        def get_current_component(norm_values, component_indx):
-            if third_dim is None:
-                return norm_values[component_indx[0]][component_indx[1]]
-            return norm_values[component_indx[0]][component_indx[1]][component_indx[2]]
-
         # in case of 2d or 3d spectrum, finding regions of peaks then taking the maximum in each region
         # as the representative for that region
         indices = []
@@ -93,7 +93,7 @@ class CaponBeamforming:
             max, ind = 0, None
             # look for the maximum value and indices in that region
             for component_indx in component_indices:
-                cur_comp = get_current_component(norm_values, component_indx)
+                cur_comp = self.get_current_component(norm_values, component_indx, third_dim)
                 if cur_comp > max:
                     max = cur_comp
                     ind = component_indx

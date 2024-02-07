@@ -1,6 +1,6 @@
 # System parameters
 dimensions: 'Two' # 'Two' or 'Three'
-ue_pos: [ 14 , 11 ]  # TX UE position
+ue_pos: [ 11 , 9 ]  # TX UE position
 L: 4  # number of paths, up to 5 (including LOS)
 B: 1 # number of BSs, up to 3 (including)
 sigma: 1  # noise standard deviation
@@ -17,7 +17,8 @@ BW: [ 100 ] # BW frequency in MHz
 est_type: 'both' # 'angle','time','both'
 aoa_res: 1.5  # resolution in degrees for the azimuth dictionary
 zoa_res: 2  # resolution in degrees for the zenith dictionary
-T_res: 0.002  # number of elements in the TIME dictionary
+T_res: 0.002  # number of elements in the TIME dictionary in us
+band_type: 'SINGLE' # 'SINGLE' or 'MULTI'
 
 # general
 seed: 0 # run seed

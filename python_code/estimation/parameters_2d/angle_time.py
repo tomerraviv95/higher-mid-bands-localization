@@ -3,12 +3,12 @@ from typing import List, Union
 import numpy as np
 
 from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
-from python_code.utils.bands_manipulation import Band
-from python_code.utils.constants import BandType, Estimation
 from python_code.estimation.parameters_2d.angle import AngleEstimator2D
 from python_code.estimation.parameters_2d.time import TimeEstimator2D
+from python_code.utils.bands_manipulation import Band
+from python_code.utils.constants import BandType, Estimation
 
-coef_per_frequencies_dict = {6000: 2.5, 24000: 1.5}
+coef_per_frequencies_dict = {6000: 1.5, 24000: 1.5}
 
 
 class AngleTimeEstimator2D:

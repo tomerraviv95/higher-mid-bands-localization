@@ -7,8 +7,8 @@ sigma: 1  # noise standard deviation
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # Bands parameters
-K: [ 48 ] # number of subcarriers
-Nr_x: [ 32 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
+K: [ 40 ] # number of subcarriers
+Nr_x: [ 16 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
 Nr_y: [ 1 ] # number of RX n_elements in y.
 fc: [ 24000 ]  # carrier frequency in MHz
 BW: [ 400 ] # BW frequency in MHz
@@ -17,7 +17,8 @@ BW: [ 400 ] # BW frequency in MHz
 est_type: 'both' # 'angle','time','both'
 aoa_res: 1.5  # resolution in degrees for the azimuth dictionary
 zoa_res: 2  # resolution in degrees for the zenith dictionary
-T_res: 0.002  # number of elements in the TIME dictionary
+T_res: 0.002  # number of elements in the TIME dictionary in us
+band_type: 'SINGLE' # 'SINGLE' or 'MULTI'
 
 # general
 seed: 0 # run seed

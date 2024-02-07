@@ -5,7 +5,7 @@ from python_code.utils.constants import DimensionType
 
 
 def create_scatter_points_2d(L: int) -> np.ndarray:
-    scatterers = np.array([[15, 12], [15, 14], [12, 14]])
+    scatterers = np.array([[5, 12], [5, 14], [2, 14]])
     return scatterers[:L - 1]
 
 

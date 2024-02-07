@@ -8,7 +8,7 @@ from dir_definitions import CONFIG_PATH
 
 class Config:
     """
-    Singleton class for the config holding all the config.yaml parameters_2d
+    Singleton class for the config holding all the config.yaml parameters
     Can be called anywhere in the code and have the same initialized values
     """
     __instance = None
