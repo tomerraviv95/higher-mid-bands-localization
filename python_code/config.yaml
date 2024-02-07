@@ -1,7 +1,7 @@
 # System parameters
 dimensions: 'Two' # 'Two' or 'Three'
-scenario: 'SYNTHETIC' # 'SYNTHETIC' or 'NY'
-ue_pos: [ 12 , 10 ]  # TX UE position
+scenario: 'NY' # 'SYNTHETIC' or 'NY'
+ue_pos: [ 240 , 350 ]  # TX UE position
 L: 4  # number of paths, up to 5 (including LOS)
 B: 1 # number of BSs, up to 3 (including)
 sigma: 1  # noise standard deviation

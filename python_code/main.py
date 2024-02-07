@@ -36,7 +36,7 @@ def main():
     # ------------------------------------- #
     estimations, per_band_y, bs_locs = [], [], []
     # for each bs
-    for b in range(conf.B):
+    for b in range(1, conf.B + 1):
         # for each frequency sub-band
         for j, band in enumerate(bands):
             # generate the channel

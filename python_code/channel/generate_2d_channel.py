@@ -1,45 +1,21 @@
-# Generate scatter points
-from typing import List, Tuple
+from typing import List
 
 import numpy as np
 
 from python_code import conf
+from python_code.channel import create_bs_locs_2d, create_scatter_points_2d
+from python_code.channel.ny_channel.ny_channel_loader_2d import load_ny_scenario
+from python_code.channel.synthetic_channel.synthetic_2d import generate_synthetic_parameters
 from python_code.utils.bands_manipulation import Band
-from python_code.utils.basis_functions import compute_time_options, compute_angle_options
-from python_code.utils.constants import C, ChannelBWType, DATA_COEF, Channel, P_0
-from python_code.utils.path_loss import compute_path_loss, calc_power
-
-
-def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray, band: Band) -> Tuple[
-    List[float], List[float], List[float]]:
-    """"
-    Computes the parameters for each path. Each path includes the toa, aoa and power.
-    """
-    # Initialize the channel parameters_2d for L paths
-    TOA = [0 for _ in range(conf.L)]
-    AOA = [0 for _ in range(conf.L)]
-    POWER = [0 for _ in range(conf.L)]
-    # Compute for the LOS path
-    TOA[0] = np.linalg.norm(ue_pos - bs_loc) / C
-    AOA[0] = np.arctan2(ue_pos[1] - bs_loc[1], ue_pos[0] - bs_loc[0])
-    initial_power = P_0 * np.sqrt(1 / 2) * (1 + 1j)
-    POWER[0] = calc_power(initial_power, bs_loc, ue_pos, band.fc) / compute_path_loss(TOA[0], band.fc)
-    # Compute for the NLOS paths
-    for l in range(1, conf.L):
-        AOA[l] = np.arctan2(scatterers[l - 1, 1] - bs_loc[1], scatterers[l - 1, 0] - bs_loc[0])
-        TOA[l] = (np.linalg.norm(bs_loc - scatterers[l - 1]) + np.linalg.norm(conf.ue_pos - scatterers[l - 1])) / C
-        initial_power = P_0 * np.sqrt(1 / 2) * (1 + 1j)
-        POWER[l] = calc_power(calc_power(initial_power, bs_loc, scatterers[l - 1], band.fc), scatterers[l - 1],
-                              ue_pos, band.fc) / compute_path_loss(TOA[l], band.fc)
-    # assert that the toas are supported, must be smaller than largest distance divided by the speed
-    assert all([TOA[l] < band.K / band.BW for l in range(len(TOA))])
-    return TOA, AOA, POWER
+from python_code.utils.basis_functions import compute_angle_options, compute_time_options
+from python_code.utils.constants import Channel, ChannelBWType, DATA_COEF, ScenarioType
 
 
 def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float], band: Band) -> np.ndarray:
     """"
     Compute the channel observations based on the band's parameters_2d, and L TOAs, AOAs and POWERs
     """
+    L = len(POWER)
     # For the covariance to have full rank we need to have enough samples, strictly more than the dimensions
     Ns = int(band.Nr_x * band.K * DATA_COEF)
     # Initialize the observations and beamformers
@@ -49,7 +25,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
         # Generate channel
         h = np.zeros((band.Nr_x, band.K), dtype=complex)
         # for each path
-        for l in range(conf.L):
+        for l in range(L):
             # assume random phase beamforming
             F = np.exp(1j * np.random.rand(1) * 2 * np.pi)
             # phase delay for the K subcarriers
@@ -71,9 +47,16 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     return y
 
 
-def get_2d_basic_channel(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray, band: Band) -> Channel:
-    # compute the parameters for each of the L paths
-    TOA, AOA, POWER = compute_gt_channel_parameters(bs_loc, ue_pos, scatterers, band)
+def get_2d_channel(bs_ind: int, ue_pos: np.ndarray, band: Band) -> Channel:
+    if conf.scenario == ScenarioType.SYNTHETIC.name:
+        bs_loc = create_bs_locs_2d(bs_ind)
+        scatterers = create_scatter_points_2d(conf.L)
+        TOA, AOA, POWER = generate_synthetic_parameters(bs_loc, ue_pos, scatterers, band)
+    elif conf.scenario == ScenarioType.NY.name:
+        bs_loc, TOA, AOA, POWER = load_ny_scenario(bs_ind, ue_pos, band)
+        scatterers = None
+    else:
+        raise ValueError("Scenario is not implemented!!!")
     # compute the channel observations based on the above paths
     y = compute_observations(TOA, AOA, POWER, band)
     # save results for easy access in a namedtuple

@@ -8,3 +8,4 @@ RESULTS_DIR = os.path.join(ROOT_DIR, 'results')
 
 # subfolders
 CONFIG_PATH = os.path.join(CODE_DIR, 'config.yaml')
+RAYTRACING_DIR = os.path.join(RESOURCES_DIR, 'raytracing')
