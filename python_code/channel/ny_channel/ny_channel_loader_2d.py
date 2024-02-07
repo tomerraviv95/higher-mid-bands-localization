@@ -26,4 +26,4 @@ def load_ny_scenario(bs_ind: int, ue_pos: np.ndarray, band: Band):
         aoa = row[f'aod_{path}']
         powers.append(power), toas.append(toa), aoas.append(aoa)
 
-    return bs_loc, toa, aoa, power
+    return bs_loc, toas, aoas, powers
