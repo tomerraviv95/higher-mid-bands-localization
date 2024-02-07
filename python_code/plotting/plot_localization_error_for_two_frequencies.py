@@ -27,4 +27,4 @@ if __name__ == "__main__":
     plt.xticks(range(len(ue_x_positions)), ue_x_positions)
     plt.ylabel('Y location')
     plt.yticks(range(1, len(ue_y_positions) + 1), ue_y_positions[::-1])
-    plt.savefig(f'rmse_map_{conf.L}_{conf.fc}_{conf.Nr_x}_{conf.BW}.png', dpi=fig.dpi)
+    plt.savefig(f'rmse_map_{conf.fc}_{conf.Nr_x}_{conf.BW}.png', dpi=fig.dpi)

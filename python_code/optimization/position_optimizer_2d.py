@@ -3,6 +3,7 @@ from typing import List, Tuple
 import numpy as np
 from scipy.optimize import least_squares
 
+from python_code import conf
 from python_code.utils.constants import C, Estimation
 
 MAX_L = 5
@@ -29,11 +30,11 @@ def optimize_to_estimate_position_2d(bs_locs: np.ndarray, estimations: List[Esti
         costs = []
         # LOS AOA constraints
         for i in range(len(bs_locs)):
-            cost = abs(np.arctan2(ue[1] - bs_locs[i][1], ue[0] - bs_locs[i][0]) - aoa_values[i])
+            cost = abs(np.arctan2(ue[1] - bs_locs[i][1], ue[0] - bs_locs[i][0]) - aoa_values[i] - conf.orientation)
             costs.append(cost)
         # LOS TOA constraints
         for i in range(len(bs_locs)):
-            cost = abs(np.linalg.norm(ue - bs_locs[i]) / C - toa_values[i])
+            cost = abs(np.linalg.norm(ue - bs_locs[i]) / conf.medium_speed - toa_values[i])
             costs.append(cost)
         return costs
 

@@ -3,8 +3,6 @@ import numpy as np
 from python_code import conf
 from python_code.channel.generate_2d_channel import get_2d_channel
 from python_code.channel.generate_3d_channel import get_3d_channel
-from python_code.channel.synthetic_channel import get_synthetic_channel
-from python_code.channel.synthetic_channel.bs_scatterers import create_bs_locs_2d, create_scatter_points_2d
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.constants import Channel, DimensionType
 

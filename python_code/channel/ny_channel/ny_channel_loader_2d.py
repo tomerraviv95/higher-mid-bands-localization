@@ -1,9 +1,11 @@
+import math
 import os
 
 import numpy as np
 import pandas as pd
 
 from dir_definitions import RAYTRACING_DIR
+from python_code import conf
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.constants import mu_sec, P_0
 
@@ -23,7 +25,16 @@ def load_ny_scenario(bs_ind: int, ue_pos: np.ndarray, band: Band):
         loss_db = row[f'path_loss_{path}']
         power = initial_power / 10 ** (loss_db / 20)
         toa = row[f'delay_{path}'] / mu_sec
-        aoa = row[f'aod_{path}']
-        powers.append(power), toas.append(toa), aoas.append(aoa)
-
+        if path == 1:
+            conf.medium_speed = np.linalg.norm(ue_pos - bs_loc) / toa
+        if toa > band.K / band.BW:
+            continue
+        aoa = math.radians(row[f'aod_{path}'])
+        if path == 1:
+            conf.orientation = aoa
+        normalized_aoa = aoa - conf.orientation
+        # the base station can see 90 degrees to each side of its orientation
+        if -math.pi / 2 < normalized_aoa < math.pi / 2:
+            powers.append(power), toas.append(toa), aoas.append(normalized_aoa)
+    assert all([toas[l] < band.K / band.BW for l in range(len(toas))])
     return bs_loc, toas, aoas, powers
