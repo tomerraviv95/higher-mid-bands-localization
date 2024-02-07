@@ -6,7 +6,7 @@ MAX_DIST = 100  # maximum distance in meters supported in the simulation, but th
 DATA_COEF = 10  # increase the data of the covariance matrix to make sure the covariance is enough
 P_0 = 10 ** 4  # initial transmission power in watt
 
-Channel = namedtuple("Channel", ["scatterers", "y", "AOA", "TOA", "ZOA", "band"])
+Channel = namedtuple("Channel", ["scatterers", "y", "bs", "AOA", "TOA", "ZOA", "band"])
 
 Estimation = namedtuple("Estimation", ["AOA", "TOA", "ZOA"], defaults=(None,) * 3)
 
@@ -30,6 +30,11 @@ class AlgType(Enum):
 class DimensionType(Enum):
     Two = 'Two'
     Three = 'Three'
+
+
+class ScenarioType(Enum):
+    SYNTHETIC = 'SYNTHETIC'
+    NY = 'NY'
 
 
 class BandType(Enum):

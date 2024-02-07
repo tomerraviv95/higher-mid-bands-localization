@@ -81,11 +81,11 @@ def compute_observations(TOA: List[float], AOA: List[float], ZOA: List[float], P
     return y
 
 
-def get_3d_channel(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray, band: Band) -> Channel:
+def get_3d_basic_channel(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray, band: Band) -> Channel:
     # compute the parameters_2d for each of the L paths
     TOA, AOA, ZOA, POWER = compute_gt_channel_parameters(bs_loc, ue_pos, scatterers, band)
     # compute the channel observations based on the above paths
     y = compute_observations(TOA, AOA, ZOA, POWER, band)
     # save results for easy access in a namedtuple
-    channel_instance = Channel(scatterers=scatterers, y=y, TOA=TOA, AOA=AOA, ZOA=ZOA, band=band)
+    channel_instance = Channel(scatterers=scatterers, bs=bs_loc, y=y, TOA=TOA, AOA=AOA, ZOA=ZOA, band=band)
     return channel_instance

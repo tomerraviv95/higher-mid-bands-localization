@@ -11,3 +11,7 @@ estimators = {
     EstimatorType.TIME: {DimensionType.Three.name: TimeEstimator3D, DimensionType.Two.name: TimeEstimator2D},
     EstimatorType.ANGLE_TIME: {DimensionType.Three.name: AngleTimeEstimator3D,
                                DimensionType.Two.name: AngleTimeEstimator2D}}
+
+estimations_strings_dict = {'angle': EstimatorType.ANGLE,
+                            'time': EstimatorType.TIME,
+                            'both': EstimatorType.ANGLE_TIME}

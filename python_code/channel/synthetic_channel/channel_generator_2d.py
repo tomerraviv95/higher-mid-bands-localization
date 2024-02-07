@@ -13,7 +13,7 @@ from python_code.utils.path_loss import compute_path_loss, calc_power
 def compute_gt_channel_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray, band: Band) -> Tuple[
     List[float], List[float], List[float]]:
     """"
-    Computes the parameters_2d for each path. Each path includes the toa, aoa and power.
+    Computes the parameters for each path. Each path includes the toa, aoa and power.
     """
     # Initialize the channel parameters_2d for L paths
     TOA = [0 for _ in range(conf.L)]
@@ -71,11 +71,11 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     return y
 
 
-def get_2d_channel(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray, band: Band) -> Channel:
-    # compute the parameters_2d for each of the L paths
+def get_2d_basic_channel(bs_loc: np.ndarray, ue_pos: np.ndarray, scatterers: np.ndarray, band: Band) -> Channel:
+    # compute the parameters for each of the L paths
     TOA, AOA, POWER = compute_gt_channel_parameters(bs_loc, ue_pos, scatterers, band)
     # compute the channel observations based on the above paths
     y = compute_observations(TOA, AOA, POWER, band)
     # save results for easy access in a namedtuple
-    channel_instance = Channel(scatterers=scatterers, y=y, TOA=TOA, AOA=AOA, band=band, ZOA=None)
+    channel_instance = Channel(scatterers=scatterers, bs=bs_loc, y=y, TOA=TOA, AOA=AOA, band=band, ZOA=None)
     return channel_instance
