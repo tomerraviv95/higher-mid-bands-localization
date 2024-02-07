@@ -1,8 +1,9 @@
 from typing import List
 
 import numpy as np
+import torch.cuda
 
-from python_code import conf
+from python_code import conf, DEVICE
 from python_code.channel.ny_channel.ny_channel_loader_2d import load_ny_scenario
 from python_code.channel.synthetic_channel.bs_scatterers import create_bs_locs_2d, create_scatter_points_2d
 from python_code.channel.synthetic_channel.synthetic_2d import generate_synthetic_parameters
@@ -24,21 +25,33 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     for l in range(L):
         # assume random phase beamforming
         F = np.exp(1j * np.random.rand(1, 1, Ns) * 2 * np.pi)
+        print(111)
         # phase delay for the K subcarriers
         delays_phase_vector = compute_time_options(band.fc, band.K, band.BW, np.array([TOA[l]]))
+        # different phase in each antennas element
+        aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(band.Nr_x)).T
+        print(222)
         if conf.channel_bandwidth == ChannelBWType.NARROWBAND.name:
-            # different phase in each antennas element
-            aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(band.Nr_x)).T
-            delay_aoa_matrix = np.matmul(aoa_vector, delays_phase_vector)
-        elif conf.channel_bandwidth == ChannelBWType.WIDEBAND.name:
-            raise ValueError("Wideband is currently not supported!!")
+
+            print(333)
+            if torch.cuda.is_available():
+                delay_aoa_tensor = torch.matmul(torch.tensor(aoa_vector, dtype=torch.cfloat).to(DEVICE),
+                                             torch.tensor(delays_phase_vector, dtype=torch.cfloat).to(DEVICE))
+                delay_aoa_tensor = torch.tensor(F, dtype=torch.cfloat).to(DEVICE) * delay_aoa_tensor.unsqueeze(-1)
+                delay_aoa_matrix = delay_aoa_tensor.cpu().numpy()
+                print(444)
+            else:
+                delay_aoa_matrix = np.matmul(aoa_vector, delays_phase_vector)
+                delay_aoa_matrix = F * delay_aoa_matrix[..., np.newaxis]
         else:
             raise ValueError("No such type of channel BW!")
         # add for each path
-        h += F * POWER[l] * delay_aoa_matrix[..., np.newaxis]
+        h += POWER[l] * delay_aoa_matrix
+        print(555)
     # adding the white Gaussian noise
     noise = conf.sigma / np.sqrt(2) * (
             np.random.randn(band.Nr_x, band.K, Ns) + 1j * np.random.randn(band.Nr_x, band.K, Ns))
+    print(666)
     # finally sum up to y, the final observation
     y = h + noise
     return y

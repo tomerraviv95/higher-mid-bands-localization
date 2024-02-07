@@ -32,7 +32,7 @@ class AngleTimeEstimator2D:
     def _single_band_constructor(self, mat1: np.ndarray, mat2: np.ndarray):
         # if a GPU is available, perform the calculations on it. Note that it is imperative
         # for the 3d case, otherwise expect memory crash on a computer with 16/32 GB RAM.
-        if True: #torch.cuda.is_available()
+        if torch.cuda.is_available():
             tensor1 = torch.tensor(mat1, dtype=torch.cfloat).to(DEVICE)
             tensor2 = torch.tensor(mat2, dtype=torch.cfloat).to(DEVICE)
 
@@ -50,7 +50,7 @@ class AngleTimeEstimator2D:
         self.indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=self.n_elements,
                                                              basis_vectors=self.angle_time_options,
                                                              second_dim=len(self.time_estimator.times_dict),
-                                                             use_gpu=True)
+                                                             use_gpu=torch.cuda.is_available())
         # if no peaks found - return an empty estimation
         if len(self.indices) == 0:
             return Estimation()

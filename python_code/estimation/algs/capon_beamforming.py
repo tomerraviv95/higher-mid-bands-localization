@@ -31,16 +31,22 @@ class CaponBeamforming:
         return a tuple of the [max_indices, spectrum, L_hat] where L_hat is the estimated number of paths
         """
         # compute inverse covariance matrix
-        cov = self._compute_cov(n_elements, y)
+        cov = self._compute_cov(n_elements, y,use_gpu)
         # compute the Capon spectrum values for each basis vector
         norm_values = self._compute_capon_spectrum(basis_vectors, use_gpu, cov)
         # finally find the peaks in the spectrum
         return self.find_peaks_in_spectrum(norm_values, second_dim, third_dim)
 
-    def _compute_cov(self, n_elements: int, y: np.ndarray):
-        cov = np.cov(y.reshape(n_elements, -1))
-        cov = np.linalg.inv(cov)
-        cov = cov / np.linalg.norm(cov)
+    def _compute_cov(self, n_elements: int, y: np.ndarray,use_gpu:bool):
+        if not use_gpu:
+            cov = np.cov(y.reshape(n_elements, -1))
+            cov = np.linalg.inv(cov)
+            cov = cov / np.linalg.norm(cov)
+        else:
+            y = torch.tensor(y, dtype=torch.cfloat).to(DEVICE)
+            cov = torch.cov(y.reshape(n_elements, -1))
+            cov = torch.inverse(cov)
+            cov = cov / torch.norm(cov)
         return cov
 
     def _compute_capon_spectrum(self, basis_vectors: np.ndarray, use_gpu: bool, cov: np.ndarray):

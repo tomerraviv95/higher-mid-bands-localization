@@ -22,7 +22,7 @@ class MultiBandCaponBeamforming(CaponBeamforming):
         norm_values_list = []
         for i in range(len(y)):
             # compute inverse covariance matrix
-            cov = self._compute_cov(n_elements[i], y[i])
+            cov = self._compute_cov(n_elements[i], y[i],use_gpu)
             # compute the Capon spectrum values for each basis vector per band
             norm_values = self._compute_capon_spectrum(basis_vectors[i], use_gpu, cov)
             norm_values_list.append(norm_values.reshape(-1, second_dim))
