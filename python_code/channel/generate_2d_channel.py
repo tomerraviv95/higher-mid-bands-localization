@@ -18,8 +18,6 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     L = len(POWER)
     # For the covariance to have full rank we need to have enough samples, strictly more than the dimensions
     Ns = int(band.Nr_x * band.K * DATA_COEF)
-    # Initialize the observations and beamformers
-    y = np.zeros((band.Nr_x, band.K, Ns), dtype=complex)
     # Generate channel
     h = np.zeros((band.Nr_x, band.K, Ns), dtype=complex)
     # for each path
@@ -40,7 +38,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
         h += F * POWER[l] * delay_aoa_matrix[..., np.newaxis]
     # adding the white Gaussian noise
     noise = conf.sigma / np.sqrt(2) * (
-                np.random.randn(band.Nr_x, band.K, Ns) + 1j * np.random.randn(band.Nr_x, band.K, Ns))
+            np.random.randn(band.Nr_x, band.K, Ns) + 1j * np.random.randn(band.Nr_x, band.K, Ns))
     # finally sum up to y, the final observation
     y = h + noise
     return y

@@ -24,9 +24,13 @@ def load_ny_scenario(bs_ind: int, ue_pos: np.ndarray, band: Band):
         initial_power = P_0 * np.sqrt(1 / 2) * (1 + 1j)
         loss_db = row[f'path_loss_{path}']
         power = initial_power / 10 ** (loss_db / 20)
+        # path is below noise level, so ignore it
+        if abs(power) < (conf.sigma / 10):
+            continue
         toa = row[f'delay_{path}'] / mu_sec
         if path == 1:
             conf.medium_speed = np.linalg.norm(ue_pos - bs_loc) / toa
+        # path is above the maximal range, so ignore it
         if toa > band.K / band.BW:
             continue
         aoa = math.radians(row[f'aod_{path}'])
