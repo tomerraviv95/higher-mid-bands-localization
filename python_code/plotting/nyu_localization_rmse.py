@@ -31,7 +31,7 @@ if __name__ == "__main__":
             conf.ue_pos[0] = ue_pos_x
             conf.ue_pos[1] = ue_pos_y
             rmse = main()
-            rmse_dict[(ue_pos_x, ue_pos_y)] = rmse
+            rmse_dict[(ue_pos_x, ue_pos_y)] = [rmse, rmse > 1]
             count += 1
 
     rmse_df = pd.DataFrame.from_dict(rmse_dict, orient='index', columns=['RMSE', 'Error > 1m'])
