@@ -34,5 +34,6 @@ if __name__ == "__main__":
             rmse_dict[(ue_pos_x, ue_pos_y)] = rmse
             count += 1
 
-    rmse_df = pd.DataFrame.from_dict(rmse_dict, orient='index', columns=['RMSE'])
+    rmse_df = pd.DataFrame.from_dict(rmse_dict, orient='index', columns=['RMSE', 'Error > 1m'])
+    rmse_df.loc['mean'] = rmse_df.mean()
     rmse_df.to_csv(f"{ROOT_DIR}/rmse_ny_{conf.fc}_{conf.Nr_x}_{conf.BW}.csv")
