@@ -7,7 +7,7 @@ sigma: 1  # noise standard deviation
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # Bands parameters
-K: [ 50 ] # number of subcarriers
+K: [ 48 ] # number of subcarriers
 Nr_x: [ 32 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
 Nr_y: [ 1 ] # number of RX n_elements in y.
 fc: [ 24000 ]  # carrier frequency in MHz
