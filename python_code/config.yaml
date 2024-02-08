@@ -7,11 +7,11 @@ sigma: 1  # noise standard deviation
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # Bands parameters
-K: [ 100 , 250 ] # number of subcarriers
-Nr_x: [ 4 , 16 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
+K: [ 200 , 200 ] # number of subcarriers
+Nr_x: [ 4 , 8 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
 Nr_y: [ 1 , 1 ] # number of RX n_elements in y.
 fc: [ 6000 , 24000 ]  # carrier frequency in MHz
-BW: [ 100 , 250 ] # BW frequency in MHz
+BW: [ 100 , 100 ] # BW frequency in MHz
 
 # beamforming parameters
 est_type: 'both' # 'angle','time','both'

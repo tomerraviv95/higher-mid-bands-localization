@@ -46,10 +46,11 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
                 h += POWER[l] * delay_aoa_matrix
         else:
             raise ValueError("No such type of channel BW!")
+    if torch.cuda.is_available():
+        h = h.cpu().numpy()
     # adding the white Gaussian noise
     noise = conf.sigma / np.sqrt(2) * (
             np.random.randn(band.Nr_x, band.K, Ns) + 1j * np.random.randn(band.Nr_x, band.K, Ns))
-    h = h.cpu().numpy()
     # finally sum up to y, the final observation
     y = h + noise
     return y

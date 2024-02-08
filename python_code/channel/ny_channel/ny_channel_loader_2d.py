@@ -15,7 +15,7 @@ def load_ny_scenario(bs_ind: int, ue_pos: np.ndarray, band: Band):
     csv_loaded = pd.read_csv(csv_path)
     row_ind = csv_loaded.index[(csv_loaded[['rx_x', 'rx_y']] == ue_pos).all(axis=1)].item()
     row = csv_loaded.iloc[row_ind]
-    if row['link state'] == 2:
+    if row['link state'] != 1:
         raise ValueError("NLOS location! currently supporting only LOS")
     bs_loc = np.array(row[['tx_x', 'tx_y']]).astype(float)
     n_paths = row['n_path'].astype(int)

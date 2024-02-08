@@ -1,30 +1,37 @@
+import os
+
 import numpy as np
-import seaborn as sns
+import pandas as pd
 from matplotlib import pyplot as plt
 
+from dir_definitions import RAYTRACING_DIR
 from python_code import conf
 from python_code.main import main
 
 plt.style.use('dark_background')
 
 if __name__ == "__main__":
-    rmse_list = []
+    rmse_dict = {}
     ue_x_positions = range(0, 1121, 5)
     ue_y_positions = range(0, 506, 5)
+    csv_path = os.path.join(RAYTRACING_DIR, str(6000), f"bs{str(1)}.csv")
+    csv_loaded = pd.read_csv(csv_path)
+    count = 0
     for ue_pos_x in ue_x_positions:
-        rmse_list.append([])
         for ue_pos_y in ue_y_positions:
+            if count >= 2:
+                break
+            ue_pos = np.array([ue_pos_x, ue_pos_y])
+            row_ind = csv_loaded.index[(csv_loaded[['rx_x', 'rx_y']] == ue_pos).all(axis=1)].item()
+            row = csv_loaded.iloc[row_ind]
+            if row['link state'] != 1:
+                continue
             print('******' * 5)
             conf.ue_pos[0] = ue_pos_x
             conf.ue_pos[1] = ue_pos_y
             rmse = main()
-            rmse_list[-1].append(rmse)
-    rmse_array = np.flipud(np.round(np.array(rmse_list), 2).T)
-    fig = plt.figure(figsize=(12, 8), dpi=80)
-    sns.heatmap(rmse_array, annot=True, linewidths=.5, vmin=0, vmax=1)
-    ax = plt.gca()
-    plt.xlabel('X location')
-    plt.xticks(range(len(ue_x_positions)), ue_x_positions)
-    plt.ylabel('Y location')
-    plt.yticks(range(1, len(ue_y_positions) + 1), ue_y_positions[::-1])
-    plt.savefig(f'rmse_map_{conf.fc}_{conf.Nr_x}_{conf.BW}.png', dpi=fig.dpi)
+            rmse_dict[(ue_pos_x, ue_pos_y)] = rmse
+            count += 1
+
+    rmse_df = pd.DataFrame.from_dict(rmse_dict, orient='index', columns=['RMSE'])
+    rmse_df.to_csv(f"rmse_ny_{conf.fc}_{conf.Nr_x}_{conf.BW}.csv")
