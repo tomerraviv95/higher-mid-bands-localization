@@ -3,7 +3,7 @@ from enum import Enum
 
 C = 300  # speed of light meter / micro-second
 MAX_DIST = 100  # maximum distance in meters supported in the simulation, but this could be smaller due to BW.
-DATA_COEF = 10  # increase the data of the covariance matrix to make sure the covariance is enough
+DATA_COEF = 2  # increase the data of the covariance matrix to make sure the covariance is enough
 P_0 = 10 ** 6  # initial transmission power in watt
 mu_sec = 10 ** (-6)  # mu seconds factor
 L_MAX = 4  # maximum number of paths for the synthetic channel
