@@ -21,37 +21,35 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     Ns = int(band.Nr_x * band.K * DATA_COEF)
     # Generate channel
     h = np.zeros((band.Nr_x, band.K, Ns), dtype=complex)
+    if torch.cuda.is_available():
+        h = torch.tensor(h, dtype=torch.cfloat).to(DEVICE)
     # for each path
     for l in range(L):
         # assume random phase beamforming
         F = np.exp(1j * np.random.rand(1, 1, Ns) * 2 * np.pi)
-        print(111)
         # phase delay for the K subcarriers
         delays_phase_vector = compute_time_options(band.fc, band.K, band.BW, np.array([TOA[l]]))
         # different phase in each antennas element
         aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(band.Nr_x)).T
-        print(222)
         if conf.channel_bandwidth == ChannelBWType.NARROWBAND.name:
-
-            print(333)
             if torch.cuda.is_available():
                 delay_aoa_tensor = torch.matmul(torch.tensor(aoa_vector, dtype=torch.cfloat).to(DEVICE),
-                                             torch.tensor(delays_phase_vector, dtype=torch.cfloat).to(DEVICE))
-                delay_aoa_tensor = torch.tensor(F, dtype=torch.cfloat).to(DEVICE) * delay_aoa_tensor.unsqueeze(-1)
-                delay_aoa_matrix = delay_aoa_tensor.cpu().numpy()
-                print(444)
+                                                torch.tensor(delays_phase_vector, dtype=torch.cfloat).to(DEVICE))
+                delay_aoa_tensor = torch.tensor(F, dtype=torch.cfloat).to(
+                    DEVICE) * delay_aoa_tensor.unsqueeze(-1)
+                # add for each path
+                h += POWER[l] * delay_aoa_tensor
             else:
                 delay_aoa_matrix = np.matmul(aoa_vector, delays_phase_vector)
                 delay_aoa_matrix = F * delay_aoa_matrix[..., np.newaxis]
+                # add for each path
+                h += POWER[l] * delay_aoa_matrix
         else:
             raise ValueError("No such type of channel BW!")
-        # add for each path
-        h += POWER[l] * delay_aoa_matrix
-        print(555)
     # adding the white Gaussian noise
     noise = conf.sigma / np.sqrt(2) * (
             np.random.randn(band.Nr_x, band.K, Ns) + 1j * np.random.randn(band.Nr_x, band.K, Ns))
-    print(666)
+    h = h.cpu().numpy()
     # finally sum up to y, the final observation
     y = h + noise
     return y
