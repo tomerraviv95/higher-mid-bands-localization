@@ -10,7 +10,7 @@ L_MAX = 4  # maximum number of paths for the synthetic channel
 
 Channel = namedtuple("Channel", ["scatterers", "y", "bs", "AOA", "TOA", "ZOA", "band"])
 
-Estimation = namedtuple("Estimation", ["AOA", "TOA", "ZOA"], defaults=(None,) * 3)
+Estimation = namedtuple("Estimation", ["AOA", "TOA", "ZOA", "POWER"], defaults=(None,) * 4)
 
 
 class EstimatorType(Enum):

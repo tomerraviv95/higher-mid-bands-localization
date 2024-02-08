@@ -56,6 +56,8 @@ class AngleTimeEstimator2D:
             return Estimation()
         self._aoa_indices = self.indices[:, 0]
         self._toa_indices = self.indices[:, 1]
+        spectrum_powers = self._spectrum[self.indices[:, 0], self.indices[:, 1]]
         estimator = Estimation(AOA=self.angle_estimator.aoa_angles_dict[self._aoa_indices],
-                               TOA=self.time_estimator.times_dict[self._toa_indices])
+                               TOA=self.time_estimator.times_dict[self._toa_indices],
+                               POWER=spectrum_powers)
         return estimator

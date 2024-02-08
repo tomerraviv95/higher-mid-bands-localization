@@ -4,7 +4,7 @@ import numpy as np
 from scipy.optimize import least_squares
 
 from python_code import conf
-from python_code.utils.constants import C, Estimation
+from python_code.utils.constants import Estimation
 
 MAX_L = 5
 
@@ -16,10 +16,13 @@ def extract_measurements_from_estimations(bs_locs: np.ndarray, estimations: List
     toa_values, aoa_values, bs_list = [], [], []
     for i in range(len(bs_locs)):
         if estimations[i].TOA is not None and estimations[i].AOA is not None:
-            cur_toa, cur_aoa = np.array(estimations[i].TOA), np.array(estimations[i].AOA)
-            sorting_indices = np.argsort(cur_toa)
-            toa_values.append(cur_toa[sorting_indices[0]])
-            aoa_values.append(cur_aoa[sorting_indices[0]])
+            cur_toa, cur_aoa, cur_power = np.array(estimations[i].TOA), np.array(estimations[i].AOA), np.array(
+                estimations[i].POWER)
+            toa_power_list = [(ind, toa, -power) for ind, toa, power in zip(range(len(cur_toa)), cur_toa, cur_power)]
+            sorted_toa_power_list = sorted(toa_power_list, key=lambda element: (element[1], element[2]))
+            min_toa_power_ind = sorted_toa_power_list[0][0]
+            toa_values.append(cur_toa[min_toa_power_ind])
+            aoa_values.append(cur_aoa[min_toa_power_ind])
             bs_list.append(bs_locs[i])
     return toa_values, aoa_values, bs_list
 
