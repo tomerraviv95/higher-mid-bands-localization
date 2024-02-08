@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from dir_definitions import RAYTRACING_DIR
+from dir_definitions import RAYTRACING_DIR, ROOT_DIR
 from python_code import conf
 from python_code.main import main
 
@@ -34,4 +34,4 @@ if __name__ == "__main__":
             count += 1
 
     rmse_df = pd.DataFrame.from_dict(rmse_dict, orient='index', columns=['RMSE'])
-    rmse_df.to_csv(f"rmse_ny_{conf.fc}_{conf.Nr_x}_{conf.BW}.csv")
+    rmse_df.to_csv(f"{ROOT_DIR}/rmse_ny_{conf.fc}_{conf.Nr_x}_{conf.BW}.csv")
