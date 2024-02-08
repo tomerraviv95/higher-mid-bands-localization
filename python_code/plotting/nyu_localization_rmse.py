@@ -17,9 +17,10 @@ if __name__ == "__main__":
     csv_path = os.path.join(RAYTRACING_DIR, str(6000), f"bs{str(1)}.csv")
     csv_loaded = pd.read_csv(csv_path)
     count = 0
+    MAX_COUNT = 100
     for ue_pos_x in ue_x_positions:
         for ue_pos_y in ue_y_positions:
-            if count >= 2:
+            if count >= MAX_COUNT:
                 break
             ue_pos = np.array([ue_pos_x, ue_pos_y])
             row_ind = csv_loaded.index[(csv_loaded[['rx_x', 'rx_y']] == ue_pos).all(axis=1)].item()
