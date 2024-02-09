@@ -7,7 +7,8 @@ import pandas as pd
 from dir_definitions import RAYTRACING_DIR
 from python_code import conf
 from python_code.utils.bands_manipulation import Band
-from python_code.utils.constants import mu_sec
+from python_code.utils.constants import MU_SEC, P0
+from python_code.utils.path_loss import watt_from_dbm, watt_from_db
 
 
 def load_ny_scenario(bs_ind: int, ue_pos: np.ndarray, band: Band):
@@ -21,10 +22,10 @@ def load_ny_scenario(bs_ind: int, ue_pos: np.ndarray, band: Band):
     n_paths = row['n_path'].astype(int)
     powers, toas, aoas = [], [], []
     for path in range(1, n_paths + 1):
-        initial_power = np.sqrt(1 / 2) * (1 + 1j)
+        initial_power = watt_from_dbm(P0) / 2 * (1 + 1j)
         loss_db = row[f'path_loss_{path}']
-        power = initial_power / 10 ** (loss_db / 20)
-        toa = row[f'delay_{path}'] / mu_sec
+        received_power = initial_power * (1 / watt_from_db(loss_db))
+        toa = row[f'delay_{path}'] / MU_SEC
         if path == 1:
             conf.medium_speed = np.linalg.norm(ue_pos - bs_loc) / toa
         # path is above the maximal range, so ignore it
@@ -36,6 +37,6 @@ def load_ny_scenario(bs_ind: int, ue_pos: np.ndarray, band: Band):
         normalized_aoa = aoa - conf.orientation
         # the base station can see 90 degrees to each side of its orientation
         if -math.pi / 2 < normalized_aoa < math.pi / 2:
-            powers.append(power), toas.append(toa), aoas.append(normalized_aoa)
+            powers.append(received_power), toas.append(toa), aoas.append(normalized_aoa)
     assert all([toas[l] < band.K / band.BW for l in range(len(toas))])
     return bs_loc, toas, aoas, powers

@@ -28,3 +28,11 @@ def compute_path_loss(toa: float, fc: float) -> float:
     # free path loss computation
     loss_db = 20 * math.log10(toa) + 20 * math.log10(fc) + 20 * math.log10(4 * math.pi)
     return 10 ** (loss_db / 20)
+
+
+def watt_from_dbm(dbm_power: float) -> float:
+    return 10 ** ((dbm_power - 30) / 10)
+
+
+def watt_from_db(db_power: float) -> float:
+    return 10 ** (db_power / 10)
