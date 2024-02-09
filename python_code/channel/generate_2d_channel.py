@@ -49,10 +49,10 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     if torch.cuda.is_available():
         h = h.cpu().numpy()
     # adding the white Gaussian noise
-    noise = conf.sigma / np.sqrt(2) * (
-            np.random.randn(band.Nr_x, band.K, Ns) + 1j * np.random.randn(band.Nr_x, band.K, Ns))
+    noise = 1 / np.sqrt(2) * (np.random.randn(band.Nr_x, band.K, Ns) + 1j * np.random.randn(band.Nr_x, band.K, Ns))
+    snr = 10 ** (conf.snr / 10)
     # finally sum up to y, the final observation
-    y = h + noise
+    y = snr * h + noise
     return y
 
 

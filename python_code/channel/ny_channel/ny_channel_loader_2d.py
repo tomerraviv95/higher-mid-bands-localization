@@ -7,7 +7,7 @@ import pandas as pd
 from dir_definitions import RAYTRACING_DIR
 from python_code import conf
 from python_code.utils.bands_manipulation import Band
-from python_code.utils.constants import mu_sec, P_0
+from python_code.utils.constants import mu_sec
 
 
 def load_ny_scenario(bs_ind: int, ue_pos: np.ndarray, band: Band):
@@ -21,7 +21,7 @@ def load_ny_scenario(bs_ind: int, ue_pos: np.ndarray, band: Band):
     n_paths = row['n_path'].astype(int)
     powers, toas, aoas = [], [], []
     for path in range(1, n_paths + 1):
-        initial_power = P_0 * np.sqrt(1 / 2) * (1 + 1j)
+        initial_power = np.sqrt(1 / 2) * (1 + 1j)
         loss_db = row[f'path_loss_{path}']
         power = initial_power / 10 ** (loss_db / 20)
         toa = row[f'delay_{path}'] / mu_sec

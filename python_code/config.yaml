@@ -1,9 +1,9 @@
 # System parameters
 dimensions: 'Two' # 'Two' or 'Three'
 scenario: 'NY' # 'SYNTHETIC' or 'NY'
-ue_pos: [ 50 , 15 ]  # TX UE position
+ue_pos: [ 205 , 280 ]  # TX UE position
 B: 1 # number of BSs, up to 3 (including)
-sigma: 10  # noise standard deviation
+snr: 40  # signal-to-noise ratio in db
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # Bands parameters
