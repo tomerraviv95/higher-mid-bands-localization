@@ -9,7 +9,7 @@ from python_code.channel.synthetic_channel.bs_scatterers import create_bs_locs_2
 from python_code.channel.synthetic_channel.synthetic_2d import generate_synthetic_parameters
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.basis_functions import compute_angle_options, compute_time_options
-from python_code.utils.constants import Channel, ChannelBWType, DATA_COEF, ScenarioType, L_MAX, MEGA
+from python_code.utils.constants import Channel, ChannelBWType, DATA_COEF, ScenarioType, L_MAX, MEGA, NOISE_PSD
 from python_code.utils.path_loss import watt_from_dbm
 
 
@@ -17,6 +17,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     """"
     Compute the channel observations based on the band's parameters_2d, and L TOAs, AOAs and POWERs
     """
+    # extract number of detectable paths
     L = len(POWER)
     # For the covariance to have full rank we need to have enough samples, strictly more than the dimensions
     Ns = int(band.Nr_x * band.K * DATA_COEF)
@@ -52,12 +53,11 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     # adding the white Gaussian noise
     normal_gaussian_noise = 1 / np.sqrt(2) * (
             np.random.randn(band.Nr_x, band.K, Ns) + 1j * np.random.randn(band.Nr_x, band.K, Ns))
-    noise_psd = -174  # dBm/Hz
-    noise_power = watt_from_dbm(noise_psd) * band.BW * MEGA
-    snr = np.log10(1 / noise_power)
-    noise_power = 10 ** (-snr)
+    # calculate the SNR
+    noise_power = watt_from_dbm(NOISE_PSD) * band.BW * MEGA
+    power = watt_from_dbm(conf.input_power)
     # finally sum up to y, the final observation
-    y = (POWER[0] / noise_power) * h + normal_gaussian_noise
+    y = (power / noise_power) * POWER[0] * h + normal_gaussian_noise
     return y
 
 

@@ -5,8 +5,8 @@ C = 300  # speed of light meter / micro-second
 MAX_DIST = 100  # maximum distance in meters supported in the simulation, but this could be smaller due to BW.
 DATA_COEF = 10  # increase the data of the covariance matrix to make sure the covariance is enough
 MU_SEC = 10 ** (-6)  # mu seconds factor
-MEGA = 10 ** 6 # for the mega hertz frequencies
-P0 = 15  # transmit power in dBm
+MEGA = 10 ** 6  # for the mega hertz frequencies
+NOISE_PSD = -174  # dBm/Hz
 L_MAX = 4  # maximum number of paths for the synthetic channel
 
 Channel = namedtuple("Channel", ["scatterers", "y", "bs", "AOA", "TOA", "ZOA", "band"])

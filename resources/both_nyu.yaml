@@ -3,7 +3,7 @@ dimensions: 'Two' # 'Two' or 'Three'
 scenario: 'NY' # 'SYNTHETIC' or 'NY'
 ue_pos: [ 65 , 35 ]  # TX UE position
 B: 1 # number of BSs, up to 3 (including)
-snr: 50  # noise standard deviation
+input_power: 25  # dBm
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # Bands parameters
