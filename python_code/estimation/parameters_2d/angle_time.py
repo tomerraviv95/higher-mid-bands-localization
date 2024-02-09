@@ -47,10 +47,13 @@ class AngleTimeEstimator2D:
         return angle_time_options
 
     def estimate(self, y: Union[np.ndarray, List[np.ndarray]]) -> Estimation:
+        if self.angle_estimator.multi_band:
+            second_dim = [len(time_dict) for time_dict in self.time_estimator.times_dict]
+        else:
+            second_dim = len(self.time_estimator.times_dict)
         self.indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=self.n_elements,
                                                              basis_vectors=self.angle_time_options,
-                                                             second_dim=[len(time_dict) for time_dict in
-                                                                         self.time_estimator.times_dict],
+                                                             second_dim=second_dim,
                                                              use_gpu=torch.cuda.is_available())
         # if no peaks found - return an empty estimation
         if len(self.indices) == 0:
