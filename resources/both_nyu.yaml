@@ -7,11 +7,11 @@ input_power: 25  # dBm
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # Bands parameters
-K: [ 24 , 48 ] # number of subcarriers
+K: [ 160 , 80 ] # number of subcarriers
 Nr_x: [ 8 , 32 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
 Nr_y: [ 1 , 1 ] # number of RX n_elements in y.
 fc: [ 6000 , 24000 ]  # carrier frequency in MHz
-BW: [ 6 , 12 ] # BW frequency in MHz
+BW: [ 5 , 20 ] # BW frequency in MHzó
 
 # beamforming parameters
 est_type: 'both' # 'angle','time','both'

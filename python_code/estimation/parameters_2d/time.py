@@ -13,12 +13,10 @@ class TimeEstimator2D:
     def __init__(self, bands: List[Band]):
         self.multi_band = len(bands) > 1
         if self.multi_band:
-            # make sure all the different bands have the same time resolution
-            assert all([(band.K / band.BW) == (bands[0].K / bands[0].BW) for band in bands])
-        self.times_dict = np.arange(0, bands[0].K / bands[0].BW, conf.T_res)
-        if self.multi_band:
+            self.times_dict = [np.arange(0, band.K / band.BW, conf.T_res) for band in bands]
             self._multiband_constructor(bands)
         else:
+            self.times_dict = np.arange(0, bands[0].K / bands[0].BW, conf.T_res)
             self._single_band_constructor(bands)
 
     def _single_band_constructor(self, bands: List[Band]):
@@ -30,9 +28,11 @@ class TimeEstimator2D:
         self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE](1.25)
 
     def _multiband_constructor(self, bands: List[Band]):
-        self._time_options = [compute_time_options(0, band.K, band.BW, values=self.times_dict) for band in bands]
-        if self._time_options[0].shape[0] < self.times_dict.shape[0]:
-            self.times_dict = self.times_dict[:self._time_options[0].shape[0]]
+        self._time_options = [compute_time_options(0, bands[i].K, bands[i].BW, values=self.times_dict[i]) for i in
+                              range(len(bands))]
+        for i in range(len(bands)):
+            if self._time_options[i].shape[0] < self.times_dict[i].shape[0]:
+                self.times_dict[i] = self.times_dict[i][:self._time_options[0].shape[0]]
         self.K = [band.K for band in bands]
         self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](1.25)
 

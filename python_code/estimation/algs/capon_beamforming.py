@@ -31,13 +31,13 @@ class CaponBeamforming:
         return a tuple of the [max_indices, spectrum, L_hat] where L_hat is the estimated number of paths
         """
         # compute inverse covariance matrix
-        cov = self._compute_cov(n_elements, y,use_gpu)
+        cov = self._compute_cov(n_elements, y, use_gpu)
         # compute the Capon spectrum values for each basis vector
         norm_values = self._compute_capon_spectrum(basis_vectors, use_gpu, cov)
         # finally find the peaks in the spectrum
         return self.find_peaks_in_spectrum(norm_values, second_dim, third_dim)
 
-    def _compute_cov(self, n_elements: int, y: np.ndarray,use_gpu:bool):
+    def _compute_cov(self, n_elements: int, y: np.ndarray, use_gpu: bool):
         if not use_gpu:
             cov = np.cov(y.reshape(n_elements, -1))
             cov = np.linalg.inv(cov)
@@ -71,7 +71,9 @@ class CaponBeamforming:
     @staticmethod
     def get_current_component(norm_values: np.ndarray, component_indx: np.ndarray, third_dim: int):
         if third_dim is None:
-            return norm_values[component_indx[0]][component_indx[1]]
+            if component_indx[0] < norm_values.shape[0] and component_indx[1] < norm_values.shape[1]:
+                return norm_values[component_indx[0]][component_indx[1]]
+            return None
         return norm_values[component_indx[0]][component_indx[1]][component_indx[2]]
 
     def find_peaks_in_spectrum(self, norm_values: np.ndarray, second_dim: int, third_dim: int) -> Tuple[
