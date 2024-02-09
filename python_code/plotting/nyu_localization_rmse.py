@@ -20,12 +20,9 @@ if __name__ == "__main__":
     for snr in snrs:
         rmse_dict = {}
         conf.snr = snr
-        count = 0
         # for multiple locations of the UE
         for ue_pos_x in ue_x_positions:
             for ue_pos_y in ue_y_positions:
-                if count > 3:
-                    break
                 ue_pos = np.array([ue_pos_x, ue_pos_y])
                 row_ind = csv_loaded.index[(csv_loaded[['rx_x', 'rx_y']] == ue_pos).all(axis=1)].item()
                 row = csv_loaded.iloc[row_ind]
@@ -37,7 +34,6 @@ if __name__ == "__main__":
                 conf.ue_pos[1] = ue_pos_y
                 rmse = main()
                 rmse_dict[(ue_pos_x, ue_pos_y)] = [rmse, rmse > 1]
-                count += 1
         rmse_df = pd.DataFrame.from_dict(rmse_dict, orient='index', columns=['RMSE', 'Error > 1m'])
         rmse_df.loc['mean'] = rmse_df.mean()
         path = f"{NY_DIR}/{str(snr)}/fc_{conf.fc}_antennas_{conf.Nr_x}_bw_{conf.BW}_subcarriers_{conf.K}.csv"
