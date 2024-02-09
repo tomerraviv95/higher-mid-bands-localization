@@ -15,7 +15,7 @@ if __name__ == "__main__":
     ue_y_positions = range(0, 506, 5)
     csv_path = os.path.join(RAYTRACING_DIR, str(6000), f"bs{str(1)}.csv")
     csv_loaded = pd.read_csv(csv_path)
-    snrs = [35,40,45,50]
+    snrs = [36,37,38,39]
     # go over multiple SNRs
     for snr in snrs:
         rmse_dict = {}
