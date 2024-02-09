@@ -9,7 +9,7 @@ from python_code.utils.constants import EstimatorType, Estimation
 def combine_estimations(estimations: List[Estimation], bands: List[Band], estimator_type: EstimatorType) -> Estimation:
     if len(estimations) == 1:
         return estimations[0]
-
+    POWER = None
     if estimator_type == EstimatorType.ANGLE:
         # take the angle of the band with the highest number of antennas
         max_antennas_band_ind = np.argmax(np.array([band.Nr_x * band.Nr_y for band in bands]))
@@ -34,14 +34,15 @@ def combine_estimations(estimations: List[Estimation], bands: List[Band], estima
             for i in range(len(estimation.AOA)):
                 aoa = estimation.AOA[i]
                 toa = estimation.TOA[i]
+                power = estimation.POWER[i]
                 if estimation.ZOA is not None:
                     zoa = estimation.ZOA[i]
                 else:
                     zoa = None
-                options.append((aoa, toa, zoa))
+                options.append((aoa, toa, power, zoa))
         # remove duplicates
         options = list(set(options))
-        AOA, TOA, ZOA = zip(*options)
-        AOA, TOA, ZOA = list(AOA), list(TOA), list(ZOA)
+        AOA, TOA, POWER, ZOA = zip(*options)
+        AOA, TOA, POWER, ZOA = list(AOA), list(TOA), list(POWER), list(ZOA)
 
-    return Estimation(AOA=AOA, TOA=TOA, ZOA=ZOA)
+    return Estimation(AOA=AOA, TOA=TOA, POWER=POWER, ZOA=ZOA)
