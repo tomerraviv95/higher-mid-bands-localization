@@ -9,7 +9,7 @@ from python_code.channel.synthetic_channel.bs_scatterers import create_bs_locs_2
 from python_code.channel.synthetic_channel.synthetic_2d import generate_synthetic_parameters
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.basis_functions import compute_angle_options, compute_time_options
-from python_code.utils.constants import Channel, ChannelBWType, DATA_COEF, ScenarioType, L_MAX, MEGA, NOISE_PSD
+from python_code.utils.constants import Channel, ChannelBWType, DATA_COEF, ScenarioType, L_MAX, MEGA, NF, N_0
 from python_code.utils.path_loss import watt_from_dbm
 
 
@@ -53,10 +53,8 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     # adding the white Gaussian noise
     normal_gaussian_noise = 1 / np.sqrt(2) * (
             np.random.randn(band.Nr_x, band.K, Ns) + 1j * np.random.randn(band.Nr_x, band.K, Ns))
-    # calculate the SNR
-    NF = 7  # noise figure in dB
-    BW_loss = 10 * np.log10(band.BW * MEGA) # BW loss
-    N_0 = -174  # dBm
+    # calculate the noise power, and instead of multiplication by the noise, divide the signal
+    BW_loss = 10 * np.log10(band.BW * MEGA)  # BW loss
     noise_power = watt_from_dbm(NF + BW_loss + N_0)
     # finally sum up to y, the final observation
     y = (1 / noise_power) * h + normal_gaussian_noise

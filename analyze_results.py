@@ -17,23 +17,27 @@ mpl.rcParams['legend.fontsize'] = 20
 mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['font.family'] = 'STIXGeneral'
 
-file_to_label = {"fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80].csv": "6GHz Sub-band",
-                 "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80].csv": "24GHz Sub-band",
-                 "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80].csv": "Proposed - 6GHz,24GHz"}
+file_to_label = {"fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80]_band_type_SINGLE.csv": "6GHz Sub-band",
+                 "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80]_band_type_SINGLE.csv": "24GHz Sub-band",
+                 "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_SINGLE.csv": "Naive - {6,24}GHz",
+                 "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_MULTI.csv": "Proposed - {6,24}GHz"}
 
-color_to_label = {"fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80].csv": "blue",
-                  "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80].csv": "red",
-                  "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80].csv": "purple"}
+color_to_label = {"fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80]_band_type_SINGLE.csv": "blue",
+                  "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80]_band_type_SINGLE.csv": "red",
+                  "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_SINGLE.csv": "black",
+                  "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_MULTI.csv": "purple"}
 
-marker_to_label = {"fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80].csv": "o",
-                   "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80].csv": "X",
-                   "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80].csv": "s"}
+marker_to_label = {"fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80]_band_type_SINGLE.csv": "o",
+                   "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80]_band_type_SINGLE.csv": "X",
+                   "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_SINGLE.csv": "^",
+                   "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_MULTI.csv": "s"}
 
 if __name__ == "__main__":
-    input_powers = [-10,-5,0,5,10]
-    files = ["fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80].csv",
-             "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80].csv",
-             "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80].csv"]
+    input_powers = [-10, -5, 0, 5, 10]
+    files = ["fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80]_band_type_SINGLE.csv",
+             "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80]_band_type_SINGLE.csv",
+             "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_SINGLE.csv",
+             "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_MULTI.csv"]
     mean_errors_dict = {}
     for input_power in input_powers:
         dir_path = f"{NY_DIR}/{str(input_power)}/"

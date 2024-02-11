@@ -6,8 +6,9 @@ MAX_DIST = 100  # maximum distance in meters supported in the simulation, but th
 DATA_COEF = 10  # increase the data of the covariance matrix to make sure the covariance is enough
 MU_SEC = 10 ** (-6)  # mu seconds factor
 MEGA = 10 ** 6  # for the mega hertz frequencies
-NOISE_PSD = -174  # dBm/Hz
 L_MAX = 4  # maximum number of paths for the synthetic channel
+NF = 7  # noise figure in dB
+N_0 = -174  # dBm
 
 Channel = namedtuple("Channel", ["scatterers", "y", "bs", "AOA", "TOA", "ZOA", "band"])
 
