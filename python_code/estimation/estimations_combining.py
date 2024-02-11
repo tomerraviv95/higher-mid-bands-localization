@@ -40,9 +40,11 @@ def combine_estimations(estimations: List[Estimation], bands: List[Band], estima
                 else:
                     zoa = None
                 options.append((aoa, toa, power, zoa))
-        # remove duplicates
-        options = list(set(options))
-        AOA, TOA, POWER, ZOA = zip(*options)
-        AOA, TOA, POWER, ZOA = list(AOA), list(TOA), list(POWER), list(ZOA)
+
+        if options:
+            # remove duplicates
+            options = list(set(options))
+            AOA, TOA, POWER, ZOA = zip(*options)
+            AOA, TOA, POWER, ZOA = list(AOA), list(TOA), list(POWER), list(ZOA)
 
     return Estimation(AOA=AOA, TOA=TOA, POWER=POWER, ZOA=ZOA)
