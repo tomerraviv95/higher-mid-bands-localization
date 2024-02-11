@@ -33,7 +33,7 @@ marker_to_label = {"fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80]_band_type_SIN
                    "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_MULTI.csv": "s"}
 
 if __name__ == "__main__":
-    input_powers = [-10, -5, 0, 5, 10]
+    input_powers = [-5, 0, 5, 10]
     files = ["fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80]_band_type_SINGLE.csv",
              "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80]_band_type_SINGLE.csv",
              "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_SINGLE.csv",
