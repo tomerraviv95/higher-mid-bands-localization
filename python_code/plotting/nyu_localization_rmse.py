@@ -39,4 +39,4 @@ if __name__ == "__main__":
         path = f"{NY_DIR}/{str(input_power)}/fc_{conf.fc}_antennas_{conf.Nr_x}_bw_{conf.BW}_subcarriers_{conf.K}.csv"
         if not os.path.exists(f"{NY_DIR}/{str(input_power)}"):
             os.makedirs(f"{NY_DIR}/{str(input_power)}", exist_ok=True)
-        rmse_df.to_csv(f"{NY_DIR}/{str(input_power)}/fc_{conf.fc}_antennas_{conf.Nr_x}_bw_{conf.BW}_subcarriers_{conf.K}.csv")
+        rmse_df.to_csv(f"{NY_DIR}/{str(input_power)}/fc_{conf.fc}_antennas_{conf.Nr_x}_bw_{conf.BW}_subcarriers_{conf.K}_band_type_{conf.band_type}.csv")
