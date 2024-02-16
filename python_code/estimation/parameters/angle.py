@@ -10,7 +10,7 @@ from python_code.utils.constants import BandType
 from python_code.utils.constants import Estimation
 
 
-class AngleEstimator2D:
+class AngleEstimator:
     """
     Angles Estimator for the AOA
     """

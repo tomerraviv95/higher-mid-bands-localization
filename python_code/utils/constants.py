@@ -30,12 +30,6 @@ class AlgType(Enum):
     CAPON = 'BEAMSWEEPER'
     MUSIC = 'MUSIC'
 
-
-class DimensionType(Enum):
-    Two = 'Two'
-    Three = 'Three'
-
-
 class ScenarioType(Enum):
     SYNTHETIC = 'SYNTHETIC'
     NY = 'NY'

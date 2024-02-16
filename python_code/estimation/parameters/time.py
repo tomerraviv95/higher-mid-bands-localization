@@ -9,7 +9,7 @@ from python_code.utils.basis_functions import compute_time_options
 from python_code.utils.constants import BandType, Estimation
 
 
-class TimeEstimator2D:
+class TimeEstimator:
     def __init__(self, bands: List[Band]):
         self.multi_band = len(bands) > 1
         if self.multi_band:

@@ -2,29 +2,24 @@ import numpy as np
 from sklearn.metrics import mean_squared_error
 
 from python_code import conf
-from python_code.channel import get_channel
+from python_code.channel.generate_channel import get_channel
 from python_code.estimation import estimations_strings_dict
 from python_code.estimation.estimate_physical_parameters import estimate_physical_parameters
-from python_code.optimization import optimize_to_estimate_position
+from python_code.optimization.position_optimizer import optimize_to_estimate_position
 from python_code.plotting.estimations_printer import printer_main
 from python_code.plotting.plotter import print_channel
 from python_code.utils.bands_manipulation import get_bands_from_conf
-from python_code.utils.constants import EstimatorType, DimensionType, C
+from python_code.utils.constants import EstimatorType, C
 
 np.random.seed(conf.seed)
 
 
 def main():
-    # BS locs of type [x,y,z]. x must be above the x-location of at least one BS.
-    # In 2D - The array lies on the y-axis and points towards the x-axis.
-    # In 3D - The array lies on the x-axis and y-axis and points towards the z-axis.
+    # BS locs of type [x,y]. x must be above the x-location of at least one BS.
+    # The array lies on the y-axis and points towards the x-axis.
     ue_pos = np.array(conf.ue_pos)
-    if conf.dimensions == DimensionType.Two.name:
-        assert len(ue_pos) == 2
-        print("x-axis up, y-axis right")
-    else:
-        assert len(ue_pos) == 3
-        print("Right handed 3D axes")
+    assert len(ue_pos) == 2
+    print("x-axis up, y-axis right")
     bands = get_bands_from_conf()
     estimator_type = estimations_strings_dict[conf.est_type]
     print(f"UE: {ue_pos}")
@@ -56,7 +51,7 @@ def main():
     # ------------------------- #
     # Position Estimation Phase #
     # ------------------------- #
-    est_ue_pos = optimize_to_estimate_position(bs_locs, estimations)
+    est_ue_pos = optimize_to_estimate_position(np.array(bs_locs), estimations)
     print(f"Estimated Position: {est_ue_pos}")
     rmse = mean_squared_error(ue_pos, est_ue_pos, squared=False)
     print(f"RMSE: {rmse}")

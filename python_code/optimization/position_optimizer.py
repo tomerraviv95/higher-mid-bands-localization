@@ -4,9 +4,7 @@ import numpy as np
 from scipy.optimize import least_squares
 
 from python_code import conf
-from python_code.utils.constants import Estimation
-
-MAX_L = 5
+from python_code.utils.constants import Estimation, L_MAX
 
 
 def extract_measurements_from_estimations(bs_locs: np.ndarray, estimations: List[Estimation]) -> Tuple[
@@ -27,7 +25,7 @@ def extract_measurements_from_estimations(bs_locs: np.ndarray, estimations: List
     return toa_values, aoa_values, bs_list
 
 
-def optimize_to_estimate_position_2d(bs_locs: np.ndarray, estimations: List[Estimation]) -> np.ndarray:
+def optimize_to_estimate_position(bs_locs: np.ndarray, estimations: List[Estimation]) -> np.ndarray:
     def cost_func_2d(x0: np.ndarray) -> List[float]:
         ue, scatterers = x0[:2], x0[2:].reshape(-1, 2)
         costs = []
@@ -41,13 +39,13 @@ def optimize_to_estimate_position_2d(bs_locs: np.ndarray, estimations: List[Esti
             costs.append(cost)
         return costs
 
-    # extract the estimated parameters_2d for each bs
+    # extract the estimated parameters for each bs
     toa_values, aoa_values, bs_list = extract_measurements_from_estimations(bs_locs, estimations)
     print(f'Solving optimization for TOA:{toa_values},AOA:{aoa_values}')
     # LOS computation of location in case of angle and time estimations
     bs_locs = np.array(bs_list)
     initial_ue_loc = np.array([[0, 0]])
-    initial_scatterers = np.zeros([MAX_L, 2])
+    initial_scatterers = np.zeros([L_MAX, 2])
     x0 = np.concatenate([initial_ue_loc, initial_scatterers]).reshape(-1)
     # estimate the UE using least squares
     res = least_squares(cost_func_2d, x0).x

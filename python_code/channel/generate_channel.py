@@ -4,9 +4,9 @@ import numpy as np
 import torch.cuda
 
 from python_code import conf, DEVICE
-from python_code.channel.ny_channel.ny_channel_loader_2d import load_ny_scenario
-from python_code.channel.synthetic_channel.bs_scatterers import create_bs_locs_2d, create_scatter_points_2d
-from python_code.channel.synthetic_channel.synthetic_2d import generate_synthetic_parameters
+from python_code.channel.ny_channel.ny_channel_loader import load_ny_scenario
+from python_code.channel.synthetic_channel.bs_scatterers import create_bs_locs, create_scatter_points
+from python_code.channel.synthetic_channel.synthetic import generate_synthetic_parameters
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.basis_functions import compute_angle_options, compute_time_options
 from python_code.utils.constants import Channel, ChannelBWType, DATA_COEF, ScenarioType, L_MAX, MEGA, NF, N_0
@@ -15,7 +15,7 @@ from python_code.utils.path_loss import watt_from_dbm
 
 def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float], band: Band) -> np.ndarray:
     """"
-    Compute the channel observations based on the band's parameters_2d, and L TOAs, AOAs and POWERs
+    Compute the channel observations based on the band's parameters, and L TOAs, AOAs and POWERs
     """
     # extract number of detectable paths
     L = len(POWER)
@@ -61,10 +61,10 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     return y
 
 
-def get_2d_channel(bs_ind: int, ue_pos: np.ndarray, band: Band) -> Channel:
+def get_channel(bs_ind: int, ue_pos: np.ndarray, band: Band) -> Channel:
     if conf.scenario == ScenarioType.SYNTHETIC.name:
-        bs_loc = create_bs_locs_2d(bs_ind)
-        scatterers = create_scatter_points_2d(L_MAX)
+        bs_loc = create_bs_locs(bs_ind)
+        scatterers = create_scatter_points(L_MAX)
         TOA, AOA, POWER = generate_synthetic_parameters(bs_loc, ue_pos, scatterers, band)
     elif conf.scenario == ScenarioType.NY.name:
         bs_loc, TOA, AOA, POWER = load_ny_scenario(bs_ind, ue_pos, band)

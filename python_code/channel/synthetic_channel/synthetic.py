@@ -1,4 +1,3 @@
-# Generate scatter points
 from typing import List, Tuple
 
 import numpy as np
@@ -14,7 +13,7 @@ def generate_synthetic_parameters(bs_loc: np.ndarray, ue_pos: np.ndarray, scatte
     """"
     Computes the parameters for each path. Each path includes the toa, aoa and power.
     """
-    # Initialize the channel parameters_2d for L paths
+    # Initialize the channel parameters for L paths
     TOA = [0 for _ in range(L_MAX)]
     AOA = [0 for _ in range(L_MAX)]
     POWER = [0 for _ in range(L_MAX)]

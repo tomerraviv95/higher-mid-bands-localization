@@ -1,5 +1,4 @@
 # System parameters
-dimensions: 'Two' # 'Two' or 'Three'
 ue_pos: [ 14 , 11 ]  # TX UE position
 L: 4  # number of paths, up to 5 (including LOS)
 B: 1 # number of BSs, up to 3 (including)

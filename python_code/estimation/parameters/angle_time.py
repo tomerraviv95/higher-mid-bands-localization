@@ -5,18 +5,18 @@ import torch
 
 from python_code import DEVICE
 from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
-from python_code.estimation.parameters_2d.angle import AngleEstimator2D
-from python_code.estimation.parameters_2d.time import TimeEstimator2D
+from python_code.estimation.parameters.angle import AngleEstimator
+from python_code.estimation.parameters.time import TimeEstimator
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.constants import BandType, Estimation
 
 coef_per_frequencies_dict = {6000: 5, 24000: 5}
 
 
-class AngleTimeEstimator2D:
+class AngleTimeEstimator:
     def __init__(self, bands: List[Band]):
-        self.angle_estimator = AngleEstimator2D(bands)
-        self.time_estimator = TimeEstimator2D(bands)
+        self.angle_estimator = AngleEstimator(bands)
+        self.time_estimator = TimeEstimator(bands)
         if self.angle_estimator.multi_band:
             self.n_elements = [band.Nr_x * band.K for band in bands]
             mat1s = [self.angle_estimator._angle_options[i].astype(np.complex64) for i in range(len(bands))]
