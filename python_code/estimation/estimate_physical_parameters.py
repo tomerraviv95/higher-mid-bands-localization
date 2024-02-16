@@ -25,7 +25,7 @@ def separate_bands_estimator(per_band_y: List[Channel], bands: List[Band], estim
 def sim_bands_estimator(per_band_y: List[Channel], bands: List[Band], estimator_type: EstimatorType) -> Tuple[
     Estimation, object]:
     # choose the estimator based on the desired type
-    estimator = estimators[estimator_type][conf.dimensions](bands)
+    estimator = estimators[estimator_type](bands)
     # estimate delay / AOA / ZOA parameters for the current bs based on all measurements from all bands
     estimation = estimator.estimate(per_band_y)
     return estimation, estimator

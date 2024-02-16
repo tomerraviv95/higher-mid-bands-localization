@@ -47,7 +47,6 @@ You can control the simulated setup via the hyperparameters in the config:
 
 #### System parameters
 
-* dimensions - number of dimensions in the simulation. Either 'Two' or 'Three'.
 * ue_pos - the 2d/3d position of the ue. For example, [10,10] in 2d.
 * L - number of paths in the simulation, including LOS. You need to introduce additional scattering objects if you wish to have more than 5 paths.
 * B - number of BSs by which localization is done.  You need to introduce additional ones in the bs script if you wish to have more than 3.
