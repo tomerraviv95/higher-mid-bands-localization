@@ -19,7 +19,7 @@ class MultiBandCaponBeamforming(CaponBeamforming):
         """
         To be completed
         """
-        K=len(y)
+        K = len(y)
         norm_values_list = []
         peaks = {}
         for k in range(K):
@@ -50,9 +50,9 @@ class MultiBandCaponBeamforming(CaponBeamforming):
             refined_peaks = next_refined_peaks
             k += 1
         high_spectrum = norm_values_list[-1]
-        for refined_peak,k in refined_peaks:
+        for refined_peak, k in refined_peaks:
             for peak_ind in refined_peak:
                 i, j = peak_ind[0], peak_ind[1]
                 high_spectrum[i][j] = norm_values_list[k][i][j]
         # finally find the peaks in the spectrum
-        return self.find_peaks_in_spectrum(high_spectrum.reshape(-1), second_dim[0],third_dim)
+        return self._find_peaks_in_spectrum(high_spectrum.reshape(-1), second_dim[0], third_dim)

@@ -1,6 +1,5 @@
 from typing import List, Tuple
 
-from python_code import conf
 from python_code.estimation import estimators
 from python_code.estimation.estimations_combining import combine_estimations
 from python_code.utils.bands_manipulation import Band

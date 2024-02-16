@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import numpy as np
 import scipy.signal
 import torch
@@ -33,7 +31,10 @@ class CaponBeamforming:
         # compute the Capon spectrum values for each basis vector
         norm_values = self._compute_capon_spectrum(basis_vectors, use_gpu, cov)
         # finally find the peaks in the spectrum
-        return self.find_peaks_in_spectrum(norm_values, second_dim)
+        if second_dim is not None:
+            norm_values = norm_values.reshape(-1, second_dim)
+        indices = self._find_peaks_in_spectrum(norm_values, second_dim)
+        return np.array(indices), norm_values, len(indices)
 
     def _compute_cov(self, n_elements: int, y: np.ndarray, use_gpu: bool):
         if not use_gpu:
@@ -66,13 +67,15 @@ class CaponBeamforming:
             norm_values = (1 / norm_values).cpu().numpy().astype(float)
         return norm_values
 
-    def find_peaks_in_spectrum(self, norm_values: np.ndarray, second_dim: int) -> Tuple[np.ndarray, np.ndarray, int]:
+    def _find_peaks_in_spectrum(self, norm_values: np.ndarray, second_dim: int) -> np.ndarray:
         # treat the spectrum as 1d if the second dim is None
         if second_dim is None:
             indices, _ = scipy.signal.find_peaks(norm_values, height=self.thresh)
-            return indices, norm_values, len(indices)
+            return indices
         # treat the spectrum as 2d
-        norm_values = norm_values.reshape(-1, second_dim)
+        return self._get_peaks_regions(norm_values)
+
+    def _get_peaks_regions(self, norm_values: np.ndarray) -> np.ndarray:
         sorted_indices = np.unravel_index(np.argsort(norm_values, axis=None)[::-1], norm_values.shape)
         peaks_regions = {}
         for ind in zip(sorted_indices[0], sorted_indices[1]):
@@ -89,4 +92,4 @@ class CaponBeamforming:
         for peak, region in peaks_regions.items():
             if len(region) >= 20:
                 indices.append(peak)
-        return np.array(indices), norm_values, len(indices)
+        return np.array(indices)
