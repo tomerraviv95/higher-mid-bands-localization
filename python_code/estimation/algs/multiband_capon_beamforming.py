@@ -28,26 +28,18 @@ class MultiBandCaponBeamforming(CaponBeamforming):
             # compute the Capon spectrum values for each basis vector per band
             norm_values = self._compute_capon_spectrum(basis_vectors[k], use_gpu, cov)
             norm_values = norm_values.reshape(-1, second_dim[k])
-            peak_regions[k] = self._find_peaks_in_spectrum(norm_values, self.threshs[k], second_dim[k])
             norm_values_list.append(norm_values)
         # spectrum refinement step
-        # replace the peaks in the low spectrum by peaks of higher spectrum
-        refined_peaks = {0: peak_regions[0]}
-        k = 1
-        while k < K:
-            next_refined_peaks = {}
-            for low_res_peak, low_res_region in refined_peaks[k - 1].items():
-                intersected_peaks = 0
-                for high_res_peak, high_res_region in peak_regions[k].items():
-                    low_res_peak_set = set(low_res_region)
-                    high_res_peak_set = set(high_res_region)
-                    intersection = low_res_peak_set.intersection(high_res_peak_set)
-                    if len(intersection) > 0:
-                        next_refined_peaks[high_res_peak] = high_res_region
-                        intersected_peaks += 1
-                if intersected_peaks == 0:
-                    next_refined_peaks[low_res_peak] = low_res_region
-            refined_peaks[k] = next_refined_peaks
-            k += 1
-        # finally find the peaks in the spectrum
-        return np.array(list(refined_peaks[K - 1].keys())), norm_values_list[0]
+        low_norm_values = norm_values_list[0]
+        low_maximum_ind = np.unravel_index(np.argmax(low_norm_values, axis=None), low_norm_values.shape)
+        high_norm_values = norm_values_list[1]
+        high_maximum_ind = np.unravel_index(np.argmax(high_norm_values, axis=None), high_norm_values.shape)
+        maximum_ind, maximum_value = None, 0
+        epsilon_theta, epsilon_tau = 6, 6
+        for i in range(low_maximum_ind[0] - epsilon_theta, low_maximum_ind[0] + epsilon_theta + 1):
+            for j in range(low_maximum_ind[1] - epsilon_tau, low_maximum_ind[1] + epsilon_tau + 1):
+                if high_norm_values[i, j] > maximum_value:
+                    maximum_value = high_norm_values[i, j]
+                    maximum_ind = [i, j]
+        print(high_maximum_ind)
+        return np.array([maximum_ind]), low_norm_values
