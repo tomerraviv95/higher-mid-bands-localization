@@ -19,30 +19,40 @@ class MultiBandCaponBeamforming(CaponBeamforming):
         """
         To be completed
         """
+        K=len(y)
         norm_values_list = []
-        for i in range(len(y)):
+        peaks = {}
+        for k in range(K):
             # compute inverse covariance matrix
-            cov = self._compute_cov(n_elements[i], y[i], use_gpu)
+            cov = self._compute_cov(n_elements[k], y[k], use_gpu)
             # compute the Capon spectrum values for each basis vector per band
-            norm_values = self._compute_capon_spectrum(basis_vectors[i], use_gpu, cov)
-            norm_values_list.append(norm_values.reshape(-1, second_dim[i]))
-        low_norm_values, high_norm_values = norm_values_list[0], norm_values_list[1]
-        # replace the peaks in the low spectrum by peaks of higher spectrum, if the peak at lower spectrum
-        # is also a peak at the higher spectrum. Otherwise, leave the lower spectrum peak.
-        labeled, ncomponents = label(low_norm_values > self.thresh, structure=np.ones((3, 3), dtype=int))
-        for component in range(1, ncomponents + 1):
-            # get the region indices
-            component_indices = np.array(np.where(labeled == component)).T
-            # find if at least one index in the higher frequency is peak
-            peak_found = False
-            for component_indx in component_indices:
-                cur_comp = self.get_current_component(norm_values_list[1], component_indx, third_dim)
-                if cur_comp and cur_comp > self.thresh:
-                    peak_found = True
-            # only if it is peak in higher frequency - replace the spectrum with the more accurate values
-            if peak_found:
-                for component_indx in component_indices:
-                    low_norm_values[component_indx[0]][component_indx[1]] = \
-                        high_norm_values[component_indx[0]][component_indx[1]]
+            norm_values = self._compute_capon_spectrum(basis_vectors[k], use_gpu, cov).reshape(-1, second_dim[k])
+            labeled, ncomponents = label(norm_values > self.thresh, structure=np.ones((3, 3), dtype=int))
+            peaks[k] = [(np.array(np.where(labeled == component)).T, k) for component in range(1, ncomponents + 1)]
+            norm_values_list.append(norm_values)
+        # spectrum refinement step
+        # replace the peaks in the low spectrum by peaks of higher spectrum
+        refined_peaks = peaks[0]
+        k = 1
+        while k < K:
+            next_refined_peaks = []
+            for low_res_peak, low_res_k in refined_peaks:
+                intersected_peaks = 0
+                for high_res_peak, cur_k in peaks[k]:
+                    low_res_peak_set = set([tuple(ele) for ele in low_res_peak])
+                    high_res_peak_set = set([tuple(ele) for ele in high_res_peak])
+                    intersection = low_res_peak_set.intersection(high_res_peak_set)
+                    if len(intersection) > 0:
+                        next_refined_peaks.append((high_res_peak, cur_k))
+                        intersected_peaks += 1
+                if intersected_peaks == 0:
+                    next_refined_peaks.append((low_res_peak, low_res_k))
+            refined_peaks = next_refined_peaks
+            k += 1
+        high_spectrum = norm_values_list[-1]
+        for refined_peak,k in refined_peaks:
+            for peak_ind in refined_peak:
+                i, j = peak_ind[0], peak_ind[1]
+                high_spectrum[i][j] = norm_values_list[k][i][j]
         # finally find the peaks in the spectrum
-        return self.find_peaks_in_spectrum(low_norm_values.reshape(-1), second_dim[0], third_dim)
+        return self.find_peaks_in_spectrum(high_spectrum.reshape(-1), second_dim[0],third_dim)

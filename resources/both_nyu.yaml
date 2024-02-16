@@ -1,16 +1,16 @@
 # System parameters
 dimensions: 'Two' # 'Two' or 'Three'
 scenario: 'NY' # 'SYNTHETIC' or 'NY'
-ue_pos: [ 65 , 35 ]  # TX UE position
+ue_pos: [ 145 , 155 ]  # TX UE position
 B: 1 # number of BSs, up to 3 (including)
-input_power: 25  # dBm
+input_power: 1  # dBm
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # Bands parameters
 K: [ 80 , 80] # number of subcarriers
 Nr_x: [ 6 , 24] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
 Nr_y: [ 1 , 1] # number of RX n_elements in y.
-fc: [ 6000 , 24000]  # carrier frequency in MHz
+fc: [ 6000 , 24000]  # carr ier frequency in MHz
 BW: [ 5 , 20] # BW frequency in MHz
 
 # beamforming parameters
