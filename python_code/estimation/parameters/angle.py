@@ -37,7 +37,7 @@ class AngleEstimator:
         self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](1.5)
 
     def estimate(self, y: Union[np.ndarray, List[np.ndarray]]) -> Estimation:
-        self._indices, self._spectrum, _ = self.algorithm.run(y=y, basis_vectors=self._angle_options,
+        self._indices, self._spectrum = self.algorithm.run(y=y, basis_vectors=self._angle_options,
                                                               n_elements=self.Nr_x)
         estimator = Estimation(AOA=self.aoa_angles_dict[self._indices])
         return estimator

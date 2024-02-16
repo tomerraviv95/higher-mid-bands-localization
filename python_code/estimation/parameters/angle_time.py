@@ -51,7 +51,7 @@ class AngleTimeEstimator:
             second_dim = [len(time_dict) for time_dict in self.time_estimator.times_dict]
         else:
             second_dim = len(self.time_estimator.times_dict)
-        self.indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=self.n_elements,
+        self.indices, self._spectrum = self.algorithm.run(y=y, n_elements=self.n_elements,
                                                              basis_vectors=self.angle_time_options,
                                                              second_dim=second_dim,
                                                              use_gpu=torch.cuda.is_available())

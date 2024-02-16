@@ -41,7 +41,7 @@ class TimeEstimator:
             y = [np.transpose(y_single, [1, 0, 2]) for y_single in y]
         else:
             y = np.transpose(y, [1, 0, 2])
-        self._indices, self._spectrum, _ = self.algorithm.run(y=y, n_elements=self.K,
+        self._indices, self._spectrum = self.algorithm.run(y=y, n_elements=self.K,
                                                               basis_vectors=self._time_options)
         estimator = Estimation(TOA=self.times_dict[self._indices])
         return estimator

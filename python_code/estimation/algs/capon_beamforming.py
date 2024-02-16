@@ -1,3 +1,5 @@
+from typing import Dict, List
+
 import numpy as np
 import scipy.signal
 import torch
@@ -33,8 +35,8 @@ class CaponBeamforming:
         # finally find the peaks in the spectrum
         if second_dim is not None:
             norm_values = norm_values.reshape(-1, second_dim)
-        indices = self._find_peaks_in_spectrum(norm_values, second_dim)
-        return np.array(indices), norm_values, len(indices)
+        regions = self._find_peaks_in_spectrum(norm_values, second_dim)
+        return np.array(list(regions.keys())), norm_values
 
     def _compute_cov(self, n_elements: int, y: np.ndarray, use_gpu: bool):
         if not use_gpu:
@@ -67,15 +69,15 @@ class CaponBeamforming:
             norm_values = (1 / norm_values).cpu().numpy().astype(float)
         return norm_values
 
-    def _find_peaks_in_spectrum(self, norm_values: np.ndarray, second_dim: int) -> np.ndarray:
+    def _find_peaks_in_spectrum(self, norm_values: np.ndarray, second_dim: int) -> Dict[np.ndarray, List]:
         # treat the spectrum as 1d if the second dim is None
         if second_dim is None:
             indices, _ = scipy.signal.find_peaks(norm_values, height=self.thresh)
-            return indices
+            return {index: index for index in indices}
         # treat the spectrum as 2d
         return self._get_peaks_regions(norm_values)
 
-    def _get_peaks_regions(self, norm_values: np.ndarray) -> np.ndarray:
+    def _get_peaks_regions(self, norm_values: np.ndarray) -> Dict[np.ndarray, List]:
         sorted_indices = np.unravel_index(np.argsort(norm_values, axis=None)[::-1], norm_values.shape)
         peaks_regions = {}
         for ind in zip(sorted_indices[0], sorted_indices[1]):
@@ -88,8 +90,5 @@ class CaponBeamforming:
                         break
                 if create_new_peak:
                     peaks_regions[ind] = [ind]
-        indices = []
-        for peak, region in peaks_regions.items():
-            if len(region) >= 20:
-                indices.append(peak)
-        return np.array(indices)
+        filtered_peaks_regions = {peak: region for peak, region in peaks_regions.items() if len(region) > 20}
+        return filtered_peaks_regions
