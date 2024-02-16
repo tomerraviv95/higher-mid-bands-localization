@@ -85,6 +85,23 @@ class CaponBeamforming:
         # treat the spectrum as 2d if the third dim is None
         elif third_dim is None:
             norm_values = norm_values.reshape(-1, second_dim)
+            sorted_indices = np.unravel_index(np.argsort(norm_values, axis=None)[::-1], norm_values.shape)
+            peaks_regions = {}
+            for ind in zip(sorted_indices[0], sorted_indices[1]):
+                if norm_values[ind[0], ind[1]] > self.thresh:
+                    create_new_peak = True
+                    for main_ind in peaks_regions.keys():
+                        if abs(main_ind[0] - ind[0]) < 7 and abs(main_ind[1] - ind[1]) < 7:
+                            peaks_regions[main_ind].append(ind)
+                            create_new_peak = False
+                            break
+                    if create_new_peak:
+                        peaks_regions[ind] = [ind]
+            indices = []
+            for peak,region in peaks_regions.items():
+                if len(region) >= 20:
+                    indices.append(peak)
+            return np.array(indices), norm_values, len(indices)
             labeled, ncomponents = label(norm_values > self.thresh, structure=np.ones((3, 3), dtype=int))
         # treat the spectrum as 3d
         else:

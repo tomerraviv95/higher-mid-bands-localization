@@ -10,7 +10,7 @@ from python_code.estimation.parameters_2d.time import TimeEstimator2D
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.constants import BandType, Estimation
 
-coef_per_frequencies_dict = {6000: 1.5, 24000: 1.5}
+coef_per_frequencies_dict = {6000: 5, 24000: 5}
 
 
 class AngleTimeEstimator2D:
