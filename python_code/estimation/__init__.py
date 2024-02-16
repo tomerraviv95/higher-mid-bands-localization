@@ -9,3 +9,4 @@ estimators = {EstimatorType.ANGLE: AngleEstimator, EstimatorType.TIME: TimeEstim
 estimations_strings_dict = {'angle': EstimatorType.ANGLE,
                             'time': EstimatorType.TIME,
                             'both': EstimatorType.ANGLE_TIME}
+

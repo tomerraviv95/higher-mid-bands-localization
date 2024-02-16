@@ -14,6 +14,8 @@ Channel = namedtuple("Channel", ["scatterers", "y", "bs", "AOA", "TOA", "ZOA", "
 
 Estimation = namedtuple("Estimation", ["AOA", "TOA", "ZOA", "POWER"], defaults=(None,) * 4)
 
+coef_per_frequencies_dict = {6000: 2, 24000: 1.1}
+
 
 class EstimatorType(Enum):
     ANGLE = 'ANGLE'
@@ -29,6 +31,7 @@ class ChannelBWType(Enum):
 class AlgType(Enum):
     CAPON = 'BEAMSWEEPER'
     MUSIC = 'MUSIC'
+
 
 class ScenarioType(Enum):
     SYNTHETIC = 'SYNTHETIC'

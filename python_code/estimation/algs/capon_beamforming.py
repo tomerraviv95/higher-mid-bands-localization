@@ -35,7 +35,7 @@ class CaponBeamforming:
         # finally find the peaks in the spectrum
         if second_dim is not None:
             norm_values = norm_values.reshape(-1, second_dim)
-        regions = self._find_peaks_in_spectrum(norm_values, second_dim)
+        regions = self._find_peaks_in_spectrum(norm_values, self.thresh, second_dim)
         return np.array(list(regions.keys())), norm_values
 
     def _compute_cov(self, n_elements: int, y: np.ndarray, use_gpu: bool):
@@ -69,19 +69,20 @@ class CaponBeamforming:
             norm_values = (1 / norm_values).cpu().numpy().astype(float)
         return norm_values
 
-    def _find_peaks_in_spectrum(self, norm_values: np.ndarray, second_dim: int) -> Dict[np.ndarray, List]:
+    def _find_peaks_in_spectrum(self, norm_values: np.ndarray, thresh: float, second_dim: int) -> Dict[
+        np.ndarray, List]:
         # treat the spectrum as 1d if the second dim is None
         if second_dim is None:
-            indices, _ = scipy.signal.find_peaks(norm_values, height=self.thresh)
+            indices, _ = scipy.signal.find_peaks(norm_values, height=thresh)
             return {index: index for index in indices}
         # treat the spectrum as 2d
-        return self._get_peaks_regions(norm_values)
+        return self._get_peaks_regions(norm_values, thresh)
 
-    def _get_peaks_regions(self, norm_values: np.ndarray) -> Dict[np.ndarray, List]:
+    def _get_peaks_regions(self, norm_values: np.ndarray, thresh: float) -> Dict[np.ndarray, List]:
         sorted_indices = np.unravel_index(np.argsort(norm_values, axis=None)[::-1], norm_values.shape)
         peaks_regions = {}
         for ind in zip(sorted_indices[0], sorted_indices[1]):
-            if norm_values[ind[0], ind[1]] > self.thresh:
+            if norm_values[ind[0], ind[1]] > thresh:
                 create_new_peak = True
                 for main_ind in peaks_regions.keys():
                     if abs(main_ind[0] - ind[0]) < 7 and abs(main_ind[1] - ind[1]) < 7:

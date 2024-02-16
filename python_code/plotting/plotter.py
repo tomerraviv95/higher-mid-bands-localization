@@ -31,9 +31,12 @@ def plot_time(estimator, estimation: Estimation):
 
 def plot_angle_time(estimator, estimation: Estimation):
     fig = plt.figure()
-    plt.contourf(estimator.time_estimator.times_dict, estimator.angle_estimator.aoa_angles_dict,
-                 estimator._spectrum.reshape(len(estimator.angle_estimator.aoa_angles_dict),
-                                             len(estimator.time_estimator.times_dict), order='F'),
+    aoa_dict = estimator.angle_estimator.aoa_angles_dict
+    if estimator.time_estimator.multi_band:
+        times_dict = estimator.time_estimator.times_dict[0]
+    else:
+        times_dict = estimator.time_estimator.times_dict
+    plt.contourf(times_dict, aoa_dict, estimator._spectrum.reshape(len(aoa_dict), len(times_dict), order='F'),
                  map='magma')
     ax = plt.gca()
     ax.set_xlabel('TIME[us]')
