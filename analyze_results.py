@@ -33,29 +33,43 @@ marker_to_label = {"fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80]_band_type_SIN
                    "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_MULTI.csv": "s"}
 
 if __name__ == "__main__":
-    input_powers = [-15, -10, -5, 0, 5, 10]
+    input_powers = [-15, -10, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 10]
     files = ["fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80]_band_type_SINGLE.csv",
              "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80]_band_type_SINGLE.csv",
              "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_SINGLE.csv",
              "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_MULTI.csv"]
+    mean_rmse_dict = {}
     mean_errors_dict = {}
     for input_power in input_powers:
         dir_path = f"{NY_DIR}/{str(input_power)}/"
         for file in files:
             file_path = dir_path + file
             df = pd.read_csv(file_path, index_col=0)
-            mean_error = float(df[df.index == 'mean']['RMSE'].item())
-            if file not in mean_errors_dict:
+            mean_rmse = float(df[df.index == 'mean']['RMSE'].item())
+            mean_error = float(df[df.index == 'mean']['Error > 1m'].item())
+            if file not in mean_rmse_dict:
+                mean_rmse_dict[file] = []
                 mean_errors_dict[file] = []
+            mean_rmse_dict[file].append(mean_rmse)
             mean_errors_dict[file].append(mean_error)
-    print(mean_errors_dict)
+    ### RMSE PLOT ###
     plt.figure()
     for file in files:
-        plt.plot(input_powers, mean_errors_dict[file], label=file_to_label[file], markersize=11,
-                 linewidth=2.5, color=color_to_label[file], marker=marker_to_label[file])
+        plt.plot(input_powers, mean_rmse_dict[file], label=file_to_label[file], markersize=9,
+                 linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file])
     plt.xlabel('Transmitted power [dBm]')
     plt.ylabel('RMSE')
     plt.grid(which='both', ls='--')
     plt.legend(loc='upper right', prop={'size': 15})
-    plt.ylim([0, 25])
+    plt.ylim([0, 30])
+    plt.show()
+    ### Error Rate PLOT ###
+    plt.figure()
+    for file in files:
+        plt.plot(input_powers, mean_errors_dict[file], label=file_to_label[file], markersize=9,
+                 linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file])
+    plt.xlabel('Transmitted power [dBm]')
+    plt.ylabel('Error Rate (RMSE>1m)')
+    plt.grid(which='both', ls='--')
+    plt.legend(loc='upper right', prop={'size': 15})
     plt.show()
