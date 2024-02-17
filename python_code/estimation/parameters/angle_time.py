@@ -8,7 +8,7 @@ from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
 from python_code.estimation.parameters.angle import AngleEstimator
 from python_code.estimation.parameters.time import TimeEstimator
 from python_code.utils.bands_manipulation import Band
-from python_code.utils.constants import BandType, Estimation, coef_per_frequencies_dict
+from python_code.utils.constants import BandType, Estimation, THRESH
 
 
 class AngleTimeEstimator:
@@ -20,13 +20,12 @@ class AngleTimeEstimator:
             mat1s = [self.angle_estimator._angle_options[i].astype(np.complex64) for i in range(len(bands))]
             mat2s = [self.time_estimator._time_options[i].astype(np.complex64) for i in range(len(bands))]
             self.angle_time_options = [self._single_band_constructor(mat1, mat2) for mat1, mat2 in zip(mat1s, mat2s)]
-            threshs = [coef_per_frequencies_dict[band.fc] for band in bands]
-            self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](threshs)
+            self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](THRESH)
         else:
             self.n_elements = bands[0].Nr_x * bands[0].K
             mat1, mat2 = self.angle_estimator._angle_options, self.time_estimator._time_options
             self.angle_time_options = self._single_band_constructor(mat1, mat2)
-            self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE](coef_per_frequencies_dict[bands[0].fc])
+            self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE](THRESH)
 
     def _single_band_constructor(self, mat1: np.ndarray, mat2: np.ndarray):
         # if a GPU is available, perform the calculations on it. Note that it is imperative
@@ -50,10 +49,10 @@ class AngleTimeEstimator:
             second_dim = [len(time_dict) for time_dict in self.time_estimator.times_dict]
         else:
             second_dim = len(self.time_estimator.times_dict)
-        self.indices, self._spectrum,self.k = self.algorithm.run(y=y, n_elements=self.n_elements,
-                                                          basis_vectors=self.angle_time_options,
-                                                          second_dim=second_dim,
-                                                          use_gpu=torch.cuda.is_available())
+        self.indices, self._spectrum, self.k = self.algorithm.run(y=y, n_elements=self.n_elements,
+                                                                  basis_vectors=self.angle_time_options,
+                                                                  second_dim=second_dim,
+                                                                  use_gpu=torch.cuda.is_available())
         # if no peaks found - return an empty estimation
         if len(self.indices) == 0:
             return Estimation(AOA=[0], TOA=[0], POWER=[0])

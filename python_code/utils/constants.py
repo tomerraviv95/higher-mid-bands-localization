@@ -14,8 +14,7 @@ Channel = namedtuple("Channel", ["scatterers", "y", "bs", "AOA", "TOA", "ZOA", "
 
 Estimation = namedtuple("Estimation", ["AOA", "TOA", "ZOA", "POWER"], defaults=(None,) * 4)
 
-coef_per_frequencies_dict = {6000: 2, 24000: 1.1}
-
+THRESH = 1.2
 
 class EstimatorType(Enum):
     ANGLE = 'ANGLE'

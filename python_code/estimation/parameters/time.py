@@ -6,7 +6,7 @@ from python_code import conf
 from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.basis_functions import compute_time_options
-from python_code.utils.constants import BandType, Estimation, coef_per_frequencies_dict
+from python_code.utils.constants import BandType, Estimation, THRESH
 
 
 class TimeEstimator:
@@ -25,7 +25,7 @@ class TimeEstimator:
         if self._time_options.shape[0] < self.times_dict.shape[0]:
             self.times_dict = self.times_dict[:self._time_options.shape[0]]
         self.K = band.K
-        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE](coef_per_frequencies_dict[bands[0].fc])
+        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE](THRESH)
 
     def _multiband_constructor(self, bands: List[Band]):
         self._time_options = [compute_time_options(0, bands[i].K, bands[i].BW, values=self.times_dict[i]) for i in
@@ -34,8 +34,7 @@ class TimeEstimator:
             if self._time_options[i].shape[0] < self.times_dict[i].shape[0]:
                 self.times_dict[i] = self.times_dict[i][:self._time_options[0].shape[0]]
         self.K = [band.K for band in bands]
-        threshs = [coef_per_frequencies_dict[band.fc] for band in bands]
-        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](threshs)
+        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](THRESH)
 
     def estimate(self, y: Union[np.ndarray, List[np.ndarray]]) -> Estimation:
         if self.multi_band:

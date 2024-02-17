@@ -6,7 +6,7 @@ from python_code import conf
 from python_code.estimation.algs import ALGS_DICT, ALG_TYPE
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.basis_functions import compute_angle_options
-from python_code.utils.constants import BandType, coef_per_frequencies_dict
+from python_code.utils.constants import BandType, THRESH
 from python_code.utils.constants import Estimation
 
 
@@ -28,17 +28,16 @@ class AngleEstimator:
         self._angle_options = compute_angle_options(np.sin(self.aoa_angles_dict), zoa=1,
                                                     values=np.arange(band.Nr_x))
         self.Nr_x = band.Nr_x
-        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE](coef_per_frequencies_dict[bands[0].fc])
+        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE](THRESH)
 
     def _multiband_constructor(self, bands: List[Band]):
         self._angle_options = [compute_angle_options(np.sin(self.aoa_angles_dict), zoa=1,
                                                      values=np.arange(band.Nr_x)) for band in bands]
         self.Nr_x = [band.Nr_x for band in bands]
-        threshs = [coef_per_frequencies_dict[band.fc] for band in bands]
-        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](threshs)
+        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](THRESH)
 
     def estimate(self, y: Union[np.ndarray, List[np.ndarray]]) -> Estimation:
         self._indices, self._spectrum = self.algorithm.run(y=y, basis_vectors=self._angle_options,
-                                                              n_elements=self.Nr_x)
+                                                           n_elements=self.Nr_x)
         estimator = Estimation(AOA=self.aoa_angles_dict[self._indices])
         return estimator

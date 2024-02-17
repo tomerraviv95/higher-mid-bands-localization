@@ -23,9 +23,9 @@ class MultiBandCaponBeamforming(CaponBeamforming):
     The Proposed MultiBand Capon Beamformer.
     """
 
-    def __init__(self, threshs: List[float]):
-        super(MultiBandCaponBeamforming, self).__init__(threshs[0])
-        self.threshs = threshs
+    def __init__(self, thresh: float):
+        super(MultiBandCaponBeamforming, self).__init__(thresh)
+        self.thresh = thresh
 
     def run(self, y: List[np.ndarray], basis_vectors: List[np.ndarray], n_elements: List[int],
             second_dim: List[int] = None, third_dim: List[int] = None, use_gpu=False):
@@ -43,10 +43,13 @@ class MultiBandCaponBeamforming(CaponBeamforming):
             norm_values = norm_values.reshape(-1, second_dim[k])
             maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
             n_components = count_components(norm_values)
-            peaks[n_components] = (maximum_ind, norm_values[maximum_ind], k)
+            if norm_values[maximum_ind] > self.thresh:
+                peaks[n_components] = (maximum_ind, k)
             norm_values_list.append(norm_values)
+        print(peaks)
         # otherwise, run the spectrum refinement step
         for n_components in range(1, MAX_COMPONENTS):
             if n_components in peaks.keys():
-                maximum_ind, _, k = peaks[n_components]
+                maximum_ind, k = peaks[n_components]
+                print(f"Chosen: {str(6) if k==0 else str(24)}")
                 return np.array([maximum_ind]), norm_values_list[k], k
