@@ -32,7 +32,7 @@ def load_ny_scenario(bs_ind: int, ue_pos: np.ndarray, band: Band):
             continue
         aoa = math.radians(row[f'aod_{path}'])
         if path == 1:
-            conf.orientation = aoa
+            conf.orientation = aoa + math.pi / 5
         normalized_aoa = aoa - conf.orientation
         # the base station can see 90 degrees to each side of its orientation
         if -math.pi / 2 < normalized_aoa < math.pi / 2:

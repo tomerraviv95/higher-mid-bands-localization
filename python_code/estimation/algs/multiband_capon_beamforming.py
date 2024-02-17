@@ -21,25 +21,30 @@ class MultiBandCaponBeamforming(CaponBeamforming):
         """
         K = len(y)
         norm_values_list = []
-        peak_regions = {}
+        peaks = {}
         for k in range(K):
             # compute inverse covariance matrix
             cov = self._compute_cov(n_elements[k], y[k], use_gpu)
             # compute the Capon spectrum values for each basis vector per band
             norm_values = self._compute_capon_spectrum(basis_vectors[k], use_gpu, cov)
             norm_values = norm_values.reshape(-1, second_dim[k])
+            maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
+            peaks[k] = (maximum_ind, norm_values[maximum_ind])
             norm_values_list.append(norm_values)
-        # spectrum refinement step
+        # if the highest frequency is in high confidence - return its peak
+        if peaks[1][1] > 1.2:
+            print(1)
+            return peaks[1][0], norm_values_list[1]
+        # otherwise, run the spectrum refinement step
+        print(2)
         low_norm_values = norm_values_list[0]
-        low_maximum_ind = np.unravel_index(np.argmax(low_norm_values, axis=None), low_norm_values.shape)
         high_norm_values = norm_values_list[1]
-        high_maximum_ind = np.unravel_index(np.argmax(high_norm_values, axis=None), high_norm_values.shape)
+        low_maximum_ind = peaks[0][0]
         maximum_ind, maximum_value = None, 0
-        epsilon_theta, epsilon_tau = 6, 6
+        epsilon_theta, epsilon_tau = 3, 0
         for i in range(low_maximum_ind[0] - epsilon_theta, low_maximum_ind[0] + epsilon_theta + 1):
-            for j in range(low_maximum_ind[1] - epsilon_tau, low_maximum_ind[1] + epsilon_tau + 1):
+            for j in range(low_maximum_ind[1], low_maximum_ind[1] + epsilon_tau + 1):
                 if high_norm_values[i, j] > maximum_value:
                     maximum_value = high_norm_values[i, j]
                     maximum_ind = [i, j]
-        print(high_maximum_ind)
         return np.array([maximum_ind]), low_norm_values

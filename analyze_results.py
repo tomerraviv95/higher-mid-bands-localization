@@ -17,27 +17,22 @@ mpl.rcParams['legend.fontsize'] = 20
 mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['font.family'] = 'STIXGeneral'
 
-file_to_label = {"fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80]_band_type_SINGLE.csv": "6GHz Sub-band",
-                 "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80]_band_type_SINGLE.csv": "24GHz Sub-band",
-                 "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_SINGLE.csv": "Naive - {6,24}GHz",
-                 "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_MULTI.csv": "Proposed - {6,24}GHz"}
+file_to_label = {0: "6GHz Sub-band",
+                 1: "24GHz Sub-band",
+                 2: "Proposed - {6,24}GHz"}
 
-color_to_label = {"fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80]_band_type_SINGLE.csv": "blue",
-                  "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80]_band_type_SINGLE.csv": "red",
-                  "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_SINGLE.csv": "black",
-                  "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_MULTI.csv": "purple"}
+color_to_label = {0: "blue",
+                  1: "red",
+                  2: "black"}
 
-marker_to_label = {"fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80]_band_type_SINGLE.csv": "o",
-                   "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80]_band_type_SINGLE.csv": "X",
-                   "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_SINGLE.csv": "^",
-                   "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_MULTI.csv": "s"}
+marker_to_label = {0: "o",
+                   1: "X",
+                   2: "^"}
 
 if __name__ == "__main__":
-    input_powers = [-15, -10, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 10]
-    files = ["fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[80]_band_type_SINGLE.csv",
-             "fc_[24000]_antennas_[24]_bw_[20]_subcarriers_[80]_band_type_SINGLE.csv",
-             "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_SINGLE.csv",
-             "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 20]_subcarriers_[80, 80]_band_type_MULTI.csv"]
+    input_powers = [-10,-9,-8,-7,-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+    files = ["fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[16]_band_type_SINGLE.csv",
+             "fc_[24000]_antennas_[24]_bw_[5]_subcarriers_[16]_band_type_SINGLE.csv"]
     mean_rmse_dict = {}
     mean_errors_dict = {}
     for input_power in input_powers:
@@ -54,9 +49,9 @@ if __name__ == "__main__":
             mean_errors_dict[file].append(mean_error)
     ### RMSE PLOT ###
     plt.figure()
-    for file in files:
-        plt.plot(input_powers, mean_rmse_dict[file], label=file_to_label[file], markersize=9,
-                 linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file])
+    for i, file in enumerate(files):
+        plt.plot(input_powers, mean_rmse_dict[file], label=file_to_label[i], markersize=9,
+                 linewidth=3.5, color=color_to_label[i], marker=marker_to_label[i])
     plt.xlabel('Transmitted power [dBm]')
     plt.ylabel('RMSE')
     plt.grid(which='both', ls='--')
@@ -65,9 +60,9 @@ if __name__ == "__main__":
     plt.show()
     ### Error Rate PLOT ###
     plt.figure()
-    for file in files:
-        plt.plot(input_powers, mean_errors_dict[file], label=file_to_label[file], markersize=9,
-                 linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file])
+    for i, file in enumerate(files):
+        plt.plot(input_powers, mean_errors_dict[file], label=file_to_label[i], markersize=9,
+                 linewidth=3.5, color=color_to_label[i], marker=marker_to_label[i])
     plt.xlabel('Transmitted power [dBm]')
     plt.ylabel('Error Rate (RMSE>1m)')
     plt.grid(which='both', ls='--')

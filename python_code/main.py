@@ -25,7 +25,7 @@ def main():
     print(f"UE: {ue_pos}")
     print(estimator_type.name)
     print(f"Max distance supported by setup: {max([C / band.BW * band.K for band in bands])}[m]")
-    print(f"Calculating from #{len(bands)} band")
+    print(f"Calculating from #{len(bands)} band - {[band.fc for band in bands]}")
     # ------------------------------------- #
     # Physical Parameters' Estimation Phase #
     # ------------------------------------- #
