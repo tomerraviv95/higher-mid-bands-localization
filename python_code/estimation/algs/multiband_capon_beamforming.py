@@ -33,14 +33,16 @@ class MultiBandCaponBeamforming(CaponBeamforming):
             norm_values_list.append(norm_values)
         # otherwise, run the spectrum refinement step
         low_norm_values = norm_values_list[0]
+        maximum_inds = np.unravel_index(np.argsort(low_norm_values, axis=None)[::-1][:5], norm_values.shape)
+        print(maximum_inds, norm_values[maximum_inds[0], maximum_inds[1]])
         high_norm_values = norm_values_list[1]
-        low_maximum_ind = peaks[0][0]
-        maximum_ind, maximum_value = None, 0
-        epsilon_theta, epsilon_tau = 8, 0
-        for i in range(low_maximum_ind[0] - epsilon_theta, low_maximum_ind[0] + epsilon_theta + 1):
-            for j in range(low_maximum_ind[1], low_maximum_ind[1] + epsilon_tau + 1):
-                if high_norm_values[i, j] > maximum_value:
-                    maximum_value = high_norm_values[i, j]
-                    maximum_ind = [i, j]
-        print(low_maximum_ind,peaks[1][0],maximum_ind)
+        epsilon_theta, epsilon_tau = 5, 5
+        for local_max in zip(list(maximum_inds)):
+            maximum_ind, maximum_value = None, 0
+            for i in range(local_max[0] - epsilon_theta, local_max[0] + epsilon_theta + 1):
+                for j in range(local_max[1], local_max[1] + epsilon_tau + 1):
+                    if high_norm_values[i, j] > maximum_value:
+                        maximum_value = high_norm_values[i, j]
+                        maximum_ind = [i, j]
+            print(local_max,maximum_ind, maximum_value)
         return np.array([maximum_ind]), low_norm_values
