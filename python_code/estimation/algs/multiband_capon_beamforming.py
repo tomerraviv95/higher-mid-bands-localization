@@ -42,7 +42,7 @@ class MultiBandCaponBeamforming(CaponBeamforming):
         epsilon_theta, epsilon_tau = 3, 0
         for i in range(low_maximum_ind[0] - epsilon_theta, low_maximum_ind[0] + epsilon_theta + 1):
             for j in range(low_maximum_ind[1], low_maximum_ind[1] + epsilon_tau + 1):
-                if high_norm_values[i, j] > maximum_value:
-                    maximum_value = high_norm_values[i, j]
+                if low_norm_values[i, j] > maximum_value:
+                    maximum_value = low_norm_values[i, j]
                     maximum_ind = [i, j]
         return np.array([maximum_ind]), low_norm_values
