@@ -10,6 +10,7 @@ from python_code.estimation.parameters.time import TimeEstimator
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.constants import BandType, Estimation, coef_per_frequencies_dict
 
+DEBUG = True
 
 class AngleTimeEstimator:
     def __init__(self, bands: List[Band]):
@@ -57,6 +58,9 @@ class AngleTimeEstimator:
         # if no peaks found - return an empty estimation
         if len(self.indices) == 0:
             return Estimation(AOA=[0], TOA=[0], POWER=[0])
+        if DEBUG:
+            point = [211, 356]
+            print(self._spectrum[point[0]-3:point[0]+3,point[1]-3:point[1]+3])
         self._aoa_indices = self.indices[:, 0]
         self._toa_indices = self.indices[:, 1]
         spectrum_powers = self._spectrum[self.indices[:, 0], self.indices[:, 1]]

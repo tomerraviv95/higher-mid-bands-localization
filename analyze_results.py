@@ -30,9 +30,10 @@ marker_to_label = {0: "o",
                    2: "^"}
 
 if __name__ == "__main__":
-    input_powers = [-10,-9,-8,-7,-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+    input_powers = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
     files = ["fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[16]_band_type_SINGLE.csv",
-             "fc_[24000]_antennas_[24]_bw_[5]_subcarriers_[16]_band_type_SINGLE.csv"]
+             "fc_[24000]_antennas_[24]_bw_[5]_subcarriers_[16]_band_type_SINGLE.csv",
+             "fc_[6000, 24000]_antennas_[6, 24]_bw_[5, 10]_subcarriers_[20, 20]_band_type_MULTI.csv"]
     mean_rmse_dict = {}
     mean_errors_dict = {}
     for input_power in input_powers:
