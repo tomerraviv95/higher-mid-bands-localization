@@ -33,10 +33,8 @@ class MultiBandCaponBeamforming(CaponBeamforming):
             norm_values_list.append(norm_values)
         # if the highest frequency is in high confidence - return its peak
         if peaks[1][1] > 1.2:
-            print(1)
             return peaks[1][0], norm_values_list[1]
         # otherwise, run the spectrum refinement step
-        print(2)
         low_norm_values = norm_values_list[0]
         high_norm_values = norm_values_list[1]
         low_maximum_ind = peaks[0][0]
