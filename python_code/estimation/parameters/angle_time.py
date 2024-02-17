@@ -10,8 +10,6 @@ from python_code.estimation.parameters.time import TimeEstimator
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.constants import BandType, Estimation, coef_per_frequencies_dict
 
-DEBUG = True
-
 
 class AngleTimeEstimator:
     def __init__(self, bands: List[Band]):
@@ -52,19 +50,16 @@ class AngleTimeEstimator:
             second_dim = [len(time_dict) for time_dict in self.time_estimator.times_dict]
         else:
             second_dim = len(self.time_estimator.times_dict)
-        self.indices, self._spectrum = self.algorithm.run(y=y, n_elements=self.n_elements,
+        self.indices, self._spectrum,self.k = self.algorithm.run(y=y, n_elements=self.n_elements,
                                                           basis_vectors=self.angle_time_options,
                                                           second_dim=second_dim,
                                                           use_gpu=torch.cuda.is_available())
         # if no peaks found - return an empty estimation
         if len(self.indices) == 0:
             return Estimation(AOA=[0], TOA=[0], POWER=[0])
-        if DEBUG:
-            j=1
         self._aoa_indices = self.indices[:, 0]
         self._toa_indices = self.indices[:, 1]
         spectrum_powers = self._spectrum[self.indices[:, 0], self.indices[:, 1]]
-        print(self.indices, spectrum_powers)
         AOA = self.angle_estimator.aoa_angles_dict[self._aoa_indices]
         if self.angle_estimator.multi_band:
             TOA = self.time_estimator.times_dict[0][self._toa_indices]

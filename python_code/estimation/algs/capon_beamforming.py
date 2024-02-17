@@ -36,9 +36,9 @@ class CaponBeamforming:
         if second_dim is not None:
             norm_values = norm_values.reshape(-1, second_dim)
             maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
-            return np.array([maximum_ind]), norm_values
+            return np.array([maximum_ind]), norm_values, 0
         maximum_ind = np.argmax(norm_values)
-        return np.array([maximum_ind]), norm_values
+        return np.array([maximum_ind]), norm_values, 0
 
     def _compute_cov(self, n_elements: int, y: np.ndarray, use_gpu: bool):
         if not use_gpu:

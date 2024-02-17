@@ -1,8 +1,21 @@
 from typing import List
 
 import numpy as np
+from scipy.ndimage import label
 
 from python_code.estimation.algs import CaponBeamforming
+
+MAX_COMPONENTS = 5
+
+
+def count_components(norm_values: np.ndarray) -> int:
+    max_indices = np.argsort(norm_values, axis=None)[::-1][:MAX_COMPONENTS]
+    indices = np.array(np.unravel_index(max_indices, norm_values.shape)).T
+    image = np.zeros_like(norm_values)
+    for ind in indices:
+        image[ind[0], ind[1]] = 1
+    _, ncomponents = label(image, structure=np.array([[0, 1, 0], [1, 1, 1], [0, 1, 0]], dtype=int))
+    return ncomponents
 
 
 class MultiBandCaponBeamforming(CaponBeamforming):
@@ -29,20 +42,11 @@ class MultiBandCaponBeamforming(CaponBeamforming):
             norm_values = self._compute_capon_spectrum(basis_vectors[k], use_gpu, cov)
             norm_values = norm_values.reshape(-1, second_dim[k])
             maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
-            peaks[k] = (maximum_ind, norm_values[maximum_ind])
+            n_components = count_components(norm_values)
+            peaks[n_components] = (maximum_ind, norm_values[maximum_ind], k)
             norm_values_list.append(norm_values)
         # otherwise, run the spectrum refinement step
-        low_norm_values = norm_values_list[0]
-        maximum_inds = np.unravel_index(np.argsort(low_norm_values, axis=None)[::-1][:5], norm_values.shape)
-        print(maximum_inds, norm_values[maximum_inds[0], maximum_inds[1]])
-        high_norm_values = norm_values_list[1]
-        epsilon_theta, epsilon_tau = 5, 5
-        for local_max in zip(list(maximum_inds)):
-            maximum_ind, maximum_value = None, 0
-            for i in range(local_max[0] - epsilon_theta, local_max[0] + epsilon_theta + 1):
-                for j in range(local_max[1], local_max[1] + epsilon_tau + 1):
-                    if high_norm_values[i, j] > maximum_value:
-                        maximum_value = high_norm_values[i, j]
-                        maximum_ind = [i, j]
-            print(local_max,maximum_ind, maximum_value)
-        return np.array([maximum_ind]), low_norm_values
+        for n_components in range(1, MAX_COMPONENTS):
+            if n_components in peaks.keys():
+                maximum_ind, _, k = peaks[n_components]
+                return np.array([maximum_ind]), norm_values_list[k], k
