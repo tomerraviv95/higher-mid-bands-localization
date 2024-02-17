@@ -47,9 +47,14 @@ class MultiBandCaponBeamforming(CaponBeamforming):
                 peaks[n_components] = (maximum_ind, k)
             norm_values_list.append(norm_values)
         print(peaks)
+        maximum_ind = None
+        k = 0
         # otherwise, run the spectrum refinement step
         for n_components in range(1, MAX_COMPONENTS):
             if n_components in peaks.keys():
                 maximum_ind, k = peaks[n_components]
                 print(f"Chosen: {str(6) if k==0 else str(24)}")
-                return np.array([maximum_ind]), norm_values_list[k], k
+                break
+        if maximum_ind is None:
+            return [],norm_values_list[0], 0
+        return np.array([maximum_ind]), norm_values_list[k], k

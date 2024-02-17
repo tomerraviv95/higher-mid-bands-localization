@@ -11,7 +11,7 @@ from python_code.main import main
 plt.style.use('dark_background')
 
 if __name__ == "__main__":
-    ue_pos = np.array([145, 165])
+    ue_pos = np.array([45, 5])
     conf.ue_pos[0] = ue_pos[0]
     conf.ue_pos[1] = ue_pos[1]
     input_powers = np.arange(-50,101)
@@ -31,5 +31,6 @@ if __name__ == "__main__":
     ax = plt.gca()
     ax.set_xlabel('Power[dBm]')
     ax.set_ylabel('RMSE')
+    plt.ylim([0,50])
     plt.savefig(f'{path}.png', dpi=fig.dpi)
     plt.show()
