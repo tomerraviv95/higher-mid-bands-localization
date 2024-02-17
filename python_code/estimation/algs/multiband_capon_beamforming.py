@@ -33,16 +33,16 @@ class MultiBandCaponBeamforming(CaponBeamforming):
             norm_values_list.append(norm_values)
         # if the highest frequency is in high confidence - return its peak
         if peaks[1][1] > 1.2:
-            return peaks[1][0], norm_values_list[1]
+            return np.array([peaks[1][0]]), norm_values_list[1]
         # otherwise, run the spectrum refinement step
         low_norm_values = norm_values_list[0]
         high_norm_values = norm_values_list[1]
         low_maximum_ind = peaks[0][0]
         maximum_ind, maximum_value = None, 0
-        epsilon_theta, epsilon_tau = 3, 0
+        epsilon_theta, epsilon_tau = 4, 0
         for i in range(low_maximum_ind[0] - epsilon_theta, low_maximum_ind[0] + epsilon_theta + 1):
             for j in range(low_maximum_ind[1], low_maximum_ind[1] + epsilon_tau + 1):
-                if low_norm_values[i, j] > maximum_value:
-                    maximum_value = low_norm_values[i, j]
+                if high_norm_values[i, j] > maximum_value:
+                    maximum_value = high_norm_values[i, j]
                     maximum_ind = [i, j]
         return np.array([maximum_ind]), low_norm_values
