@@ -32,11 +32,14 @@ class MultiBandCaponBeamforming(CaponBeamforming):
             labeled, ncomponents = self.label_spectrum_by_peaks(norm_values)
             if ncomponents == 0:
                 maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
+                min_toa_components = 0
             else:
+                # each group is tuple (toa,max_power,max_ind)
                 s_groups = self.compute_peaks_groups(labeled, ncomponents, norm_values)
                 # minimal TOA, maximum power peak
                 maximum_ind = s_groups[0][2]
-            peaks[ncomponents] = (maximum_ind, k)
+                min_toa_components = len(s_groups)
+            peaks[min_toa_components] = (maximum_ind, k)
             norm_values_list.append(norm_values)
         # run the greedy peak selection phase
         for n_components in range(1, MAX_COMPONENTS + 1):

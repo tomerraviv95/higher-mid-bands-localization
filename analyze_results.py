@@ -57,5 +57,5 @@ if __name__ == "__main__":
     plt.ylabel('RMSE')
     plt.grid(which='both', ls='--')
     plt.legend(loc='upper right', prop={'size': 15})
-    plt.ylim([0, 30])
+    plt.ylim([0, 6])
     plt.show()

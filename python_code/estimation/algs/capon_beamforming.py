@@ -59,11 +59,12 @@ class CaponBeamforming:
         groups = []
         for comp_ind in range(1, 1 + ncomponents):
             group_inds = np.array(np.where(labeled == comp_ind)).T
-            min_toa = group_inds.min(axis=0)[1]
-            power = max(norm_values[group_inds[:, 0], group_inds[:, 1]])
-            group_peak = group_inds[np.argmax(norm_values[group_inds[:, 0], group_inds[:, 1]])]
-            groups.append((min_toa, power, group_peak))
-        s_groups = sorted(groups, key=lambda x: (x[0], x[1]))
+            group_toa = group_inds.min(axis=0)[1]
+            group_max_power = max(norm_values[group_inds[:, 0], group_inds[:, 1]])
+            peak_ind = group_inds[np.argmax(norm_values[group_inds[:, 0], group_inds[:, 1]])]
+            groups.append((group_toa, group_max_power, peak_ind))
+        s_groups = sorted(groups, key=lambda x: (x[0], -x[1]))
+        s_groups = list(filter(lambda x: x[0] == s_groups[0][0], s_groups))
         return s_groups
 
     def _compute_cov(self, n_elements: int, y: np.ndarray, use_gpu: bool):
