@@ -11,10 +11,10 @@ from python_code.main import main
 plt.style.use('dark_background')
 
 if __name__ == "__main__":
-    params1 = {'K':[20],'Nr_x':[6],'Nr_y':[1],'fc':[6000],'BW':[5],'band_type': 'SINGLE'}
-    params2 = {'K':[20],'Nr_x':[18],'Nr_y':[1],'fc':[24000],'BW':[10],'band_type': 'SINGLE'}
-    params3 = {'K':[ 20 ,20],'Nr_x':[ 6 ,18],'Nr_y':[ 1 ,1],'fc':[ 6000 ,24000],
-               'BW':[ 5 ,10],'band_type': 'MULTI'}
+    params1 = {'K':[40],'Nr_x':[6],'Nr_y':[1],'fc':[6000],'BW':[5],'band_type': 'SINGLE'}
+    params2 = {'K':[40],'Nr_x':[18],'Nr_y':[1],'fc':[24000],'BW':[20],'band_type': 'SINGLE'}
+    params3 = {'K':[ 40 ,40],'Nr_x':[ 6 ,18],'Nr_y':[ 1 ,1],'fc':[ 6000 ,24000],
+               'BW':[ 5 ,20],'band_type': 'MULTI'}
     params_list = [params3,params2,params1]
     for params in params_list:
         for field,value in params.items():
@@ -23,7 +23,7 @@ if __name__ == "__main__":
         ue_y_positions = range(0, 506, 5)
         csv_path = os.path.join(RAYTRACING_DIR, str(6000), f"bs{str(1)}.csv")
         csv_loaded = pd.read_csv(csv_path)
-        input_powers = range(-15,21)
+        input_powers = range(16,25,2)
         # go over multiple SNRs
         for input_power in input_powers:
             rmse_dict = {}

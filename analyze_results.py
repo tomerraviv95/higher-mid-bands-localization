@@ -30,10 +30,10 @@ marker_to_label = {0: "o",
                    2: "^"}
 
 if __name__ == "__main__":
-    input_powers = range(-15,21)
-    files = ["fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[20]_band_type_SINGLE.csv",
-             "fc_[24000]_antennas_[18]_bw_[10]_subcarriers_[20]_band_type_SINGLE.csv",
-             "fc_[6000, 24000]_antennas_[6, 18]_bw_[5, 10]_subcarriers_[20, 20]_band_type_MULTI.csv"]
+    input_powers = range(-10,25,2)
+    files = ["fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[40]_band_type_SINGLE.csv",
+             "fc_[24000]_antennas_[18]_bw_[20]_subcarriers_[40]_band_type_SINGLE.csv",
+             "fc_[6000, 24000]_antennas_[6, 18]_bw_[5, 20]_subcarriers_[40, 40]_band_type_MULTI.csv"]
     mean_rmse_dict = {}
     mean_errors_dict = {}
     for input_power in input_powers:
@@ -48,8 +48,8 @@ if __name__ == "__main__":
                 mean_errors_dict[file] = []
             mean_rmse_dict[file].append(mean_rmse)
             mean_errors_dict[file].append(mean_error)
-    ### RMSE PLOT ###
-    plt.figure()
+    # RMSE PLOT
+    fig = plt.figure()
     for i, file in enumerate(files):
         plt.plot(input_powers, mean_rmse_dict[file], label=file_to_label[i], markersize=9,
                  linewidth=3.5, color=color_to_label[i], marker=marker_to_label[i])
@@ -58,4 +58,5 @@ if __name__ == "__main__":
     plt.grid(which='both', ls='--')
     plt.legend(loc='upper right', prop={'size': 15})
     plt.ylim([0, 6])
+    fig.savefig('RMSE.png')
     plt.show()

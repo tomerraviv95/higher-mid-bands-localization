@@ -14,7 +14,7 @@ BW: [ 10 ] # BW frequency in MHz
 
 # beamforming parameters
 est_type: 'both' # 'angle','time','both'
-aoa_res: 0.5  # resolution in degrees for the azimuth dictionary
+aoa_res: 1  # resolution in degrees for the azimuth dictionary
 zoa_res: 2  # resolution in degrees for the zenith dictionary
 T_res: 0.005  # number of elements in the TIME dictionary in us
 band_type: 'SINGLE' # 'SINGLE' or 'MULTI'
