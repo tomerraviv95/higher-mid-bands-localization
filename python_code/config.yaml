@@ -6,19 +6,19 @@ input_power: 30  # dBm
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # Bands parameters
-K: [ 20 ,20] # number of subcarriers
-Nr_x: [ 6 ,18] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
-Nr_y: [ 1 ,1] # number of RX n_elements in y.
-fc: [ 6000 ,24000]  # carrier frequency in MHz
-BW: [ 5 ,10] # BW frequency in MHz
+K: [ 20 ] # number of subcarriers
+Nr_x: [ 6 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
+Nr_y: [ 1 ] # number of RX n_elements in y.
+fc: [ 6000]  # carrier frequency in MHz
+BW: [ 5 ] # BW frequency in MHz
 
 # beamforming parameters
 est_type: 'both' # 'angle','time','both'
 aoa_res: 0.5  # resolution in degrees for the azimuth dictionary
 zoa_res: 2  # resolution in degrees for the zenith dictionary
 T_res: 0.005  # number of elements in the TIME dictionary in us
-band_type: 'MULTI' # 'MULTI' or 'MULTI'
+band_type: 'SINGLE' # 'SINGLE' or 'MULTI'
 
 # general
 seed: 1 # run seed
-plot_estimation_results: True # either True or False
+plot_estimation_results: False # either True or False
