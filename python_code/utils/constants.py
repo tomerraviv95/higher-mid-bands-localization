@@ -1,6 +1,8 @@
 from collections import namedtuple
 from enum import Enum
 
+import numpy as np
+
 C = 300  # speed of light meter / micro-second
 MAX_DIST = 100  # maximum distance in meters supported in the simulation, but this could be smaller due to BW.
 DATA_COEF = 10  # increase the data of the covariance matrix to make sure the covariance is enough
@@ -10,6 +12,7 @@ L_MAX = 4  # maximum number of paths for the synthetic channel
 NF = 7  # noise figure in dB
 N_0 = -174  # dBm
 MAX_COMPONENTS = 5  # maximum detectable peaks in spectrum
+DEG = np.pi / 180
 
 Channel = namedtuple("Channel", ["scatterers", "y", "bs", "AOA", "TOA", "ZOA", "band"])
 

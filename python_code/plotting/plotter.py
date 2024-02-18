@@ -1,8 +1,11 @@
 from matplotlib import pyplot as plt
 
-from python_code.utils.constants import Channel, C, Estimation
+from python_code import conf
+from python_code.utils.constants import Channel, C, Estimation, DEG
 
 plt.style.use('dark_background')
+
+T_WINDOW, A_WINDOW = 10, 15
 
 
 def plot_angle(estimator, estimation: Estimation):
@@ -42,6 +45,8 @@ def plot_angle_time(estimator, estimation: Estimation):
     ax.set_xlabel('TIME[us]')
     ax.set_ylabel('AOA[rad]')
     plt.plot(estimation.TOA, estimation.AOA, 'ro')
+    plt.axis([estimation.TOA - T_WINDOW * conf.T_res, estimation.TOA + T_WINDOW * conf.T_res,
+              estimation.AOA - A_WINDOW * DEG, estimation.AOA + A_WINDOW * DEG])
     plt.savefig('AOA_and_delay_est.png', dpi=fig.dpi)
     plt.show()
 
