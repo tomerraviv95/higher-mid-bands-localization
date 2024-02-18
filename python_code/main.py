@@ -11,10 +11,10 @@ from python_code.plotting.plotter import print_channel
 from python_code.utils.bands_manipulation import get_bands_from_conf
 from python_code.utils.constants import EstimatorType, C
 
-np.random.seed(conf.seed)
-
 
 def main():
+    # random seed for run
+    np.random.seed(conf.seed)
     # BS locs of type [x,y]. x must be above the x-location of at least one BS.
     # The array lies on the y-axis and points towards the x-axis.
     ue_pos = np.array(conf.ue_pos)
