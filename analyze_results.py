@@ -59,13 +59,3 @@ if __name__ == "__main__":
     plt.legend(loc='upper right', prop={'size': 15})
     plt.ylim([0, 30])
     plt.show()
-    ### Error Rate PLOT ###
-    plt.figure()
-    for i, file in enumerate(files):
-        plt.plot(input_powers, mean_errors_dict[file], label=file_to_label[i], markersize=9,
-                 linewidth=3.5, color=color_to_label[i], marker=marker_to_label[i])
-    plt.xlabel('Transmitted power [dBm]')
-    plt.ylabel('Error Rate (RMSE>1m)')
-    plt.grid(which='both', ls='--')
-    plt.legend(loc='upper right', prop={'size': 15})
-    plt.show()
