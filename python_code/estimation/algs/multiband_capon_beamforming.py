@@ -1,21 +1,9 @@
 from typing import List
 
 import numpy as np
-from scipy.ndimage import label
 
 from python_code.estimation.algs import CaponBeamforming
-
-MAX_COMPONENTS = 5
-
-
-def count_components(norm_values: np.ndarray) -> int:
-    max_indices = np.argsort(norm_values, axis=None)[::-1][:MAX_COMPONENTS]
-    indices = np.array(np.unravel_index(max_indices, norm_values.shape)).T
-    image = np.zeros_like(norm_values)
-    for ind in indices:
-        image[ind[0], ind[1]] = 1
-    _, ncomponents = label(image, structure=np.array([[0, 1, 0], [1, 1, 1], [0, 1, 0]], dtype=int))
-    return ncomponents
+from python_code.utils.constants import MAX_COMPONENTS
 
 
 class MultiBandCaponBeamforming(CaponBeamforming):
@@ -41,20 +29,19 @@ class MultiBandCaponBeamforming(CaponBeamforming):
             # compute the Capon spectrum values for each basis vector per band
             norm_values = self._compute_capon_spectrum(basis_vectors[k], use_gpu, cov)
             norm_values = norm_values.reshape(-1, second_dim[k])
-            maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
-            n_components = count_components(norm_values)
-            if norm_values[maximum_ind] > self.thresh:
-                peaks[n_components] = (maximum_ind, k)
+            labeled, ncomponents = self.label_spectrum_by_peaks(norm_values)
+            if ncomponents == 0:
+                maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
+            else:
+                s_groups = self.compute_peaks_groups(labeled, ncomponents, norm_values)
+                # minimal TOA, maximum power peak
+                maximum_ind = s_groups[0][2]
+            peaks[ncomponents] = (maximum_ind, k)
             norm_values_list.append(norm_values)
-        print(peaks)
-        maximum_ind = None
-        k = 0
-        # otherwise, run the spectrum refinement step
-        for n_components in range(1, MAX_COMPONENTS):
+        # run the greedy peak selection phase
+        for n_components in range(1, MAX_COMPONENTS + 1):
             if n_components in peaks.keys():
                 maximum_ind, k = peaks[n_components]
-                print(f"Chosen: {str(6) if k==0 else str(24)}")
-                break
-        if maximum_ind is None:
-            return [],norm_values_list[0], 0
+                return np.array([maximum_ind]), norm_values_list[k], k
+        maximum_ind, k = peaks[0]
         return np.array([maximum_ind]), norm_values_list[k], k
