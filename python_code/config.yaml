@@ -1,8 +1,8 @@
 # System parameters
 scenario: 'NY' # 'SYNTHETIC' or 'NY'
-ue_pos: [ 100 , 95 ]  # TX UE position
+ue_pos: [ 95 , 105 ]  # TX UE position
 B: 1 # number of BSs, up to 3 (including)
-input_power: 20  # dBm
+input_power: 30  # dBm
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # Bands parameters
@@ -17,7 +17,7 @@ est_type: 'both' # 'angle','time','both'
 aoa_res: 0.5  # resolution in degrees for the azimuth dictionary
 zoa_res: 2  # resolution in degrees for the zenith dictionary
 T_res: 0.005  # number of elements in the TIME dictionary in us
-band_type: 'SINGLE' # 'MULTI' or 'MULTI'
+band_type: 'MULTI' # 'MULTI' or 'MULTI'
 
 # general
 seed: 1 # run seed
