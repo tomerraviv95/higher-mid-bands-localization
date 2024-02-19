@@ -11,19 +11,23 @@ from python_code.main import main
 plt.style.use('dark_background')
 
 if __name__ == "__main__":
-    params1 = {'K':[40],'Nr_x':[10],'Nr_y':[1],'fc':[12000],'BW':[10],'band_type': 'SINGLE'}
-    params2 = {'K':[40],'Nr_x':[14],'Nr_y':[1],'fc':[18000],'BW':[15],'band_type': 'SINGLE'}
-    params3 = {'K':[ 40 ,40,40,40],'Nr_x':[ 6 ,10,14,18],'Nr_y':[ 1 ,1,1,1],'fc':[ 6000 ,12000,18000,24000],
-               'BW':[ 5 ,10,15,20],'band_type': 'MULTI'}
-    params_list = [params1,params2,params3]
+    csv_path = os.path.join(RAYTRACING_DIR, str(6000), f"bs{str(1)}.csv")
+    csv_loaded = pd.read_csv(csv_path)
+    params6 = {'K':[40],'Nr_x':[6],'Nr_y':[1],'fc':[6000],'BW':[5],'band_type': 'SINGLE'}
+    params12 = {'K':[40],'Nr_x':[10],'Nr_y':[1],'fc':[12000],'BW':[10],'band_type': 'SINGLE'}
+    params18 = {'K':[40],'Nr_x':[14],'Nr_y':[1],'fc':[18000],'BW':[15],'band_type': 'SINGLE'}
+    params24 = {'K':[40],'Nr_x':[18],'Nr_y':[1],'fc':[24000],'BW':[20],'band_type': 'SINGLE'}
+    # params3 = {'K':[ 40 ,40,40,40],'Nr_x':[ 6 ,10,14,18],'Nr_y':[ 1 ,1,1,1],'fc':[ 6000 ,12000,18000,24000],
+    #            'BW':[ 5 ,10,15,20],'band_type': 'MULTI'}
+    params_list = [params24]
     for params in params_list:
         for field,value in params.items():
             conf.set_value(field=field,value=value)
-        ue_x_positions = range(0, 1121, 5)
-        ue_y_positions = range(0, 506, 5)
-        csv_path = os.path.join(RAYTRACING_DIR, str(6000), f"bs{str(1)}.csv")
-        csv_loaded = pd.read_csv(csv_path)
-        input_powers = range(-14,71,2)
+        # ue_x_positions = range(0, 1121, 5)
+        # ue_y_positions = range(0, 506, 5)
+        ue_x_positions = [75]
+        ue_y_positions = [65]
+        input_powers = range(70,71,2)
         # go over multiple SNRs
         for input_power in input_powers:
             rmse_dict = {}

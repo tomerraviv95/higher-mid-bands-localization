@@ -17,8 +17,8 @@ class AngleTimeEstimator:
         self.time_estimator = TimeEstimator(bands)
         if self.angle_estimator.multi_band:
             self.n_elements = [band.Nr_x * band.K for band in bands]
-            mat1s = [self.angle_estimator._angle_options[i].astype(np.complex64) for i in range(len(bands))]
-            mat2s = [self.time_estimator._time_options[i].astype(np.complex64) for i in range(len(bands))]
+            mat1s = [self.angle_estimator._angle_options[i] for i in range(len(bands))]
+            mat2s = [self.time_estimator._time_options[i] for i in range(len(bands))]
             self.angle_time_options = [self._single_band_constructor(mat1, mat2) for mat1, mat2 in zip(mat1s, mat2s)]
             self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](THRESH)
         else:
@@ -31,8 +31,8 @@ class AngleTimeEstimator:
         # if a GPU is available, perform the calculations on it. Note that it is imperative
         # for the 3d case, otherwise expect memory crash on a computer with 16/32 GB RAM.
         if torch.cuda.is_available():
-            tensor1 = torch.tensor(mat1, dtype=torch.cfloat).to(DEVICE)
-            tensor2 = torch.tensor(mat2, dtype=torch.cfloat).to(DEVICE)
+            tensor1 = torch.tensor(mat1).to(DEVICE)
+            tensor2 = torch.tensor(mat2).to(DEVICE)
 
             def angle_time_options_func(batch_ind: int):
                 sub_tensor1 = tensor1[batch_ind].reshape(1, -1)

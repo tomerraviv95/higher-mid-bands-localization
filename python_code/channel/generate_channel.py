@@ -24,7 +24,10 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     # Generate channel
     h = np.zeros((band.Nr_x, band.K, Ns), dtype=complex)
     if torch.cuda.is_available():
-        h = torch.tensor(h, dtype=torch.cfloat).to(DEVICE)
+        h = torch.tensor(h, dtype=torch.complex128).to(DEVICE)
+    # calculate the noise power, and instead of multiplication by the noise, divide the signal
+    BW_loss = 10 * np.log10(band.BW * MEGA)  # BW loss
+    noise_power = watt_from_dbm(NF + BW_loss + N_0)
     # for each path
     for l in range(L):
         # assume random phase beamforming
@@ -35,17 +38,16 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
         aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(band.Nr_x)).T
         if conf.channel_bandwidth == ChannelBWType.NARROWBAND.name:
             if torch.cuda.is_available():
-                delay_aoa_tensor = torch.matmul(torch.tensor(aoa_vector, dtype=torch.cfloat).to(DEVICE),
-                                                torch.tensor(delays_phase_vector, dtype=torch.cfloat).to(DEVICE))
-                delay_aoa_tensor = torch.tensor(F, dtype=torch.cfloat).to(
-                    DEVICE) * delay_aoa_tensor.unsqueeze(-1)
+                delay_aoa_tensor = torch.matmul(torch.tensor(aoa_vector).to(DEVICE),
+                                                torch.tensor(delays_phase_vector).to(DEVICE))
+                delay_aoa_tensor = torch.tensor(F).to(DEVICE) * delay_aoa_tensor.unsqueeze(-1)
                 # add for each path
-                h += watt_from_dbm(POWER[l]) * delay_aoa_tensor
+                h += watt_from_dbm(POWER[l]) / noise_power * delay_aoa_tensor
             else:
                 delay_aoa_matrix = np.matmul(aoa_vector, delays_phase_vector)
                 delay_aoa_matrix = F * delay_aoa_matrix[..., np.newaxis]
                 # add for each path
-                h += watt_from_dbm(POWER[l]) * delay_aoa_matrix
+                h += watt_from_dbm(POWER[l]) / noise_power * delay_aoa_matrix
         else:
             raise ValueError("No such type of channel BW!")
     if torch.cuda.is_available():
@@ -53,11 +55,8 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     # adding the white Gaussian noise
     normal_gaussian_noise = 1 / np.sqrt(2) * (
             np.random.randn(band.Nr_x, band.K, Ns) + 1j * np.random.randn(band.Nr_x, band.K, Ns))
-    # calculate the noise power, and instead of multiplication by the noise, divide the signal
-    BW_loss = 10 * np.log10(band.BW * MEGA)  # BW loss
-    noise_power = watt_from_dbm(NF + BW_loss + N_0)
     # finally sum up to y, the final observation
-    y = (1 / noise_power) * h + normal_gaussian_noise
+    y = h + normal_gaussian_noise
     return y
 
 

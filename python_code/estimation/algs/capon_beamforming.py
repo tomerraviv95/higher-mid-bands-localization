@@ -73,7 +73,7 @@ class CaponBeamforming:
             cov = np.linalg.inv(cov)
             cov = cov / np.linalg.norm(cov)
         else:
-            y = torch.tensor(y, dtype=torch.cfloat).to(DEVICE)
+            y = torch.tensor(y).to(DEVICE)
             cov = torch.cov(y.reshape(n_elements, -1))
             cov = torch.inverse(cov)
             cov = cov / torch.norm(cov)
@@ -86,14 +86,14 @@ class CaponBeamforming:
             norm_values = 1 / norm_values
         # do calculations on GPU - much faster for big matrices
         else:
-            cov_mat = torch.tensor(cov, dtype=torch.cfloat).to(DEVICE)
+            cov_mat = torch.tensor(cov).to(DEVICE)
             res0, max_batches = basis_vectors(batch_ind=0)
             batch_size = res0.shape[0]
-            norm_values = torch.zeros(batch_size * max_batches, dtype=torch.float).to(DEVICE)
+            norm_values = torch.zeros(batch_size * max_batches).to(DEVICE)
             for i in range(max_batches):
                 cur_basis_vectors = basis_vectors(batch_ind=i)[0]
                 norm_values[i * batch_size:(i + 1) * batch_size] = torch.linalg.norm(
                     torch.matmul(cur_basis_vectors.conj(), cov_mat)
                     * cur_basis_vectors, dim=1)
-            norm_values = (1 / norm_values).cpu().numpy().astype(float)
+            norm_values = (1 / norm_values).cpu().numpy()
         return norm_values
