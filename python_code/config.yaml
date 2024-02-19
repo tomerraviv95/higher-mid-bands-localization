@@ -2,7 +2,7 @@
 scenario: 'NY' # 'SYNTHETIC' or 'NY'
 ue_pos: [ 75 , 65 ]  # TX UE position
 B: 1 # number of BSs, up to 3 (including)
-input_power: 150  # dBm
+input_power: 0  # dBm
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # Bands parameters
@@ -20,5 +20,5 @@ T_res: 0.005  # number of elements in the TIME dictionary in us
 band_type: 'SINGLE' # 'SINGLE' or 'MULTI'
 
 # general
-seed: 2 # run seed
-plot_estimation_results: True # either True or False
+seed: 1 # run seed
+plot_estimation_results: False # either True or False

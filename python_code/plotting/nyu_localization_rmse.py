@@ -21,11 +21,11 @@ if __name__ == "__main__":
     #            'BW':[ 5 ,10,15,20],'band_type': 'MULTI'}
     params_list = [params24]
     for params in params_list:
-        for field,value in params.items():
+        for field, value in params.items():
             conf.set_value(field=field,value=value)
         ue_x_positions = range(0, 1121, 5)
         ue_y_positions = range(0, 506, 5)
-        input_powers = range(0,31,2)
+        input_powers = range(0, 31, 2)
         # go over multiple SNRs
         for input_power in input_powers:
             rmse_dict = {}
