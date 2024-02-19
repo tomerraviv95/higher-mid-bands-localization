@@ -22,27 +22,31 @@ file_to_label = {0: "6GHz Sub-band",
                  1: "12GHz Sub-band",
                  2: "18GHz Sub-band",
                  3: "24GHz Sub-band",
-                 4: "Proposed - {6,24}GHz"}
+                 4: "Proposed - {6,24}GHz",
+                 5: "Proposed - {6,12,18,24}GHz"}
 
 color_to_label = {0: "blue",
                   1: "red",
                   2: "pink",
                   3: "green",
-                  4: "black"}
+                  4: "black",
+                  5:"orange"}
 
 marker_to_label = {0: "o",
                    1: "X",
                    2: "s",
                    3: "p",
-                   4: "^"}
+                   4: "^",
+                   5: "P"}
 
 if __name__ == "__main__":
-    input_powers = range(-10, 71, 2)
+    input_powers = range(-10, 57, 2)
     files = ["fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[40]_band_type_SINGLE.csv",
              "fc_[12000]_antennas_[10]_bw_[10]_subcarriers_[40]_band_type_SINGLE.csv",
              "fc_[18000]_antennas_[14]_bw_[15]_subcarriers_[40]_band_type_SINGLE.csv",
              "fc_[24000]_antennas_[18]_bw_[20]_subcarriers_[40]_band_type_SINGLE.csv",
-             "fc_[6000, 24000]_antennas_[6, 18]_bw_[5, 20]_subcarriers_[40, 40]_band_type_MULTI.csv"]
+             "fc_[6000, 24000]_antennas_[6, 18]_bw_[5, 20]_subcarriers_[40, 40]_band_type_MULTI.csv",
+             "fc_[6000, 12000, 18000, 24000]_antennas_[6, 10, 14, 18]_bw_[5, 10, 15, 20]_subcarriers_[40, 40, 40, 40]_band_type_MULTI.csv"]
     mean_rmse_dict = {}
     mean_errors_dict = {}
     for input_power in input_powers:
@@ -65,7 +69,7 @@ if __name__ == "__main__":
     plt.xlabel('Transmitted power [dBm]')
     plt.ylabel('RMSE')
     plt.grid(which='both', ls='--')
-    plt.legend(loc='lower right', prop={'size': 15})
+    plt.legend(loc='upper left', prop={'size': 15})
     plt.ylim([0, 10])
-    fig.savefig('RMSE.png')
+    fig.savefig('RMSE_all.png')
     plt.show()
