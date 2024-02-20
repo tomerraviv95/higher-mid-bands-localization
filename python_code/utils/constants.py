@@ -11,7 +11,7 @@ MEGA = 10 ** 6  # for the mega hertz frequencies
 L_MAX = 4  # maximum number of paths for the synthetic channel
 NF = 7  # noise figure in dB
 N_0 = -174  # dBm
-MAX_COMPONENTS = 5  # maximum detectable peaks in spectrum
+MAX_COMPONENTS = 25  # maximum detectable peaks in spectrum
 DEG = np.pi / 180
 
 Channel = namedtuple("Channel", ["scatterers", "y", "bs", "AOA", "TOA", "ZOA", "band"])

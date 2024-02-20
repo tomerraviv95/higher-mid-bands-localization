@@ -1,8 +1,8 @@
 # System parameters
 scenario: 'NY' # 'SYNTHETIC' or 'NY'
-ue_pos: [ 75 , 65 ]  # TX UE position
+ue_pos: [ 230 , 335 ]  # TX UE position
 B: 1 # number of BSs, up to 3 (including)
-input_power: 60  # dBm
+input_power: 62  # dBm
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # Bands parameters
@@ -21,4 +21,4 @@ band_type: 'SINGLE' # 'SINGLE' or 'MULTI'
 
 # general
 seed: 1 # run seed
-plot_estimation_results: False # either True or False
+plot_estimation_results: True # either True or False
