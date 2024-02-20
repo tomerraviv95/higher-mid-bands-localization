@@ -40,13 +40,12 @@ marker_to_label = {0: "o",
                    5: "P"}
 
 if __name__ == "__main__":
-    input_powers = range(-10, 57, 2)
+    input_powers = range(-10, 81, 4)
     files = ["fc_[6000]_antennas_[6]_bw_[5]_subcarriers_[40]_band_type_SINGLE.csv",
              "fc_[12000]_antennas_[10]_bw_[10]_subcarriers_[40]_band_type_SINGLE.csv",
              "fc_[18000]_antennas_[14]_bw_[15]_subcarriers_[40]_band_type_SINGLE.csv",
-             "fc_[24000]_antennas_[18]_bw_[20]_subcarriers_[40]_band_type_SINGLE.csv",
-             "fc_[6000, 24000]_antennas_[6, 18]_bw_[5, 20]_subcarriers_[40, 40]_band_type_MULTI.csv",
-             "fc_[6000, 12000, 18000, 24000]_antennas_[6, 10, 14, 18]_bw_[5, 10, 15, 20]_subcarriers_[40, 40, 40, 40]_band_type_MULTI.csv"]
+             "fc_[24000]_antennas_[18]_bw_[20]_subcarriers_[40]_band_type_SINGLE.csv"]
+             # "fc_[6000, 24000]_antennas_[6, 18]_bw_[5, 20]_subcarriers_[40, 40]_band_type_MULTI.csv"]
     mean_rmse_dict = {}
     mean_errors_dict = {}
     for input_power in input_powers:
@@ -70,6 +69,6 @@ if __name__ == "__main__":
     plt.ylabel('RMSE')
     plt.grid(which='both', ls='--')
     plt.legend(loc='upper left', prop={'size': 15})
-    plt.ylim([0, 10])
+    plt.ylim([0, 20])
     fig.savefig('RMSE_all.png')
     plt.show()
