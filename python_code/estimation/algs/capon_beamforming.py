@@ -6,14 +6,6 @@ from python_code import DEVICE
 from python_code.utils.constants import MAX_COMPONENTS
 
 
-def get_neighbors(ind, indices):
-    neighbors = []
-    for neigh_ind in indices:
-        if abs(ind[0] - neigh_ind[0]) < 4 and abs(ind[1] - neigh_ind[1]) < 3:
-            neighbors.append(neigh_ind)
-    return neighbors
-
-
 class CaponBeamforming:
     """
     The Capon Beamformer.
