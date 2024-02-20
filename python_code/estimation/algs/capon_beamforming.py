@@ -6,6 +6,14 @@ from python_code import DEVICE
 from python_code.utils.constants import MAX_COMPONENTS
 
 
+def get_neighbors(ind, indices):
+    neighbors = []
+    for neigh_ind in indices:
+        if abs(ind[0] - neigh_ind[0]) < 4 and abs(ind[1] - neigh_ind[1]) < 3:
+            neighbors.append(neigh_ind)
+    return neighbors
+
+
 class CaponBeamforming:
     """
     The Capon Beamformer.
@@ -48,9 +56,10 @@ class CaponBeamforming:
     def label_spectrum_by_peaks(self, norm_values):
         max_indices = np.argsort(norm_values, axis=None)[::-1][:MAX_COMPONENTS]
         indices = np.array(np.unravel_index(max_indices, norm_values.shape)).T
+        max_val = norm_values[indices[0][0], indices[0][1]]
         image = np.zeros_like(norm_values)
         for ind in indices:
-            if norm_values[ind[0], ind[1]] > self.thresh:
+            if image[ind[0], ind[1]] > max(0.3 * max_val,self.thresh):
                 image[ind[0], ind[1]] = 1
         labeled, ncomponents = label(image, structure=np.array([[0, 1, 0], [1, 1, 1], [0, 1, 0]], dtype=int))
         return labeled, ncomponents
@@ -59,6 +68,7 @@ class CaponBeamforming:
         groups = []
         for comp_ind in range(1, 1 + ncomponents):
             group_inds = np.array(np.where(labeled == comp_ind)).T
+            print(len(group_inds))
             group_toa = group_inds.min(axis=0)[1]
             group_max_power = max(norm_values[group_inds[:, 0], group_inds[:, 1]])
             peak_ind = group_inds[np.argmax(norm_values[group_inds[:, 0], group_inds[:, 1]])]
