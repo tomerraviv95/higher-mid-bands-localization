@@ -51,7 +51,7 @@ class CaponBeamforming:
         max_val = norm_values[indices[0][0], indices[0][1]]
         image = np.zeros_like(norm_values)
         for ind in indices:
-            if image[ind[0], ind[1]] > max(0.3 * max_val,self.thresh):
+            if norm_values[ind[0], ind[1]] > max(0.3 * max_val, self.thresh):
                 image[ind[0], ind[1]] = 1
         labeled, ncomponents = label(image, structure=np.array([[0, 1, 0], [1, 1, 1], [0, 1, 0]], dtype=int))
         return labeled, ncomponents
