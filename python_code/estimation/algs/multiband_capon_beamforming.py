@@ -29,6 +29,7 @@ class MultiBandCaponBeamforming(CaponBeamforming):
             norm_values = self._compute_capon_spectrum(basis_vectors[k], use_gpu, cov)
             norm_values = norm_values.reshape(-1, second_dim[k])
             maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
+            norm_values_list.append(norm_values)
             if norm_values[maximum_ind[0], maximum_ind[1]] > self.thresh:
                 min_toa = maximum_ind[1]
                 peaks.append((maximum_ind, min_toa, k))
