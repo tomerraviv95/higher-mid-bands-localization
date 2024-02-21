@@ -56,7 +56,9 @@ def main():
     print(f"Estimated Position: {est_ue_pos}")
     rmse = mean_squared_error(ue_pos, est_ue_pos, squared=False)
     print(f"RMSE: {rmse}, AOA: {estimations[0].AOA[0]}, TOA: {estimations[0].TOA[0]}")
-    return rmse, estimations[0].AOA[0], estimations[0].TOA[0]
+    gt = (bs_ue_channels[0].AOA[0], bs_ue_channels[0].TOA[0])
+    est = (estimations[0].AOA[0], estimations[0].TOA[0])
+    return rmse, gt, est
 
 
 if __name__ == "__main__":
