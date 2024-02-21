@@ -19,4 +19,4 @@ band_type: 'SINGLE' # 'SINGLE' or 'MULTI'
 
 # general
 seed: 1 # run seed
-plot_estimation_results: True # either True or False
+plot_estimation_results: False # either True or False
