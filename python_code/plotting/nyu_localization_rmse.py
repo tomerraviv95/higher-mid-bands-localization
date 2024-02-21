@@ -19,15 +19,14 @@ if __name__ == "__main__":
     params24 = {'K': [40], 'Nr': [20], 'fc': [24000], 'BW': [20], 'band_type': 'SINGLE'}
     params6_24 = {'K': [40, 40, 40, 40], 'Nr': [5, 10, 15, 20], 'fc': [6000, 12000, 18000, 24000],
                   'BW': [5, 10, 15, 20], 'band_type': 'MULTI'}
-    params_list = [params6, params12, params18, params24]
-    params_list = [params6_24]
+    params_list = [params6, params12, params18, params24,params6_24]
     for params in params_list:
         for field, value in params.items():
             conf.set_value(field=field, value=value)
         ue_x_positions = range(0, 1121, 5)
         ue_y_positions = range(0, 506, 5)
         count = 0
-        input_powers = range(100, 101, 10)
+        input_powers = range(0, 71, 10)
         # go over multiple SNRs
         for input_power in input_powers:
             rmse_dict = {}
