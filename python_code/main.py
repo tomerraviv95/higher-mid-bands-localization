@@ -29,7 +29,7 @@ def main():
     # ------------------------------------- #
     # Physical Parameters' Estimation Phase #
     # ------------------------------------- #
-    estimations, per_band_y, bs_locs = [], [], []
+    estimations, per_band_y, bs_locs, bs_ue_channels = [], [], [], []
     # for each bs
     for b in range(1, conf.B + 1):
         # for each frequency sub-band
@@ -41,6 +41,7 @@ def main():
                 bs_locs.append(bs_ue_channel.bs)
             # append to list
             per_band_y.append(bs_ue_channel.y)
+            bs_ue_channels.append(bs_ue_channel)
         estimation, estimator = estimate_physical_parameters[conf.band_type](per_band_y, bands, estimator_type)
         estimations.append(estimation)
         printer_main(bs_ue_channel, estimation, estimator, estimator_type)
@@ -54,8 +55,10 @@ def main():
     est_ue_pos = optimize_to_estimate_position(np.array(bs_locs), estimations)
     print(f"Estimated Position: {est_ue_pos}")
     rmse = mean_squared_error(ue_pos, est_ue_pos, squared=False)
-    print(f"RMSE: {rmse}")
-    return rmse
+    aoa_rmse = abs(estimations[0].AOA[0]-bs_ue_channels[0].AOA[0])
+    toa_rmse = abs(estimations[0].TOA[0]-bs_ue_channels[0].TOA[0])
+    print(f"RMSE: {rmse}, AOA Abs Error: {aoa_rmse}, TOA Abs Error: {toa_rmse}")
+    return rmse, aoa_rmse, toa_rmse
 
 
 if __name__ == "__main__":

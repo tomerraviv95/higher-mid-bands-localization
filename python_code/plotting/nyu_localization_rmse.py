@@ -17,14 +17,15 @@ if __name__ == "__main__":
     params12 = {'K': [40], 'Nr': [10], 'fc': [12000], 'BW': [10], 'band_type': 'SINGLE'}
     params18 = {'K': [40], 'Nr': [15], 'fc': [18000], 'BW': [15], 'band_type': 'SINGLE'}
     params24 = {'K': [40], 'Nr': [20], 'fc': [24000], 'BW': [20], 'band_type': 'SINGLE'}
-    params6_24 = {'K': [40,40], 'Nr': [5,20], 'fc': [6000,24000], 'BW': [5,20], 'band_type': 'MULTI'}
-    params_list = [params6_24]
+    params6_24 = {'K': [40, 40], 'Nr': [5, 20], 'fc': [6000, 24000], 'BW': [5, 20], 'band_type': 'MULTI'}
+    params_list = [params6,params12,params18,params24]
     for params in params_list:
         for field, value in params.items():
             conf.set_value(field=field, value=value)
         ue_x_positions = range(0, 1121, 5)
         ue_y_positions = range(0, 506, 5)
-        input_powers = range(0, 251, 10)
+        count = 0
+        input_powers = range(100, 101, 10)
         # go over multiple SNRs
         for input_power in input_powers:
             rmse_dict = {}
@@ -32,6 +33,8 @@ if __name__ == "__main__":
             # for multiple locations of the UE
             for ue_pos_x in ue_x_positions:
                 for ue_pos_y in ue_y_positions:
+                    if count > 10:
+                        break
                     ue_pos = np.array([ue_pos_x, ue_pos_y])
                     row_ind = csv_loaded.index[(csv_loaded[['rx_x', 'rx_y']] == ue_pos).all(axis=1)].item()
                     row = csv_loaded.iloc[row_ind]
@@ -41,9 +44,11 @@ if __name__ == "__main__":
                     print('******' * 5)
                     conf.ue_pos[0] = ue_pos_x
                     conf.ue_pos[1] = ue_pos_y
-                    rmse = main()
-                    rmse_dict[(ue_pos_x, ue_pos_y)] = [rmse, rmse > 1]
-            rmse_df = pd.DataFrame.from_dict(rmse_dict, orient='index', columns=['RMSE', 'Error > 1m'])
+                    rmse, aoa_rmse, toa_rmse = main()
+                    rmse_dict[(ue_pos_x, ue_pos_y)] = [rmse, aoa_rmse, toa_rmse]
+                    count+=1
+            rmse_df = pd.DataFrame.from_dict(rmse_dict, orient='index',
+                                             columns=['Position RMSE', 'AOA RMSE', 'TOA RMSE'])
             rmse_df.loc['mean'] = rmse_df.mean()
             path = f"{NY_DIR}/{str(input_power)}/fc_{conf.fc}_antennas_{conf.Nr}_bw_{conf.BW}_subcarriers_{conf.K}.csv"
             if not os.path.exists(f"{NY_DIR}/{str(input_power)}"):
