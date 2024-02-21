@@ -70,15 +70,15 @@ class CaponBeamforming:
         return s_groups
 
     def _compute_cov(self, n_elements: int, y: np.ndarray, use_gpu: bool):
+        cov = np.cov(y.reshape(n_elements, -1))
         if not use_gpu:
-            cov = np.cov(y.reshape(n_elements, -1))
             cov = np.linalg.inv(cov)
             cov = cov / np.linalg.norm(cov)
         else:
-            y = torch.tensor(y).to(DEVICE)
-            cov = torch.cov(y.reshape(n_elements, -1))
-            cov = torch.inverse(cov)
-            cov = cov / torch.norm(cov)
+            cov = torch.tensor(cov).to(DEVICE)
+            cov = torch.linalg.inv(cov)
+            cov = cov / torch.linalg.norm(cov)
+            cov = cov.type(torch.cfloat)
         return cov
 
     def _compute_capon_spectrum(self, basis_vectors: np.ndarray, use_gpu: bool, cov: np.ndarray):
@@ -88,13 +88,12 @@ class CaponBeamforming:
             norm_values = 1 / norm_values
         # do calculations on GPU - much faster for big matrices
         else:
-            cov_mat = torch.tensor(cov).type(torch.cfloat).to(DEVICE)
             res0, max_batches = basis_vectors(batch_ind=0)
             batch_size = res0.shape[0]
             norm_values = torch.zeros(batch_size * max_batches).to(DEVICE)
             for i in range(max_batches):
                 cur_basis_vectors = basis_vectors(batch_ind=i)[0].type(torch.cfloat)
-                multiplication = torch.matmul(cur_basis_vectors.conj(), cov_mat)
+                multiplication = torch.matmul(cur_basis_vectors.conj(), cov)
                 norm_values[i * batch_size:(i + 1) * batch_size] = torch.linalg.norm(multiplication * cur_basis_vectors,
                                                                                      dim=1)
             norm_values = (1 / norm_values).cpu().numpy()
