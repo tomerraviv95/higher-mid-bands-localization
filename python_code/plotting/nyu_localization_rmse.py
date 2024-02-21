@@ -18,7 +18,7 @@ if __name__ == "__main__":
     params18 = {'K': [40], 'Nr': [15], 'fc': [18000], 'BW': [15], 'band_type': 'SINGLE'}
     params24 = {'K': [40], 'Nr': [20], 'fc': [24000], 'BW': [20], 'band_type': 'SINGLE'}
     params6_24 = {'K': [40, 40], 'Nr': [5, 20], 'fc': [6000, 24000], 'BW': [5, 20], 'band_type': 'MULTI'}
-    params_list = [params6,params12,params18,params24]
+    params_list = [params6, params12, params18, params24]
     for params in params_list:
         for field, value in params.items():
             conf.set_value(field=field, value=value)
@@ -46,7 +46,7 @@ if __name__ == "__main__":
                     conf.ue_pos[1] = ue_pos_y
                     rmse, aoa_rmse, toa_rmse = main()
                     rmse_dict[(ue_pos_x, ue_pos_y)] = [rmse, aoa_rmse, toa_rmse]
-                    count+=1
+                    count += 1
             rmse_df = pd.DataFrame.from_dict(rmse_dict, orient='index',
                                              columns=['Position RMSE', 'AOA RMSE', 'TOA RMSE'])
             rmse_df.loc['mean'] = rmse_df.mean()
