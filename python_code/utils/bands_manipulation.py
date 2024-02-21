@@ -3,7 +3,7 @@ from collections import namedtuple
 from python_code import conf
 from python_code.utils.constants import BandType
 
-Band = namedtuple('Band', ['fc', 'Nr_x', 'Nr_y', 'K', 'BW'])
+Band = namedtuple('Band', ['fc', 'Nr', 'K', 'BW'])
 
 
 def get_bands_from_conf():
@@ -12,8 +12,8 @@ def get_bands_from_conf():
     Each band shall hold the frequency fc, number of antennas, number of subcarriers and BW
     """
     bands = []
-    for fc, Nr_x, Nr_y, K, BW in zip(conf.fc, conf.Nr_x, conf.Nr_y, conf.K, conf.BW):
-        band = Band(fc=fc, Nr_x=Nr_x, Nr_y=Nr_y, K=K, BW=BW)
+    for fc, Nr, K, BW in zip(conf.fc, conf.Nr, conf.K, conf.BW):
+        band = Band(fc=fc, Nr=Nr, K=K, BW=BW)
         bands.append(band)
     if len(bands) == 1:
         assert conf.band_type == BandType.SINGLE.name

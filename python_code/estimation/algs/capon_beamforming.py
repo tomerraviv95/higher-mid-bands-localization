@@ -34,14 +34,15 @@ class CaponBeamforming:
         # find the peaks in the spectrum
         if second_dim is not None:
             norm_values = norm_values.reshape(-1, second_dim)
-            labeled, ncomponents = self.label_spectrum_by_peaks(norm_values)
-            if ncomponents == 0:
-                maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
-                return np.array([maximum_ind]), norm_values, 0
-            s_groups = self.compute_peaks_groups(labeled, ncomponents, norm_values)
-            # minimal TOA, maximum power peak
-            maximum_ind = s_groups[0][2]
+            maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
             return np.array([maximum_ind]), norm_values, 0
+            #
+            # labeled, ncomponents = self.label_spectrum_by_peaks(norm_values)
+            # if ncomponents == 0:
+            # s_groups = self.compute_peaks_groups(labeled, ncomponents, norm_values)
+            # # minimal TOA, maximum power peak
+            # maximum_ind = s_groups[0][2]
+            # return np.array([maximum_ind]), norm_values, 0
         maximum_ind = np.argmax(norm_values)
         return np.array([maximum_ind]), norm_values, 0
 
@@ -60,7 +61,6 @@ class CaponBeamforming:
         groups = []
         for comp_ind in range(1, 1 + ncomponents):
             group_inds = np.array(np.where(labeled == comp_ind)).T
-            print(len(group_inds))
             group_toa = group_inds.min(axis=0)[1]
             group_max_power = max(norm_values[group_inds[:, 0], group_inds[:, 1]])
             peak_ind = group_inds[np.argmax(norm_values[group_inds[:, 0], group_inds[:, 1]])]

@@ -24,7 +24,7 @@ if __name__ == "__main__":
     rmse_df = pd.DataFrame.from_dict(rmse_dict, orient='index', columns=['RMSE', 'Error > 1m'])
     if not os.path.exists(f"{NY_DIR}/{ue_pos}"):
         os.makedirs(f"{NY_DIR}/{ue_pos}", exist_ok=True)
-    path = f"{NY_DIR}/{ue_pos}/fc_{conf.fc}_antennas_{conf.Nr_x}_bw_{conf.BW}_subcarriers_{conf.K}_band_type_{conf.band_type}"
+    path = f"{NY_DIR}/{ue_pos}/fc_{conf.fc}_antennas_{conf.Nr}_bw_{conf.BW}_subcarriers_{conf.K}_band_type_{conf.band_type}"
     rmse_df.to_csv(f"{path}.csv")
     fig = plt.figure()
     plt.plot(input_powers, [rmse_dict[power] for power in input_powers])

@@ -20,9 +20,9 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     # extract number of detectable paths
     L = len(POWER)
     # For the covariance to have full rank we need to have enough samples, strictly more than the dimensions
-    Ns = int(band.Nr_x * band.K * DATA_COEF)
+    Ns = int(band.Nr * band.K * DATA_COEF)
     # Generate channel
-    h = np.zeros((band.Nr_x, band.K, Ns), dtype=complex)
+    h = np.zeros((band.Nr, band.K, Ns), dtype=complex)
     if torch.cuda.is_available():
         h = torch.tensor(h, dtype=torch.complex128).to(DEVICE)
     # calculate the noise power, and instead of multiplication by the noise, divide the signal
@@ -35,7 +35,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
         # phase delay for the K subcarriers
         delays_phase_vector = compute_time_options(band.fc, band.K, band.BW, np.array([TOA[l]]))
         # different phase in each antennas element
-        aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(band.Nr_x)).T
+        aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(band.Nr)).T
         if conf.channel_bandwidth == ChannelBWType.NARROWBAND.name:
             if torch.cuda.is_available():
                 delay_aoa_tensor = torch.matmul(torch.tensor(aoa_vector).to(DEVICE),
@@ -54,7 +54,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
         h = h.cpu().numpy()
     # adding the white Gaussian noise
     normal_gaussian_noise = 1 / np.sqrt(2) * (
-            np.random.randn(band.Nr_x, band.K, Ns) + 1j * np.random.randn(band.Nr_x, band.K, Ns))
+            np.random.randn(band.Nr, band.K, Ns) + 1j * np.random.randn(band.Nr, band.K, Ns))
     # finally sum up to y, the final observation
     y = h + normal_gaussian_noise
     return y

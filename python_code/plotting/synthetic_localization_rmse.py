@@ -28,5 +28,5 @@ if __name__ == "__main__":
     plt.xticks(range(len(ue_x_positions)), ue_x_positions)
     plt.ylabel('Y location')
     plt.yticks(range(1, len(ue_y_positions) + 1), ue_y_positions[::-1])
-    name = f"{ROOT_DIR}/rmse_synthetic_fc_{conf.fc}_antennas_{conf.Nr_x}_bw_{conf.BW}_subcarriers_{conf.K}.png"
+    name = f"{ROOT_DIR}/rmse_synthetic_fc_{conf.fc}_antennas_{conf.Nr}_bw_{conf.BW}_subcarriers_{conf.K}.png"
     plt.savefig(name, dpi=fig.dpi)
