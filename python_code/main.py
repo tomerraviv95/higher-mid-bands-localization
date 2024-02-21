@@ -55,10 +55,8 @@ def main():
     est_ue_pos = optimize_to_estimate_position(np.array(bs_locs), estimations)
     print(f"Estimated Position: {est_ue_pos}")
     rmse = mean_squared_error(ue_pos, est_ue_pos, squared=False)
-    aoa_rmse = abs(estimations[0].AOA[0]-bs_ue_channels[0].AOA[0])
-    toa_rmse = abs(estimations[0].TOA[0]-bs_ue_channels[0].TOA[0])
-    print(f"RMSE: {rmse}, AOA Abs Error: {aoa_rmse}, TOA Abs Error: {toa_rmse}")
-    return rmse, aoa_rmse, toa_rmse
+    print(f"RMSE: {rmse}, AOA: {estimations[0].AOA[0]}, TOA: {estimations[0].TOA[0]}")
+    return rmse, estimations[0].AOA[0], estimations[0].TOA[0]
 
 
 if __name__ == "__main__":
