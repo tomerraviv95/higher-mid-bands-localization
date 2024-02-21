@@ -33,7 +33,7 @@ if __name__ == "__main__":
             # for multiple locations of the UE
             for ue_pos_x in ue_x_positions:
                 for ue_pos_y in ue_y_positions:
-                    if count > 10:
+                    if count > 30:
                         break
                     ue_pos = np.array([ue_pos_x, ue_pos_y])
                     row_ind = csv_loaded.index[(csv_loaded[['rx_x', 'rx_y']] == ue_pos).all(axis=1)].item()
