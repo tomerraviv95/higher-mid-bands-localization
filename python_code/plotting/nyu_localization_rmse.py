@@ -17,8 +17,8 @@ if __name__ == "__main__":
     params12 = {'K': [40], 'Nr': [10], 'fc': [12000], 'BW': [10], 'band_type': 'SINGLE'}
     params18 = {'K': [40], 'Nr': [15], 'fc': [18000], 'BW': [15], 'band_type': 'SINGLE'}
     params24 = {'K': [40], 'Nr': [20], 'fc': [24000], 'BW': [20], 'band_type': 'SINGLE'}
-    params6_24 = {'K': [40], 'Nr': [5,20], 'fc': [6000,24000], 'BW': [5,20], 'band_type': 'MULTI'}
-    params_list = [params6,params12,params18,params24,params6_24]
+    params6_24 = {'K': [40,40], 'Nr': [5,20], 'fc': [6000,24000], 'BW': [5,20], 'band_type': 'MULTI'}
+    params_list = [params6_24]
     for params in params_list:
         for field, value in params.items():
             conf.set_value(field=field, value=value)

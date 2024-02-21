@@ -40,12 +40,12 @@ marker_to_label = {0: "o",
                    5: "P"}
 
 if __name__ == "__main__":
-    input_powers = range(0, 101, 10)
+    input_powers = range(0, 251, 10)
     files = ["fc_[6000]_antennas_[5]_bw_[5]_subcarriers_[40]_band_type_SINGLE.csv",
              "fc_[12000]_antennas_[10]_bw_[10]_subcarriers_[40]_band_type_SINGLE.csv",
-             "fc_[18000]_antennas_[15]_bw_[15]_subcarriers_[40]_band_type_SINGLE.csv"]
-             # "fc_[24000]_antennas_[18]_bw_[20]_subcarriers_[40]_band_type_SINGLE.csv",
-             # "fc_[6000, 24000]_antennas_[6, 18]_bw_[5, 20]_subcarriers_[40, 40]_band_type_MULTI.csv"]
+             "fc_[18000]_antennas_[15]_bw_[15]_subcarriers_[40]_band_type_SINGLE.csv",
+             "fc_[24000]_antennas_[20]_bw_[20]_subcarriers_[40]_band_type_SINGLE.csv",
+             "fc_[6000, 24000]_antennas_[5, 20]_bw_[5, 20]_subcarriers_[40, 40]_band_type_MULTI.csv"]
     mean_rmse_dict = {}
     mean_errors_dict = {}
     for input_power in input_powers:
