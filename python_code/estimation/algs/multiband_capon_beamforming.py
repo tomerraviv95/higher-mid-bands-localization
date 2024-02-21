@@ -3,7 +3,6 @@ from typing import List
 import numpy as np
 
 from python_code.estimation.algs import CaponBeamforming
-from python_code.utils.constants import MAX_COMPONENTS
 
 
 class MultiBandCaponBeamforming(CaponBeamforming):
@@ -22,29 +21,19 @@ class MultiBandCaponBeamforming(CaponBeamforming):
         """
         K = len(y)
         norm_values_list = []
-        peaks = {}
+        peaks = []
         for k in range(K):
             # compute inverse covariance matrix
             cov = self._compute_cov(n_elements[k], y[k], use_gpu)
             # compute the Capon spectrum values for each basis vector per band
             norm_values = self._compute_capon_spectrum(basis_vectors[k], use_gpu, cov)
             norm_values = norm_values.reshape(-1, second_dim[k])
-            labeled, ncomponents = self.label_spectrum_by_peaks(norm_values)
-            if ncomponents == 0:
-                maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
-                min_toa_components = 0
-            else:
-                # each group is tuple (toa,max_power,max_ind)
-                s_groups = self.compute_peaks_groups(labeled, ncomponents, norm_values)
-                # minimal TOA, maximum power peak
-                maximum_ind = s_groups[0][2]
-                min_toa_components = len(s_groups)
-            peaks[min_toa_components] = (maximum_ind, k)
-            norm_values_list.append(norm_values)
-        # run the greedy peak selection phase
-        for n_components in range(1, MAX_COMPONENTS + 1):
-            if n_components in peaks.keys():
-                maximum_ind, k = peaks[n_components]
-                return np.array([maximum_ind]), norm_values_list[k], k
-        maximum_ind, k = peaks[0]
-        return np.array([maximum_ind]), norm_values_list[k], k
+            maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
+            if norm_values[maximum_ind[0], maximum_ind[1]] > self.thresh:
+                min_toa = maximum_ind[1]
+                peaks.append((maximum_ind, min_toa, k))
+        # sort by min toa, then band
+        s_peaks = sorted(peaks, key=lambda x: (x[1], -x[2]))
+        global_peak = s_peaks[0][0]
+        k = s_peaks[0][2]
+        return np.array([global_peak]), norm_values_list[k], k

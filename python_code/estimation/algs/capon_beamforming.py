@@ -36,38 +36,8 @@ class CaponBeamforming:
             norm_values = norm_values.reshape(-1, second_dim)
             maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
             return np.array([maximum_ind]), norm_values, 0
-            #
-            # labeled, ncomponents = self.label_spectrum_by_peaks(norm_values)
-            # if ncomponents == 0:
-            # s_groups = self.compute_peaks_groups(labeled, ncomponents, norm_values)
-            # # minimal TOA, maximum power peak
-            # maximum_ind = s_groups[0][2]
-            # return np.array([maximum_ind]), norm_values, 0
         maximum_ind = np.argmax(norm_values)
         return np.array([maximum_ind]), norm_values, 0
-
-    def label_spectrum_by_peaks(self, norm_values):
-        max_indices = np.argsort(norm_values, axis=None)[::-1][:MAX_COMPONENTS]
-        indices = np.array(np.unravel_index(max_indices, norm_values.shape)).T
-        max_val = norm_values[indices[0][0], indices[0][1]]
-        image = np.zeros_like(norm_values)
-        for ind in indices:
-            if norm_values[ind[0], ind[1]] > max(0.3 * max_val, self.thresh):
-                image[ind[0], ind[1]] = 1
-        labeled, ncomponents = label(image, structure=np.array([[0, 1, 0], [1, 1, 1], [0, 1, 0]], dtype=int))
-        return labeled, ncomponents
-
-    def compute_peaks_groups(self, labeled, ncomponents, norm_values):
-        groups = []
-        for comp_ind in range(1, 1 + ncomponents):
-            group_inds = np.array(np.where(labeled == comp_ind)).T
-            group_toa = group_inds.min(axis=0)[1]
-            group_max_power = max(norm_values[group_inds[:, 0], group_inds[:, 1]])
-            peak_ind = group_inds[np.argmax(norm_values[group_inds[:, 0], group_inds[:, 1]])]
-            groups.append((group_toa, group_max_power, peak_ind))
-        s_groups = sorted(groups, key=lambda x: (x[0], -x[1]))
-        s_groups = list(filter(lambda x: x[0] == s_groups[0][0], s_groups))
-        return s_groups
 
     def _compute_cov(self, n_elements: int, y: np.ndarray, use_gpu: bool):
         cov = np.cov(y.reshape(n_elements, -1))
