@@ -48,7 +48,7 @@ if __name__ == "__main__":
                     rmse_dict[(ue_pos_x, ue_pos_y)] = [rmse, aoa_rmse, toa_rmse]
                     count += 1
             rmse_df = pd.DataFrame.from_dict(rmse_dict, orient='index',
-                                             columns=['Position RMSE', 'AOA RMSE', 'TOA RMSE'])
+                                             columns=['Position RMSE', 'AOA', 'TOA'])
             rmse_df.loc['mean'] = rmse_df.mean()
             path = f"{NY_DIR}/{str(input_power)}/fc_{conf.fc}_antennas_{conf.Nr}_bw_{conf.BW}_subcarriers_{conf.K}.csv"
             if not os.path.exists(f"{NY_DIR}/{str(input_power)}"):
