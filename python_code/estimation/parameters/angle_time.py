@@ -34,9 +34,10 @@ class AngleTimeEstimator:
             tensor1 = torch.tensor(mat1).to(DEVICE)
             tensor2 = torch.tensor(mat2).to(DEVICE)
 
-            def angle_time_options_func(batch_ind: int):
-                sub_tensor1 = tensor1[batch_ind].reshape(1, -1)
-                return torch.kron(sub_tensor1.contiguous(), tensor2.contiguous()), tensor1.shape[0]
+            def angle_time_options_func(batch_ind_start: int,batch_ind_end: int):
+                max_batches = tensor1.shape[0]
+                sub_tensor1 = tensor1[batch_ind_start: batch_ind_end]
+                return torch.kron(sub_tensor1.contiguous(), tensor2.contiguous()), max_batches
 
             angle_time_options = angle_time_options_func
         else:

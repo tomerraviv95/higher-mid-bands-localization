@@ -26,7 +26,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     if torch.cuda.is_available():
         h = torch.tensor(h, dtype=torch.complex128).to(DEVICE)
     # calculate the noise power, and instead of multiplication by the noise, divide the signal
-    BW_loss = 10 * np.log10(band.BW * MEGA)  # BW loss
+    BW_loss = 10 * np.log10(band.BW * MEGA)  # BW loss in dB
     noise_power = watt_from_dbm(NF + BW_loss + N_0)
     # for each path
     for l in range(L):

@@ -5,6 +5,7 @@ from scipy.ndimage import label
 from python_code import DEVICE
 from python_code.utils.constants import MAX_COMPONENTS
 
+STEPS = 200
 
 class CaponBeamforming:
     """
@@ -58,13 +59,13 @@ class CaponBeamforming:
             norm_values = 1 / norm_values
         # do calculations on GPU - much faster for big matrices
         else:
-            res0, max_batches = basis_vectors(batch_ind=0)
+            res0, max_batches = basis_vectors(batch_ind_start=0,batch_ind_end=1)
             batch_size = res0.shape[0]
             norm_values = torch.zeros(batch_size * max_batches).to(DEVICE)
-            for i in range(max_batches):
-                cur_basis_vectors = basis_vectors(batch_ind=i)[0].type(torch.cfloat)
+            for i in range(0,max_batches,STEPS):
+                cur_basis_vectors = basis_vectors(batch_ind_start=i,batch_ind_end=i+STEPS)[0].type(torch.cfloat)
                 multiplication = torch.matmul(cur_basis_vectors.conj(), cov)
-                norm_values[i * batch_size:(i + 1) * batch_size] = torch.linalg.norm(multiplication * cur_basis_vectors,
+                norm_values[i * batch_size:(i + STEPS) * batch_size] = torch.linalg.norm(multiplication * cur_basis_vectors,
                                                                                      dim=1)
             norm_values = (1 / norm_values).cpu().numpy()
         return norm_values
