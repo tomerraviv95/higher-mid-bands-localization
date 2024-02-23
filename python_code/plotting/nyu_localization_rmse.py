@@ -13,10 +13,10 @@ plt.style.use('dark_background')
 if __name__ == "__main__":
     csv_path = os.path.join(RAYTRACING_DIR, str(6000), f"bs{str(1)}.csv")
     csv_loaded = pd.read_csv(csv_path)
-    params6 = {'K': [20], 'Nr': [5], 'fc': [6000], 'BW': [1.2], 'band_type': 'SINGLE'}
-    params12 = {'K': [20], 'Nr': [10], 'fc': [12000], 'BW': [2.4], 'band_type': 'SINGLE'}
-    params18 = {'K': [20], 'Nr': [15], 'fc': [18000], 'BW': [4.8], 'band_type': 'SINGLE'}
-    params24 = {'K': [20], 'Nr': [20], 'fc': [24000], 'BW': [9.6], 'band_type': 'SINGLE'}
+    params6 = {'K': [30], 'Nr': [4], 'fc': [6000], 'BW': [10], 'band_type': 'SINGLE'}
+    params12 = {'K': [45], 'Nr': [8], 'fc': [12000], 'BW': [15], 'band_type': 'SINGLE'}
+    params18 = {'K': [45], 'Nr': [12], 'fc': [18000], 'BW': [15], 'band_type': 'SINGLE'}
+    params24 = {'K': [60], 'Nr': [16], 'fc': [24000], 'BW': [20], 'band_type': 'SINGLE'}
     # params_all = {'K': [40, 40, 40, 40], 'Nr': [5, 10, 15, 20], 'fc': [6000, 12000, 18000, 24000],
     #               'BW': [5, 10, 15, 20], 'band_type': 'MULTI'}
     # params_6_24 = {'K': [40, 40], 'Nr': [5, 20], 'fc': [6000, 24000],
