@@ -1,24 +1,22 @@
 # System parameters
 scenario: 'NY' # 'SYNTHETIC' or 'NY'
-ue_pos: [ 45 , 10 ]  # TX UE position
+ue_pos: [ 160 , 225 ]  # TX UE position
 B: 1 # number of BSs, up to 3 (including)
-input_power: 5  # dBm
+input_power: 25  # dBm
 channel_bandwidth: 'NARROWBAND' # either 'NARROWBAND' or 'WIDEBAND'
 
 # Bands parameters
-K: [ 20 ] # number of subcarriers
-Nr_x: [ 6  ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
-Nr_y: [ 1 ] # number of RX n_elements in y.
+K: [ 30 ] # number of subcarriers
+Nr: [ 4 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
 fc: [ 6000 ]  # carrier frequency in MHz
-BW: [ 5 ] # BW frequency in MHz
+BW: [ 10 ] # BW frequency in MHz
 
 # beamforming parameters
 est_type: 'both' # 'angle','time','both'
-aoa_res: 0.5  # resolution in degrees for the azimuth dictionary
-zoa_res: 2  # resolution in degrees for the zenith dictionary
-T_res: 0.005  # number of elements in the TIME dictionary in us
+aoa_res: 0.01  # resolution in degrees for the azimuth dictionary
+T_res: 0.01  # number of elements in the TIME dictionary in us
 band_type: 'SINGLE' # 'SINGLE' or 'MULTI'
 
 # general
-seed: 0 # run seed
-plot_estimation_results: False # either True or False
+seed: 1 # run seed
+plot_estimation_results: True # either True or False
