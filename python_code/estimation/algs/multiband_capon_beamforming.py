@@ -2,8 +2,9 @@ from typing import List
 
 import numpy as np
 
+from python_code import conf
 from python_code.estimation.algs import CaponBeamforming
-
+import scipy.signal
 
 class MultiBandCaponBeamforming(CaponBeamforming):
     """
@@ -32,9 +33,16 @@ class MultiBandCaponBeamforming(CaponBeamforming):
             norm_values_list.append(norm_values)
             if norm_values[maximum_ind[0], maximum_ind[1]] > self.thresh:
                 min_toa = maximum_ind[1]
-                peaks.append((maximum_ind, min_toa, k))
+                same_toa_spectrum = norm_values[:, maximum_ind[1]]
+                indices, _ = scipy.signal.find_peaks(same_toa_spectrum,
+                                                     height=0.8 * norm_values[maximum_ind[0], maximum_ind[1]])
+                if indices.shape[0] > 1:
+                    delta_deg = abs(indices[1] - indices[0]) * conf.aoa_res
+                else:
+                    delta_deg = 0
+                peaks.append((maximum_ind, min_toa,delta_deg, k))
         # sort by min toa, then band
-        s_peaks = sorted(peaks, key=lambda x: (x[1], -x[2]))
+        s_peaks = sorted(peaks, key=lambda x: (x[1], x[2], -x[3]))
         global_peak = s_peaks[0][0]
-        k = s_peaks[0][2]
+        k = s_peaks[0][3]
         return np.array([global_peak]), norm_values_list[k], k

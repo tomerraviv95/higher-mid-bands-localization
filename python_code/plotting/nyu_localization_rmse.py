@@ -27,7 +27,7 @@ if __name__ == "__main__":
             conf.set_value(field=field, value=value)
         ue_x_positions = range(0, 1121, 5)
         ue_y_positions = range(0, 506, 5)
-        input_powers = range(0, 41, 5)
+        input_powers = range(25, 36, 5)
         # go over multiple SNRs
         for input_power in input_powers:
             rmse_dict = {}
