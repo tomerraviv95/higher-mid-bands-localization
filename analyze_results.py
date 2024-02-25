@@ -18,50 +18,51 @@ mpl.rcParams['legend.fontsize'] = 20
 mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['font.family'] = 'STIXGeneral'
 
-file_to_label = {"fc_[6000]_antennas_[4]_bw_[10]_subcarriers_[30]_band_type_SINGLE.csv": "6GHz Sub-band Capon",
-                 "fc_[12000]_antennas_[8]_bw_[15]_subcarriers_[45]_band_type_SINGLE.csv": "12GHz Sub-band Capon",
-                 "fc_[18000]_antennas_[12]_bw_[15]_subcarriers_[45]_band_type_SINGLE.csv": "18GHz Sub-band Capon",
-                 "fc_[24000]_antennas_[16]_bw_[20]_subcarriers_[60]_band_type_SINGLE.csv": "24GHz Sub-band Capon",
-                 "fc_[6000, 24000]_antennas_[4, 16]_bw_[10, 20]_subcarriers_[30, 60]_band_type_MULTI.csv": "{6,24}GHz Multi-Frequency Capon",
-                 "fc_[6000, 12000, 18000, 24000]_antennas_[5, 10, 15, 20]_bw_[5, 10, 15, 20]_subcarriers_[40, 40, 40, 40]_band_type_MULTI.csv": "{6,12,18,24}GHz Multi-Frequency Capon"}
+file_to_label = {"fc_[6000]_antennas_[4]_bw_[5]_subcarriers_[20]_band_type_SINGLE.csv": "6GHz Sub-band Capon",
+                 "fc_[12000]_antennas_[8]_bw_[7.5]_subcarriers_[30]_band_type_SINGLE.csv": "12GHz Sub-band Capon",
+                 "fc_[18000]_antennas_[12]_bw_[7.5]_subcarriers_[30]_band_type_SINGLE.csv": "18GHz Sub-band Capon",
+                 "fc_[24000]_antennas_[16]_bw_[10]_subcarriers_[40]_band_type_SINGLE.csv": "24GHz Sub-band Capon",
+                 "fc_[6000, 24000]_antennas_[4, 16]_bw_[5, 10]_subcarriers_[20, 40]_band_type_MULTI.csv": "{6,24}GHz Multi-Frequency Capon",
+                 "fc_[6000, 12000, 18000, 24000]_antennas_[4, 8, 12, 16]_bw_[5, 7.5, 7.5, 10]_subcarriers_[20, 30, 30, 40]_band_type_MULTI.csv": "{6,12,18,24}GHz Multi-Frequency Capon"}
 
-color_to_label = {"fc_[6000]_antennas_[4]_bw_[10]_subcarriers_[30]_band_type_SINGLE.csv": "blue",
-                  "fc_[12000]_antennas_[8]_bw_[15]_subcarriers_[45]_band_type_SINGLE.csv": "green",
-                  "fc_[18000]_antennas_[12]_bw_[15]_subcarriers_[45]_band_type_SINGLE.csv": "orange",
-                  "fc_[24000]_antennas_[16]_bw_[20]_subcarriers_[60]_band_type_SINGLE.csv": "red",
-                  "fc_[6000, 24000]_antennas_[4, 16]_bw_[10, 20]_subcarriers_[30, 60]_band_type_MULTI.csv": "purple",
-                  "fc_[6000, 12000, 18000, 24000]_antennas_[5, 10, 15, 20]_bw_[5, 10, 15, 20]_subcarriers_[40, 40, 40, 40]_band_type_MULTI.csv": "black"}
+color_to_label = {"fc_[6000]_antennas_[4]_bw_[5]_subcarriers_[20]_band_type_SINGLE.csv": "blue",
+                  "fc_[12000]_antennas_[8]_bw_[7.5]_subcarriers_[30]_band_type_SINGLE.csv": "green",
+                  "fc_[18000]_antennas_[12]_bw_[7.5]_subcarriers_[30]_band_type_SINGLE.csv": "orange",
+                  "fc_[24000]_antennas_[16]_bw_[10]_subcarriers_[40]_band_type_SINGLE.csv": "red",
+                  "fc_[6000, 24000]_antennas_[4, 16]_bw_[5, 10]_subcarriers_[20, 40]_band_type_MULTI.csv": "purple",
+                  "fc_[6000, 12000, 18000, 24000]_antennas_[4, 8, 12, 16]_bw_[5, 7.5, 7.5, 10]_subcarriers_[20, 30, 30, 40]_band_type_MULTI.csv": "black"}
 
-marker_to_label = {"fc_[6000]_antennas_[4]_bw_[10]_subcarriers_[30]_band_type_SINGLE.csv": "o",
-                   "fc_[12000]_antennas_[8]_bw_[15]_subcarriers_[45]_band_type_SINGLE.csv": "X",
-                   "fc_[18000]_antennas_[12]_bw_[15]_subcarriers_[45]_band_type_SINGLE.csv": "s",
-                   "fc_[24000]_antennas_[16]_bw_[20]_subcarriers_[60]_band_type_SINGLE.csv": "p",
-                   "fc_[6000, 24000]_antennas_[4, 16]_bw_[10, 20]_subcarriers_[30, 60]_band_type_MULTI.csv": "^",
-                   "fc_[6000, 12000, 18000, 24000]_antennas_[5, 10, 15, 20]_bw_[5, 10, 15, 20]_subcarriers_[40, 40, 40, 40]_band_type_MULTI.csv": "P"}
+marker_to_label = {"fc_[6000]_antennas_[4]_bw_[5]_subcarriers_[20]_band_type_SINGLE.csv": "o",
+                   "fc_[12000]_antennas_[8]_bw_[7.5]_subcarriers_[30]_band_type_SINGLE.csv": "X",
+                   "fc_[18000]_antennas_[12]_bw_[7.5]_subcarriers_[30]_band_type_SINGLE.csv": "s",
+                   "fc_[24000]_antennas_[16]_bw_[10]_subcarriers_[40]_band_type_SINGLE.csv": "p",
+                   "fc_[6000, 24000]_antennas_[4, 16]_bw_[5, 10]_subcarriers_[20, 40]_band_type_MULTI.csv": "^",
+                   "fc_[6000, 12000, 18000, 24000]_antennas_[4, 8, 12, 16]_bw_[5, 7.5, 7.5, 10]_subcarriers_[20, 30, 30, 40]_band_type_MULTI.csv": "P"}
 
-linestyle_to_label = {"fc_[6000]_antennas_[4]_bw_[10]_subcarriers_[30]_band_type_SINGLE.csv": "dotted",
-                   "fc_[12000]_antennas_[8]_bw_[15]_subcarriers_[45]_band_type_SINGLE.csv": "dashed",
-                   "fc_[18000]_antennas_[12]_bw_[15]_subcarriers_[45]_band_type_SINGLE.csv": "dashdot",
-                   "fc_[24000]_antennas_[16]_bw_[20]_subcarriers_[60]_band_type_SINGLE.csv": (5,(10,3)),
-                   "fc_[6000, 24000]_antennas_[4, 16]_bw_[10, 20]_subcarriers_[30, 60]_band_type_MULTI.csv": "solid",
-                   "fc_[6000, 12000, 18000, 24000]_antennas_[5, 10, 15, 20]_bw_[5, 10, 15, 20]_subcarriers_[40, 40, 40, 40]_band_type_MULTI.csv": "solid"}
+linestyle_to_label = {"fc_[6000]_antennas_[4]_bw_[5]_subcarriers_[20]_band_type_SINGLE.csv": "dotted",
+                   "fc_[12000]_antennas_[8]_bw_[7.5]_subcarriers_[30]_band_type_SINGLE.csv": "dashed",
+                   "fc_[18000]_antennas_[12]_bw_[7.5]_subcarriers_[30]_band_type_SINGLE.csv": "dashdot",
+                   "fc_[24000]_antennas_[16]_bw_[10]_subcarriers_[40]_band_type_SINGLE.csv": (5,(10,3)),
+                   "fc_[6000, 24000]_antennas_[4, 16]_bw_[5, 10]_subcarriers_[20, 40]_band_type_MULTI.csv": "solid",
+                   "fc_[6000, 12000, 18000, 24000]_antennas_[4, 8, 12, 16]_bw_[5, 7.5, 7.5, 10]_subcarriers_[20, 30, 30, 40]_band_type_MULTI.csv": "solid"}
 
 
 if __name__ == "__main__":
-    input_powers = range(0, 26, 5)
+    input_powers = range(0, 71, 5)
     files1 = [
-        "fc_[6000]_antennas_[4]_bw_[10]_subcarriers_[30]_band_type_SINGLE.csv",
-        "fc_[12000]_antennas_[8]_bw_[15]_subcarriers_[45]_band_type_SINGLE.csv",
-        "fc_[18000]_antennas_[12]_bw_[15]_subcarriers_[45]_band_type_SINGLE.csv",
-        "fc_[24000]_antennas_[16]_bw_[20]_subcarriers_[60]_band_type_SINGLE.csv",
-        # "fc_[6000, 12000, 18000, 24000]_antennas_[5, 10, 15, 20]_bw_[5, 10, 15, 20]_subcarriers_[40, 40, 40, 40]_band_type_MULTI.csv"
+        # "fc_[6000]_antennas_[4]_bw_[5]_subcarriers_[20]_band_type_SINGLE.csv",
+        # "fc_[12000]_antennas_[8]_bw_[7.5]_subcarriers_[30]_band_type_SINGLE.csv",
+        "fc_[18000]_antennas_[12]_bw_[7.5]_subcarriers_[30]_band_type_SINGLE.csv",
+        "fc_[24000]_antennas_[16]_bw_[10]_subcarriers_[40]_band_type_SINGLE.csv",
+        # "fc_[6000, 12000, 18000, 24000]_antennas_[4, 8, 12, 16]_bw_[5, 7.5, 7.5, 10]_subcarriers_[20, 30, 30, 40]_band_type_MULTI.csv"
         ]
     files2 = [
-        "fc_[6000]_antennas_[4]_bw_[10]_subcarriers_[30]_band_type_SINGLE.csv",
-        "fc_[24000]_antennas_[16]_bw_[20]_subcarriers_[60]_band_type_SINGLE.csv",
-        "fc_[6000, 24000]_antennas_[4, 16]_bw_[10, 20]_subcarriers_[30, 60]_band_type_MULTI.csv",
+        "fc_[6000]_antennas_[4]_bw_[5]_subcarriers_[20]_band_type_SINGLE.csv",
+        "fc_[24000]_antennas_[16]_bw_[10]_subcarriers_[40]_band_type_SINGLE.csv",
+        "fc_[6000, 24000]_antennas_[4, 16]_bw_[5, 10]_subcarriers_[20, 40]_band_type_MULTI.csv",
+        "fc_[6000, 12000, 18000, 24000]_antennas_[4, 8, 12, 16]_bw_[5, 7.5, 7.5, 10]_subcarriers_[20, 30, 30, 40]_band_type_MULTI.csv"
     ]
-    files = files2
+    files = files1
     mean_rmse_dict = {}
     for input_power in input_powers:
         dir_path = f"{NY_DIR}/{str(input_power)}/"
@@ -77,11 +78,11 @@ if __name__ == "__main__":
     for file in files:
         plt.plot(input_powers, mean_rmse_dict[file], label=file_to_label[file], markersize=9,
                  linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file],
-                 linestyle = linestyle_to_label[file])
+                 linestyle=linestyle_to_label[file])
     plt.xlabel('Transmitted Power [dBm]')
     plt.ylabel('RMSE')
     plt.grid(which='both', ls='--')
     plt.legend(loc='upper left', prop={'size': 15})
-    plt.ylim([0, 15])
-    fig.savefig('RMSE.png')
+    plt.ylim([0, 20])
+    fig.savefig('RMSE_6_24.png')
     plt.show()

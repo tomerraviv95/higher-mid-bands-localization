@@ -13,21 +13,21 @@ plt.style.use('dark_background')
 if __name__ == "__main__":
     csv_path = os.path.join(RAYTRACING_DIR, str(6000), f"bs{str(1)}.csv")
     csv_loaded = pd.read_csv(csv_path)
-    params6 = {'K': [30], 'Nr': [4], 'fc': [6000], 'BW': [10], 'band_type': 'SINGLE'}
-    params12 = {'K': [45], 'Nr': [8], 'fc': [12000], 'BW': [15], 'band_type': 'SINGLE'}
-    params18 = {'K': [45], 'Nr': [12], 'fc': [18000], 'BW': [15], 'band_type': 'SINGLE'}
-    params24 = {'K': [60], 'Nr': [16], 'fc': [24000], 'BW': [20], 'band_type': 'SINGLE'}
-    # params_all = {'K': [40, 40, 40, 40], 'Nr': [5, 10, 15, 20], 'fc': [6000, 12000, 18000, 24000],
-    #               'BW': [5, 10, 15, 20], 'band_type': 'MULTI'}
-    params_6_24 = {'K': [30, 60], 'Nr': [4, 16], 'fc': [6000, 24000],
-                  'BW': [10, 20], 'band_type': 'MULTI'}
+    params6 = {'K': [20], 'Nr': [4], 'fc': [6000], 'BW': [5], 'band_type': 'SINGLE'}
+    params12 = {'K': [30], 'Nr': [8], 'fc': [12000], 'BW': [7.5], 'band_type': 'SINGLE'}
+    params18 = {'K': [30], 'Nr': [12], 'fc': [18000], 'BW': [7.5], 'band_type': 'SINGLE'}
+    params24 = {'K': [40], 'Nr': [16], 'fc': [24000], 'BW': [10], 'band_type': 'SINGLE'}
+    params_all = {'K': [20, 30, 30, 40], 'Nr': [4, 8, 12, 16], 'fc': [6000, 12000, 18000, 24000],
+                  'BW': [5, 7.5, 7.5, 10], 'band_type': 'MULTI'}
+    params_6_24 = {'K': [20, 40], 'Nr': [4, 16], 'fc': [6000, 24000],
+                  'BW': [5, 10], 'band_type': 'MULTI'}
     params_list = [params_6_24]
     for params in params_list:
         for field, value in params.items():
             conf.set_value(field=field, value=value)
         ue_x_positions = range(0, 1121, 5)
         ue_y_positions = range(0, 506, 5)
-        input_powers = range(25, 36, 5)
+        input_powers = range(50, 71, 5)
         # go over multiple SNRs
         for input_power in input_powers:
             rmse_dict = {}

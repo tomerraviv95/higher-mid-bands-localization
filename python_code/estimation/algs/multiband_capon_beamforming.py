@@ -40,7 +40,7 @@ class MultiBandCaponBeamforming(CaponBeamforming):
                     delta_deg = abs(indices[1] - indices[0]) * conf.aoa_res
                 else:
                     delta_deg = 0
-                peaks.append((maximum_ind, min_toa,delta_deg, k))
+                peaks.append((maximum_ind, min_toa, delta_deg, k))
         # sort by min toa, then band
         s_peaks = sorted(peaks, key=lambda x: (x[1], x[2], -x[3]))
         global_peak = s_peaks[0][0]

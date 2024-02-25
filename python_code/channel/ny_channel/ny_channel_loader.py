@@ -24,15 +24,15 @@ def load_ny_scenario(bs_ind: int, ue_pos: np.ndarray, band: Band):
         initial_power = conf.input_power  # initial power in dBm
         loss_db = row[f'path_loss_{path}']
         received_power = initial_power - loss_db  # still in dBm
-        toa = row[f'delay_{path}'] / MU_SEC
+        toa = np.ceil(row[f'delay_{path}'] / MU_SEC / conf.T_res) * conf.T_res
         if path == 1:
             conf.medium_speed = np.linalg.norm(ue_pos - bs_loc) / toa
         # path is above the maximal range, so ignore it
         if toa > band.K / band.BW:
             continue
-        aoa = math.radians(row[f'aod_{path}'])
+        aoa = math.radians(np.ceil(row[f'aod_{path}'] / conf.aoa_res) * conf.aoa_res)
         if path == 1:
-            conf.orientation = -math.pi / 2
+            conf.orientation = -math.pi/2
         normalized_aoa = aoa - conf.orientation
         # the base station can see 90 degrees to each side of its orientation
         if -math.pi / 2 < normalized_aoa < math.pi / 2:

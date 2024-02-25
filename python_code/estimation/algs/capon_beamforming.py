@@ -3,7 +3,7 @@ import torch
 
 from python_code import DEVICE
 
-STEPS = 500
+STEPS = 100
 
 
 class CaponBeamforming:
