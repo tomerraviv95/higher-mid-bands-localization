@@ -12,7 +12,7 @@ fc: [ 6000 ] # carrier frequency in MHz
 BW: [ 9.6 ] # BW frequency in MHz
 
 # beamforming parameters
-est_type: 'time' # 'angle','time','both'
+est_type: 'both' # 'angle','time','both'
 aoa_res: 0.1  # resolution in degrees for the azimuth dictionary
 T_res: 0.001  # number of elements in the TIME dictionary in us
 band_type: 'SINGLE' # 'SINGLE' or 'MULTI'

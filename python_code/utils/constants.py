@@ -4,7 +4,6 @@ from enum import Enum
 import numpy as np
 
 C = 300  # speed of light meter / micro-second
-MAX_DIST = 100  # maximum distance in meters supported in the simulation, but this could be smaller due to BW.
 MU_SEC = 10 ** (-6)  # mu seconds factor
 MEGA = 10 ** 6  # for the mega hertz frequencies
 L_MAX = 4  # maximum number of paths for the synthetic channel
@@ -16,8 +15,6 @@ NS = 10  # number of pilot samples
 Channel = namedtuple("Channel", ["scatterers", "y", "bs", "AOA", "TOA", "ZOA", "band"])
 
 Estimation = namedtuple("Estimation", ["AOA", "TOA", "ZOA", "POWER"], defaults=(None,) * 4)
-
-THRESH = 1.2
 
 
 class EstimatorType(Enum):
