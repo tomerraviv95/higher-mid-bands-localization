@@ -13,15 +13,14 @@ plt.style.use('dark_background')
 if __name__ == "__main__":
     csv_path = os.path.join(RAYTRACING_DIR, str(6000), f"bs{str(1)}.csv")
     csv_loaded = pd.read_csv(csv_path)
-    params6 = {'K': [20], 'Nr': [8], 'fc': [6000], 'BW': [1.2], 'band_type': 'SINGLE'}
-    params12 = {'K': [20], 'Nr': [16], 'fc': [12000], 'BW': [2.4], 'band_type': 'SINGLE'}
+    params6 = {'K': [20], 'Nr': [8], 'fc': [6000], 'BW': [2.4], 'band_type': 'SINGLE'}
+    params12 = {'K': [20], 'Nr': [16], 'fc': [12000], 'BW': [3.6], 'band_type': 'SINGLE'}
     params18 = {'K': [20], 'Nr': [24], 'fc': [18000], 'BW': [4.8], 'band_type': 'SINGLE'}
     params24 = {'K': [20], 'Nr': [32], 'fc': [24000], 'BW': [9.6], 'band_type': 'SINGLE'}
     params_all = {'K': [20, 20, 20, 20], 'Nr': [4, 8, 12, 16], 'fc': [6000, 12000, 18000, 24000],
                   'BW': [1.2, 2.4, 4.8, 9.6], 'band_type': 'MULTI'}
-    params_6_24 = {'K': [20, 20], 'Nr': [4, 16], 'fc': [6000, 24000],
-                  'BW': [1.2, 9.6], 'band_type': 'MULTI'}
-    params_list = [params6, params12, params18, params24]
+    params_6_24 = {'K': [20, 20], 'Nr': [4, 16], 'fc': [6000, 24000], 'BW': [1.2, 9.6], 'band_type': 'MULTI'}
+    params_list = [params6, params12]
     for params in params_list:
         for field, value in params.items():
             conf.set_value(field=field, value=value)
