@@ -44,7 +44,7 @@ def optimize_to_estimate_position(bs_locs: np.ndarray, estimations: List[Estimat
     print(f'Solving optimization for TOA:{toa_values},AOA:{aoa_values}')
     # LOS computation of location in case of angle and time estimations
     bs_locs = np.array(bs_list)
-    initial_ue_loc = np.array([[0, 0]])
+    initial_ue_loc = np.array([bs_list[0]])
     initial_scatterers = np.zeros([L_MAX, 2])
     x0 = np.concatenate([initial_ue_loc, initial_scatterers]).reshape(-1)
     # estimate the UE using least squares
