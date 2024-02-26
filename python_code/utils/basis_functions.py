@@ -23,10 +23,8 @@ def compute_time_options(fc: float, K: int, BW: float, values: np.ndarray) -> np
     return array_response_combination
 
 
-def compute_angle_options(aoa: np.ndarray, zoa: np.ndarray, values: np.ndarray) -> np.ndarray:
-    # create all the combinations for the zoa and aoa degrees
-    aoa_zoa_combination = np.kron(aoa, zoa)
+def compute_angle_options(aoa: np.ndarray, values: np.ndarray) -> np.ndarray:
     # simulate the degree at each antenna element
-    combination = np.dot(aoa_zoa_combination.reshape(-1, 1), values.reshape(1, -1))
+    combination = np.dot(aoa.reshape(-1, 1), values.reshape(1, -1))
     # return the phase at each antenna element in a vector
     return array_response_vector(combination / 2)

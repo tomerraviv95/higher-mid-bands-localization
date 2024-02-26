@@ -6,7 +6,7 @@ from python_code import conf
 from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.basis_functions import compute_time_options
-from python_code.utils.constants import BandType, Estimation, THRESH
+from python_code.utils.constants import BandType, Estimation
 
 
 class TimeEstimator:
@@ -39,7 +39,6 @@ class TimeEstimator:
             y = [np.transpose(y_single, [1, 0, 2]) for y_single in y]
         else:
             y = np.transpose(y, [1, 0, 2])
-        self._indices, self._spectrum = self.algorithm.run(y=y, n_elements=self.K,
-                                                           basis_vectors=self._time_options)
+        self._indices, self._spectrum = self.algorithm.run(y=y, basis_vectors=self._time_options)
         estimator = Estimation(TOA=self.times_dict[self._indices])
         return estimator

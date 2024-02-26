@@ -8,7 +8,8 @@ class Beamformer:
     """
     The Beamformer
     """
-    def run(self, y: np.ndarray, basis_vectors: np.ndarray, second_dim: int = None, use_gpu=False):
+
+    def run(self, y: np.ndarray, basis_vectors: np.ndarray, second_dim: bool = False, use_gpu=False):
         """
         y is channel observations
         basis vectors are the set/sets of beamforming vectors in the dictionary
@@ -16,14 +17,17 @@ class Beamformer:
         if second_dim is True do a 2 dimensions peak search
         return a tuple of the [max_ind, spectrum]
         """
-        # compute the spectrum values for each basis vector
-        norm_values = self._compute_beamforming_spectrum(basis_vectors, use_gpu, y)
-        # find the peaks in the spectrum
-        if second_dim is not None:
+        # find the peak in 2D spectrum
+        if second_dim:
+            # compute the spectrum values for each basis vector
+            norm_values = self._compute_beamforming_spectrum(basis_vectors, use_gpu, y)
             maximum_ind = np.array(np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape))
+        # find the peak in 1D spectrum
         else:
+            matmul_res = np.einsum('ij,jmk->imk', basis_vectors.conj(), y)
+            norm_values = np.linalg.norm(np.linalg.norm(matmul_res, axis=1), axis=1)
             maximum_ind = np.argmax(norm_values)
-        return np.array([maximum_ind]), norm_values, 0
+        return np.array([maximum_ind]), norm_values
 
     def _compute_beamforming_spectrum(self, basis_vectors: np.ndarray, use_gpu: bool, y: np.ndarray):
         # compute with cpu

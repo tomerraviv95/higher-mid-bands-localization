@@ -33,7 +33,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
         # phase delay for the K subcarriers
         delays_phase_vector = compute_time_options(band.fc, band.K, band.BW, np.array([TOA[l]]))
         # different phase in each antennas element
-        aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(band.Nr)).T
+        aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), values=np.arange(band.Nr)).T
         if conf.channel_bandwidth == ChannelBWType.NARROWBAND.name:
             if torch.cuda.is_available():
                 delay_aoa_tensor = torch.matmul(torch.tensor(aoa_vector).to(DEVICE),
@@ -55,26 +55,6 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
             np.random.randn(band.Nr, band.K, NS) + 1j * np.random.randn(band.Nr, band.K, NS))
     # finally sum up to y, the final observation
     y = h + normal_gaussian_noise
-    # for i in range(3):
-    #     # test aoa
-    #     y_test = y[:, :, i]
-    #     res_list = []
-    #     for l in range(L):
-    #         aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(band.Nr))
-    #         res = np.linalg.norm(np.matmul(aoa_vector.conj(), y_test))
-    #         res_list.append((l, res, AOA[l]))
-    #     sorted_list = sorted(res_list, key=lambda x: (-x[1]))
-    #     print(f'Ground Truth {i}')
-    #     print(sorted_list)
-    #     # test toa
-    #     res_list = []
-    #     for l in range(L):
-    #         delays_phase_vector = compute_time_options(band.fc, band.K, band.BW, np.array([TOA[l]]))
-    #         res = np.linalg.norm(np.matmul(y_test, delays_phase_vector.T.conj()))
-    #         res_list.append((l, res, TOA[l]))
-    #     sorted_list = sorted(res_list, key=lambda x: (-x[1]))
-    #     print(sorted_list)
-    #     print('******')
     return y
 
 

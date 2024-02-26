@@ -8,7 +8,7 @@ from python_code.estimation.algs import ALG_TYPE, ALGS_DICT
 from python_code.estimation.parameters.angle import AngleEstimator
 from python_code.estimation.parameters.time import TimeEstimator
 from python_code.utils.bands_manipulation import Band
-from python_code.utils.constants import BandType, Estimation, THRESH
+from python_code.utils.constants import BandType, Estimation
 
 
 class AngleTimeEstimator:
@@ -31,14 +31,9 @@ class AngleTimeEstimator:
             self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE]()
 
     def estimate(self, y: Union[np.ndarray, List[np.ndarray]]) -> Estimation:
-        if self.angle_estimator.multi_band:
-            second_dim = [len(time_dict) for time_dict in self.time_estimator.times_dict]
-        else:
-            second_dim = len(self.time_estimator.times_dict)
-        self.indices, self._spectrum, self.k = self.algorithm.run(y=y,
-                                                                  basis_vectors=self.mats,
-                                                                  second_dim=second_dim,
-                                                                  use_gpu=torch.cuda.is_available())
+        self.indices, self._spectrum = self.algorithm.run(y=y, basis_vectors=self.mats,
+                                                          second_dim=True,
+                                                          use_gpu=torch.cuda.is_available())
         # if no peaks found - return an empty estimation
         if len(self.indices) == 0:
             return Estimation(AOA=[0], TOA=[0], POWER=[0])

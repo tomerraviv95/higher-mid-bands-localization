@@ -32,7 +32,7 @@ class ChannelBWType(Enum):
 
 
 class AlgType(Enum):
-    CAPON = 'BEAMSWEEPER'
+    BEAMFORMER = 'BEAMSWEEPER'
     MUSIC = 'MUSIC'
 
 

@@ -6,13 +6,13 @@ from python_code import conf
 from python_code.estimation.algs import Beamformer
 import scipy.signal
 
-class MultiBandCaponBeamforming(Beamformer):
+class MultiBandBeamformer(Beamformer):
     """
     The Proposed MultiBand Capon Beamformer.
     """
 
     def __init__(self, thresh: float):
-        super(MultiBandCaponBeamforming, self).__init__(thresh)
+        super(MultiBandBeamformer, self).__init__(thresh)
         self.thresh = thresh
 
     def run(self, y: List[np.ndarray], basis_vectors: List[np.ndarray], n_elements: List[int],
