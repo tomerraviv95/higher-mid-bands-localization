@@ -17,4 +17,6 @@ def get_bands_from_conf():
         bands.append(band)
     if len(bands) == 1:
         assert conf.band_type == BandType.SINGLE.name
+    else:
+        assert conf.band_type == BandType.MULTI.name
     return bands
