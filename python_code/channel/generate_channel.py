@@ -9,7 +9,7 @@ from python_code.channel.synthetic_channel.bs_scatterers import create_bs_locs, 
 from python_code.channel.synthetic_channel.synthetic import generate_synthetic_parameters
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.basis_functions import compute_angle_options, compute_time_options
-from python_code.utils.constants import Channel, ChannelBWType, DATA_COEF, ScenarioType, L_MAX, MEGA, NF, N_0
+from python_code.utils.constants import Channel, ChannelBWType, ScenarioType, L_MAX, MEGA, NF, N_0, NS
 from python_code.utils.path_loss import watt_from_dbm
 
 
@@ -19,10 +19,8 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     """
     # extract number of detectable paths
     L = len(POWER)
-    # For the covariance to have full rank we need to have enough samples, strictly more than the dimensions
-    Ns = int(band.Nr * band.K * DATA_COEF)
     # Generate channel
-    h = np.zeros((Ns,band.Nr, band.K), dtype=complex)
+    h = np.zeros((band.Nr, band.K, NS), dtype=complex)
     if torch.cuda.is_available():
         h = torch.tensor(h, dtype=torch.complex128).to(DEVICE)
     # calculate the noise power, and instead of multiplication by the noise, divide the signal
@@ -31,7 +29,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     # for each path
     for l in range(L):
         # assume random phase beamforming
-        F = np.exp(1j * np.random.rand(Ns, 1, 1) * 2 * np.pi)
+        F = np.exp(1j * np.random.rand(1, 1, NS) * 2 * np.pi)
         # phase delay for the K subcarriers
         delays_phase_vector = compute_time_options(band.fc, band.K, band.BW, np.array([TOA[l]]))
         # different phase in each antennas element
@@ -40,12 +38,12 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
             if torch.cuda.is_available():
                 delay_aoa_tensor = torch.matmul(torch.tensor(aoa_vector).to(DEVICE),
                                                 torch.tensor(delays_phase_vector).to(DEVICE))
-                delay_aoa_tensor = torch.tensor(F).to(DEVICE) * delay_aoa_tensor.unsqueeze(0)
+                delay_aoa_tensor = torch.tensor(F).to(DEVICE) * delay_aoa_tensor.unsqueeze(-1)
                 # add for each path
                 h += watt_from_dbm(POWER[l]) / noise_power * delay_aoa_tensor
             else:
                 delay_aoa_matrix = np.matmul(aoa_vector, delays_phase_vector)
-                delay_aoa_matrix = F * delay_aoa_matrix[np.newaxis,...]
+                delay_aoa_matrix = F * delay_aoa_matrix[..., np.newaxis]
                 # add for each path
                 h += watt_from_dbm(POWER[l]) / noise_power * delay_aoa_matrix
         else:
@@ -54,9 +52,29 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
         h = h.cpu().numpy()
     # adding the white Gaussian noise
     normal_gaussian_noise = 1 / np.sqrt(2) * (
-            np.random.randn(Ns, band.Nr, band.K) + 1j * np.random.randn(Ns, band.Nr, band.K))
+            np.random.randn(band.Nr, band.K, NS) + 1j * np.random.randn(band.Nr, band.K, NS))
     # finally sum up to y, the final observation
     y = h + normal_gaussian_noise
+    # for i in range(3):
+    #     # test aoa
+    #     y_test = y[:, :, i]
+    #     res_list = []
+    #     for l in range(L):
+    #         aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), zoa=1, values=np.arange(band.Nr))
+    #         res = np.linalg.norm(np.matmul(aoa_vector.conj(), y_test))
+    #         res_list.append((l, res, AOA[l]))
+    #     sorted_list = sorted(res_list, key=lambda x: (-x[1]))
+    #     print(f'Ground Truth {i}')
+    #     print(sorted_list)
+    #     # test toa
+    #     res_list = []
+    #     for l in range(L):
+    #         delays_phase_vector = compute_time_options(band.fc, band.K, band.BW, np.array([TOA[l]]))
+    #         res = np.linalg.norm(np.matmul(y_test, delays_phase_vector.T.conj()))
+    #         res_list.append((l, res, TOA[l]))
+    #     sorted_list = sorted(res_list, key=lambda x: (-x[1]))
+    #     print(sorted_list)
+    #     print('******')
     return y
 
 
