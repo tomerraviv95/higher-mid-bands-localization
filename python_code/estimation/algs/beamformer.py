@@ -1,3 +1,5 @@
+from typing import List
+
 import numpy as np
 import torch
 
@@ -9,7 +11,7 @@ class Beamformer:
     The Beamformer
     """
 
-    def run(self, y: np.ndarray, basis_vectors: np.ndarray, second_dim: bool = False, use_gpu=False):
+    def run(self, y: np.ndarray, basis_vectors: List[np.ndarray], second_dim: bool = False, use_gpu=False):
         """
         y is channel observations
         basis vectors are the set/sets of beamforming vectors in the dictionary
@@ -29,7 +31,7 @@ class Beamformer:
             maximum_ind = np.argmax(norm_values)
         return np.array([maximum_ind]), norm_values
 
-    def _compute_beamforming_spectrum(self, basis_vectors: np.ndarray, use_gpu: bool, y: np.ndarray):
+    def _compute_beamforming_spectrum(self, basis_vectors: List[np.ndarray], use_gpu: bool, y: np.ndarray):
         # compute with cpu
         if not use_gpu:
             aoas = basis_vectors[0]

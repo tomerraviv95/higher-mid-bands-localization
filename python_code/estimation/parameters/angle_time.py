@@ -16,10 +16,8 @@ class AngleTimeEstimator:
         self.angle_estimator = AngleEstimator(bands)
         self.time_estimator = TimeEstimator(bands)
         if self.angle_estimator.multi_band:
-            self.n_elements = [band.Nr * band.K for band in bands]
-            mat1s = [self.angle_estimator._angle_options[i] for i in range(len(bands))]
-            mat2s = [self.time_estimator._time_options[i] for i in range(len(bands))]
-            self.angle_time_options = [self._single_band_constructor(mat1, mat2) for mat1, mat2 in zip(mat1s, mat2s)]
+            self.mats = [(self.angle_estimator._angle_options[i],self.time_estimator._time_options[i])
+                         for i in range(len(bands))]
             self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI]()
         else:
             if torch.cuda.is_available():
