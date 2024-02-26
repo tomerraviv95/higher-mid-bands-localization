@@ -20,7 +20,7 @@ if __name__ == "__main__":
     params_all = {'K': [20, 20, 20, 20], 'Nr': [4, 8, 12, 16], 'fc': [6000, 12000, 18000, 24000],
                   'BW': [1.2, 2.4, 4.8, 9.6], 'band_type': 'MULTI'}
     params_6_24 = {'K': [20, 20], 'Nr': [4, 16], 'fc': [6000, 24000], 'BW': [1.2, 9.6], 'band_type': 'MULTI'}
-    params_list = [params6, params12]
+    params_list = [params12]
     for params in params_list:
         for field, value in params.items():
             conf.set_value(field=field, value=value)
