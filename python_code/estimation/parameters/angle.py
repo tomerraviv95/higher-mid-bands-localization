@@ -27,14 +27,12 @@ class AngleEstimator:
         band = bands[0]
         self._angle_options = compute_angle_options(np.sin(self.aoa_angles_dict), zoa=1,
                                                     values=np.arange(band.Nr))
-        self.Nr = band.Nr
-        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE](THRESH)
+        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE]()
 
     def _multiband_constructor(self, bands: List[Band]):
         self._angle_options = [compute_angle_options(np.sin(self.aoa_angles_dict), zoa=1,
                                                      values=np.arange(band.Nr)) for band in bands]
-        self.Nr = [band.Nr for band in bands]
-        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](THRESH)
+        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI]()
 
     def estimate(self, y: Union[np.ndarray, List[np.ndarray]]) -> Estimation:
         self._indices, self._spectrum = self.algorithm.run(y=y, basis_vectors=self._angle_options,

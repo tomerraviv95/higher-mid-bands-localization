@@ -24,8 +24,7 @@ class TimeEstimator:
         self._time_options = compute_time_options(0, band.K, band.BW, values=self.times_dict)
         if self._time_options.shape[0] < self.times_dict.shape[0]:
             self.times_dict = self.times_dict[:self._time_options.shape[0]]
-        self.K = band.K
-        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE](THRESH)
+        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE]()
 
     def _multiband_constructor(self, bands: List[Band]):
         self._time_options = [compute_time_options(0, bands[i].K, bands[i].BW, values=self.times_dict[i]) for i in
@@ -33,8 +32,7 @@ class TimeEstimator:
         for i in range(len(bands)):
             if self._time_options[i].shape[0] < self.times_dict[i].shape[0]:
                 self.times_dict[i] = self.times_dict[i][:self._time_options[0].shape[0]]
-        self.K = [band.K for band in bands]
-        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI](THRESH)
+        self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI]()
 
     def estimate(self, y: Union[np.ndarray, List[np.ndarray]]) -> Estimation:
         if self.multi_band:

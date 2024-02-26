@@ -3,10 +3,10 @@ from typing import List
 import numpy as np
 
 from python_code import conf
-from python_code.estimation.algs import CaponBeamforming
+from python_code.estimation.algs import Beamformer
 import scipy.signal
 
-class MultiBandCaponBeamforming(CaponBeamforming):
+class MultiBandCaponBeamforming(Beamformer):
     """
     The Proposed MultiBand Capon Beamformer.
     """
