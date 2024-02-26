@@ -12,6 +12,7 @@ L_MAX = 4  # maximum number of paths for the synthetic channel
 NF = 7  # noise figure in dB
 N_0 = -174  # dBm
 DEG = np.pi / 180
+MAX_COMP = 15
 
 Channel = namedtuple("Channel", ["scatterers", "y", "bs", "AOA", "TOA", "ZOA", "band"])
 

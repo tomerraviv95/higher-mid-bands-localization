@@ -22,7 +22,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     # For the covariance to have full rank we need to have enough samples, strictly more than the dimensions
     Ns = int(band.Nr * band.K * DATA_COEF)
     # Generate channel
-    h = np.zeros((band.Nr, band.K, Ns), dtype=complex)
+    h = np.zeros((Ns,band.Nr, band.K), dtype=complex)
     if torch.cuda.is_available():
         h = torch.tensor(h, dtype=torch.complex128).to(DEVICE)
     # calculate the noise power, and instead of multiplication by the noise, divide the signal
@@ -31,7 +31,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
     # for each path
     for l in range(L):
         # assume random phase beamforming
-        F = np.exp(1j * np.random.rand(1, 1, Ns) * 2 * np.pi)
+        F = np.exp(1j * np.random.rand(Ns, 1, 1) * 2 * np.pi)
         # phase delay for the K subcarriers
         delays_phase_vector = compute_time_options(band.fc, band.K, band.BW, np.array([TOA[l]]))
         # different phase in each antennas element
@@ -40,12 +40,12 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
             if torch.cuda.is_available():
                 delay_aoa_tensor = torch.matmul(torch.tensor(aoa_vector).to(DEVICE),
                                                 torch.tensor(delays_phase_vector).to(DEVICE))
-                delay_aoa_tensor = torch.tensor(F).to(DEVICE) * delay_aoa_tensor.unsqueeze(-1)
+                delay_aoa_tensor = torch.tensor(F).to(DEVICE) * delay_aoa_tensor.unsqueeze(0)
                 # add for each path
                 h += watt_from_dbm(POWER[l]) / noise_power * delay_aoa_tensor
             else:
                 delay_aoa_matrix = np.matmul(aoa_vector, delays_phase_vector)
-                delay_aoa_matrix = F * delay_aoa_matrix[..., np.newaxis]
+                delay_aoa_matrix = F * delay_aoa_matrix[np.newaxis,...]
                 # add for each path
                 h += watt_from_dbm(POWER[l]) / noise_power * delay_aoa_matrix
         else:
@@ -54,7 +54,7 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
         h = h.cpu().numpy()
     # adding the white Gaussian noise
     normal_gaussian_noise = 1 / np.sqrt(2) * (
-            np.random.randn(band.Nr, band.K, Ns) + 1j * np.random.randn(band.Nr, band.K, Ns))
+            np.random.randn(Ns, band.Nr, band.K) + 1j * np.random.randn(Ns, band.Nr, band.K))
     # finally sum up to y, the final observation
     y = h + normal_gaussian_noise
     return y

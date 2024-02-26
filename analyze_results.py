@@ -48,7 +48,7 @@ linestyle_to_label = {"fc_[6000]_antennas_[4]_bw_[1.2]_subcarriers_[20]_band_typ
 
 
 if __name__ == "__main__":
-    input_powers = range(25, 51, 5)
+    input_powers = range(25, 61, 5)
     files1 = [
         "fc_[6000]_antennas_[4]_bw_[1.2]_subcarriers_[20]_band_type_SINGLE.csv",
         "fc_[12000]_antennas_[8]_bw_[2.4]_subcarriers_[20]_band_type_SINGLE.csv",

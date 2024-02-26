@@ -27,7 +27,7 @@ class MultiBandCaponBeamforming(CaponBeamforming):
             # compute inverse covariance matrix
             cov = self._compute_cov(n_elements[k], y[k], use_gpu)
             # compute the Capon spectrum values for each basis vector per band
-            norm_values = self._compute_capon_spectrum(basis_vectors[k], use_gpu, cov)
+            norm_values = self._compute_beamforming_spectrum(basis_vectors[k], use_gpu, cov)
             norm_values = norm_values.reshape(-1, second_dim[k])
             maximum_ind = np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape)
             norm_values_list.append(norm_values)
