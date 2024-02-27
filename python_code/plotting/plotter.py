@@ -36,7 +36,7 @@ def plot_angle_time(estimator, estimation: Estimation):
     fig = plt.figure()
     aoa_dict = estimator.angle_estimator.aoa_angles_dict
     if estimator.time_estimator.multi_band:
-        times_dict = estimator.time_estimator.times_dict[estimator.k]
+        times_dict = estimator.time_estimator.times_dict[estimator.algorithm.k]
     else:
         times_dict = estimator.time_estimator.times_dict
     plt.contourf(times_dict, aoa_dict, estimator._spectrum.reshape(len(aoa_dict), len(times_dict), order='F'),

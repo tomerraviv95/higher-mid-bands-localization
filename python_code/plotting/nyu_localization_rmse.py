@@ -17,18 +17,20 @@ if __name__ == "__main__":
     params12 = {'K': [20], 'Nr': [16], 'fc': [12000], 'BW': [3.6], 'band_type': 'SINGLE'}
     params18 = {'K': [20], 'Nr': [24], 'fc': [18000], 'BW': [4.8], 'band_type': 'SINGLE'}
     params24 = {'K': [20], 'Nr': [32], 'fc': [24000], 'BW': [9.6], 'band_type': 'SINGLE'}
-    params_all = {'K': [20, 20, 20, 20], 'Nr': [4, 8, 12, 16], 'fc': [6000, 12000, 18000, 24000],
-                  'BW': [1.2, 2.4, 4.8, 9.6], 'band_type': 'MULTI'}
-    params_6_24 = {'K': [20, 20], 'Nr': [4, 16], 'fc': [6000, 24000], 'BW': [1.2, 9.6], 'band_type': 'MULTI'}
-    params_list = [params12]
+    params_all = {'K': [20, 20, 20, 20], 'Nr': [8, 16, 24, 32], 'fc': [6000, 12000, 18000, 24000],
+                  'BW': [2.4,3.6, 4.8, 9.6], 'band_type': 'MULTI'}
+    params_6_24 = {'K': [20, 20], 'Nr': [8, 32], 'fc': [6000, 24000], 'BW': [2.4, 9.6], 'band_type': 'MULTI'}
+    params_list = [params6,params12,params18,params24,params_6_24,params_all]
     for params in params_list:
         for field, value in params.items():
             conf.set_value(field=field, value=value)
         ue_x_positions = range(0, 1121, 5)
         ue_y_positions = range(0, 506, 5)
-        input_powers = range(-10, 11, 5)
+        input_powers = range(-9, 0)
         # go over multiple SNRs
         for input_power in input_powers:
+            if input_power == -5:
+                continue
             rmse_dict = {}
             conf.input_power = input_power
             # for multiple locations of the UE
