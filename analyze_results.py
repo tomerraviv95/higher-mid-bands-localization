@@ -81,7 +81,7 @@ if __name__ == "__main__":
                  linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file],
                  linestyle=linestyle_to_label[file])
     plt.xlabel('Transmitted Power [dBm]')
-    plt.ylabel('RMSE')
+    plt.ylabel('RMSE [m]')
     plt.grid(which='both', ls='--')
     plt.legend(loc='upper left', prop={'size': 15})
     plt.ylim([0, 15])
