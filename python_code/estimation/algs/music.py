@@ -45,8 +45,8 @@ class MUSIC:
                 music_coef = 1 / scipy.linalg.norm(multiplication, axis=0)
                 norm_values += np.log10(10 * music_coef / music_coef.min())
             else:
-                aoa_steering_vectors = torch.tensor(cur_basis_vectors[0]).type(torch.cfloat).to(DEVICE)
-                toa_steering_vectors = torch.tensor(cur_basis_vectors[1]).type(torch.cfloat).to(DEVICE)
+                aoa_steering_vectors = cur_basis_vectors[0].type(torch.cfloat).to(DEVICE)
+                toa_steering_vectors = cur_basis_vectors[1].type(torch.cfloat).to(DEVICE)
                 conj_Qn = torch.tensor(Qn).type(torch.cfloat).to(DEVICE).conj()
                 max_batches = aoa_steering_vectors.shape[0]
                 batch_size = toa_steering_vectors.shape[0]

@@ -19,7 +19,7 @@ if __name__ == "__main__":
     params24 = {'K': [20], 'Nr': [32], 'fc': [24000], 'BW': [9.6], 'band_type': 'SINGLE'}
     params_6_24 = {'K': [20, 20], 'Nr': [8, 32], 'fc': [6000, 24000], 'BW': [2.4, 9.6], 'band_type': 'MULTI'}
     params_all = {'K': [20, 20, 20, 20], 'Nr': [8, 16, 24, 32], 'fc': [6000, 12000, 18000, 24000],
-                  'BW': [2.4,3.6, 4.8, 9.6], 'band_type': 'MULTI'}
+                  'BW': [2.4, 3.6, 4.8, 9.6], 'band_type': 'MULTI'}
     params_list = [params_6_24, params_all]
     for params in params_list:
         for field, value in params.items():
