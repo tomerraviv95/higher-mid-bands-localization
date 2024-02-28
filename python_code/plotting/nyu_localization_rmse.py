@@ -17,20 +17,18 @@ if __name__ == "__main__":
     params12 = {'K': [20], 'Nr': [16], 'fc': [12000], 'BW': [3.6], 'band_type': 'SINGLE'}
     params18 = {'K': [20], 'Nr': [24], 'fc': [18000], 'BW': [4.8], 'band_type': 'SINGLE'}
     params24 = {'K': [20], 'Nr': [32], 'fc': [24000], 'BW': [9.6], 'band_type': 'SINGLE'}
+    params_6_24 = {'K': [20, 20], 'Nr': [8, 32], 'fc': [6000, 24000], 'BW': [2.4, 9.6], 'band_type': 'MULTI'}
     params_all = {'K': [20, 20, 20, 20], 'Nr': [8, 16, 24, 32], 'fc': [6000, 12000, 18000, 24000],
                   'BW': [2.4,3.6, 4.8, 9.6], 'band_type': 'MULTI'}
-    params_6_24 = {'K': [20, 20], 'Nr': [8, 32], 'fc': [6000, 24000], 'BW': [2.4, 9.6], 'band_type': 'MULTI'}
-    params_list = [params6,params12,params18,params24,params_6_24,params_all]
+    params_list = [params_6_24, params_all]
     for params in params_list:
         for field, value in params.items():
             conf.set_value(field=field, value=value)
         ue_x_positions = range(0, 1121, 5)
         ue_y_positions = range(0, 506, 5)
-        input_powers = range(-9, 0)
+        input_powers = range(-10, 11)
         # go over multiple SNRs
         for input_power in input_powers:
-            if input_power == -5:
-                continue
             rmse_dict = {}
             conf.input_power = input_power
             # for multiple locations of the UE
@@ -50,8 +48,7 @@ if __name__ == "__main__":
             rmse_df = pd.DataFrame.from_dict(rmse_dict, orient='index',
                                              columns=['Position RMSE', 'AOA', 'TOA', 'EST AOA', 'EST TOA'])
             rmse_df.loc['mean'] = rmse_df.mean()
-            path = f"{NY_DIR}/{str(input_power)}/fc_{conf.fc}_antennas_{conf.Nr}_bw_{conf.BW}_subcarriers_{conf.K}.csv"
+            file_name = f"{conf.alg}_fc_{conf.fc}_antennas_{conf.Nr}_bw_{conf.BW}_subcarriers_{conf.K}_band_type_{conf.band_type}.csv"
             if not os.path.exists(f"{NY_DIR}/{str(input_power)}"):
                 os.makedirs(f"{NY_DIR}/{str(input_power)}", exist_ok=True)
-            rmse_df.to_csv(
-                f"{NY_DIR}/{str(input_power)}/fc_{conf.fc}_antennas_{conf.Nr}_bw_{conf.BW}_subcarriers_{conf.K}_band_type_{conf.band_type}.csv")
+            rmse_df.to_csv(f"{NY_DIR}/{str(input_power)}/{file_name}")
