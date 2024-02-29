@@ -20,12 +20,12 @@ mpl.rcParams['legend.fontsize'] = 20
 mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['font.family'] = 'STIXGeneral'
 
-file_to_label = {"fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20]_band_type_SINGLE.csv": "6GHz Sub-band Capon",
-                 "fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20]_band_type_SINGLE.csv": "12GHz Sub-band Capon",
-                 "fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20]_band_type_SINGLE.csv": "18GHz Sub-band Capon",
-                 "fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20]_band_type_SINGLE.csv": "24GHz Sub-band Capon",
-                 "fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20]_band_type_MULTI.csv": "{6,24}GHz Multi-Frequency Capon",
-                 "fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20]_band_type_MULTI.csv": "{6,12,18,24}GHz Multi-Frequency Capon"}
+file_to_label = {"fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20]_band_type_SINGLE.csv": "6GHz Sub-band Beamformer",
+                 "fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20]_band_type_SINGLE.csv": "12GHz Sub-band Beamformer",
+                 "fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20]_band_type_SINGLE.csv": "18GHz Sub-band Beamformer",
+                 "fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20]_band_type_SINGLE.csv": "24GHz Sub-band Beamformer",
+                 "fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20]_band_type_MULTI.csv": "{6,24}GHz Multi-Frequency Beamformer",
+                 "fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20]_band_type_MULTI.csv": "{6,12,18,24}GHz Multi-Frequency Beamformer"}
 
 color_to_label = {"fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20]_band_type_SINGLE.csv": "blue",
                   "fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20]_band_type_SINGLE.csv": "green",
@@ -63,7 +63,7 @@ if __name__ == "__main__":
         "fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20]_band_type_SINGLE.csv",
         "fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20]_band_type_MULTI.csv",
     ]
-    files = files1
+    files = files2
     mean_rmse_dict = {}
     for input_power in input_powers:
         dir_path = f"{NY_DIR}/{str(input_power)}/"
