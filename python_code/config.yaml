@@ -6,7 +6,7 @@ input_power: 10  # dBm
 
 # Bands parameters
 K: [ 12 ,12 ] # number of subcarriers
-Nr: [ 8 ,12 ] # number of n_elements in ULA
+Nr: [ 8 ,12 ] # number of elements in ULA
 fc: [ 6000 ,12000 ] # carrier frequency in MHz
 BW: [ 2.4, 3.6 ] # BW frequency in MHz
 
