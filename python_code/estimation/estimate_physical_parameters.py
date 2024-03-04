@@ -9,7 +9,7 @@ def single_band_estimator(per_band_y: List[Channel], bands: List[Band], estimato
     Estimation, object]:
     # choose the estimator based on the desired type
     estimator = estimators[estimator_type]([bands[0]])
-    # estimate delay / AOA / ZOA parameters for the current bs
+    # estimate delay / AOA / delay & AOA parameters for the current bs
     estimation = estimator.estimate(per_band_y[0])
     return estimation, estimator
 
@@ -18,7 +18,7 @@ def multiple_bands_estimator(per_band_y: List[Channel], bands: List[Band], estim
     Estimation, object]:
     # choose the estimator based on the desired type
     estimator = estimators[estimator_type](bands)
-    # estimate delay / AOA / ZOA parameters for the current bs based on all measurements from all bands
+    # estimate delay / AOA / delay & AOA parameters for the current bs
     estimation = estimator.estimate(per_band_y)
     return estimation, estimator
 

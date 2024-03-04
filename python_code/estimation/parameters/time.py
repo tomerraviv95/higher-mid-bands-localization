@@ -10,6 +10,11 @@ from python_code.utils.constants import BandType, Estimation
 
 
 class TimeEstimator:
+    """
+    Delay Estimator for the time
+    Holds the times dict of all plausible delays on the grid
+    """
+
     def __init__(self, bands: List[Band]):
         self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE]()
         self.multi_band = len(bands) > 1

@@ -12,12 +12,18 @@ from python_code.utils.constants import BandType, Estimation
 
 
 class AngleTimeEstimator:
+    """
+    Angles & Delays Estimator
+    Holds all plausible angles and delays on a grid
+    """
     def __init__(self, bands: List[Band]):
         self.angle_estimator = AngleEstimator(bands)
         self.time_estimator = TimeEstimator(bands)
         self.multi_band = len(bands) > 1
         if self.multi_band:
             if torch.cuda.is_available():
+                # if cuda is available - compute on GPU
+                # can speed the simulations by a large factor
                 self.mats = [[torch.tensor(self.angle_estimator._angle_options[i]).to(DEVICE),
                               torch.tensor(self.time_estimator._time_options[i]).to(DEVICE)]
                              for i in range(len(bands))]
@@ -28,6 +34,8 @@ class AngleTimeEstimator:
             self.algorithm = ALGS_DICT[ALG_TYPE][BandType.MULTI]()
         else:
             if torch.cuda.is_available():
+                # if cuda is available - compute on GPU
+                # can speed the simulations by a large factor
                 self.mats = [torch.tensor(self.angle_estimator._angle_options).to(DEVICE),
                              torch.tensor(self.time_estimator._time_options).to(DEVICE)]
             else:

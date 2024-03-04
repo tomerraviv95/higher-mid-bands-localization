@@ -3,7 +3,7 @@ from sklearn.metrics import mean_squared_error
 
 from python_code import conf
 from python_code.channel.generate_channel import get_channel
-from python_code.estimation import estimations_strings_dict
+from python_code.estimation import estimations_strings_conversions
 from python_code.estimation.estimate_physical_parameters import estimate_physical_parameters
 from python_code.optimization.position_optimizer import optimize_to_estimate_position
 from python_code.plotting.estimations_printer import printer_main
@@ -21,7 +21,7 @@ def main():
     assert len(ue_pos) == 2
     print("x-axis up, y-axis right")
     bands = get_bands_from_conf()
-    estimator_type = estimations_strings_dict[conf.est_type]
+    estimator_type = estimations_strings_conversions[conf.est_type]
     print(f"UE: {ue_pos}")
     print(estimator_type.name)
     print(f"Max distance supported by setup: {max([C / band.BW * band.K for band in bands])}[m]")

@@ -6,7 +6,7 @@ from python_code.utils.constants import EstimatorType
 estimators = {EstimatorType.ANGLE: AngleEstimator, EstimatorType.TIME: TimeEstimator,
               EstimatorType.ANGLE_TIME: AngleTimeEstimator}
 
-estimations_strings_dict = {'angle': EstimatorType.ANGLE,
+estimations_strings_conversions = {'angle': EstimatorType.ANGLE,
                             'time': EstimatorType.TIME,
                             'both': EstimatorType.ANGLE_TIME}
 

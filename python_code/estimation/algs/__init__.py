@@ -4,6 +4,7 @@ from python_code.estimation.algs.multiband_beamforming import MultiBandBeamforme
 from python_code.estimation.algs.music import MUSIC
 from python_code.utils.constants import AlgType, BandType
 
+# Following a factory design pattern
 ALGS_DICT = {AlgType.BEAMFORMER: {BandType.SINGLE: Beamformer,
                                   BandType.MULTI: MultiBandBeamformer},
              AlgType.MUSIC: {BandType.SINGLE: MUSIC,

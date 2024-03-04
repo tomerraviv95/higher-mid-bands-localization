@@ -6,18 +6,19 @@ from python_code import conf
 from python_code.estimation.algs import ALGS_DICT, ALG_TYPE
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.basis_functions import compute_angle_options
-from python_code.utils.constants import BandType
+from python_code.utils.constants import BandType, DEG
 from python_code.utils.constants import Estimation
 
 
 class AngleEstimator:
     """
     Angles Estimator for the AOA
+    Holds the aoa dict of all plausible angles on the grid
     """
 
     def __init__(self, bands: List[Band]):
         self.algorithm = ALGS_DICT[ALG_TYPE][BandType.SINGLE]()
-        self.aoa_angles_dict = np.arange(-np.pi / 2, np.pi / 2, conf.aoa_res * np.pi / 180)
+        self.aoa_angles_dict = np.arange(-np.pi / 2, np.pi / 2, conf.aoa_res * DEG)
         self.multi_band = len(bands) > 1
         if self.multi_band:
             self._multiband_constructor(bands)
