@@ -6,9 +6,9 @@ input_power: 10  # dBm
 
 # Bands parameters
 K: [ 20 ] # number of subcarriers
-Nr: [ 8 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
-fc: [ 6000 ] # carrier frequency in MHz
-BW: [ 2.4 ] # BW frequency in MHz
+Nr: [ 32 ] # number of RX n_elements in x. Also the number of elements used for the antenna in 2D.
+fc: [ 24000 ] # carrier frequency in MHz
+BW: [ 9.6 ] # BW frequency in MHz
 
 # beamforming parameters
 est_type: 'both' # 'angle','time','both'

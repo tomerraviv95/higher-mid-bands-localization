@@ -56,7 +56,6 @@ You can control the simulated setup via the hyperparameters in the config:
 * sigma - the complex noise standard deviation value, e.g. a scalar 1.
 * fc - list of carrier frequencies in MHz for each sub-band, e.g. [ 6000 , 24000 ].
 * BW -  bandwidth of the sub-band in MHz, e.g. [ 100 , 400 ].
-* channel_bandwidth - if the spatial bandwidth effect is present or not. Either 'NARROWBAND' or 'WIDEBAND'.
 
 #### beamforming parameters
 * est_type - what parameters should be estimated from the signal. 'time' for toa only, 'angle' for aoa (and zoa in 3d case), or 'both' for both angle and time.

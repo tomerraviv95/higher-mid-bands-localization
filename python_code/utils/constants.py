@@ -23,11 +23,6 @@ class EstimatorType(Enum):
     ANGLE_TIME = 'ANGLE_TIME'
 
 
-class ChannelBWType(Enum):
-    NARROWBAND = 'NARROWBAND'
-    WIDEBAND = 'WIDEBAND'
-
-
 class AlgType(Enum):
     BEAMFORMER = 'BEAMSWEEPER'
     MUSIC = 'MUSIC'
