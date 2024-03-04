@@ -58,6 +58,7 @@ linestyle_to_label = {"fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20]_band_typ
 
 
 if __name__ == "__main__":
+    # plotter for rmse results figures in the paper
     input_powers = range(-10, 11)
     files1 = [
         "fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20]_band_type_SINGLE.csv",

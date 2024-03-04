@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 
 from python_code import conf
+from python_code.estimation import AngleEstimator, TimeEstimator, AngleTimeEstimator
 from python_code.utils.constants import Channel, C, Estimation, DEG
 
 plt.style.use('dark_background')
@@ -8,7 +9,7 @@ plt.style.use('dark_background')
 T_WINDOW, A_WINDOW = 10, 15
 
 
-def plot_angle(estimator, estimation: Estimation):
+def plot_angle(estimator: AngleEstimator, estimation: Estimation):
     fig = plt.figure()
     plt.plot(estimator.aoa_angles_dict, estimator._spectrum, color="cyan")
     plt.plot(estimation.AOA, estimator._spectrum[estimator._indices], 'ro')
@@ -20,7 +21,7 @@ def plot_angle(estimator, estimation: Estimation):
     plt.show()
 
 
-def plot_time(estimator, estimation: Estimation):
+def plot_time(estimator: TimeEstimator, estimation: Estimation):
     fig = plt.figure()
     plt.plot(estimator.times_dict, estimator._spectrum, color="orange")
     plt.plot(estimation.TOA, estimator._spectrum[estimator._indices], 'ro')
@@ -32,7 +33,7 @@ def plot_time(estimator, estimation: Estimation):
     plt.show()
 
 
-def plot_angle_time(estimator, estimation: Estimation):
+def plot_angle_time(estimator: AngleTimeEstimator, estimation: Estimation):
     fig = plt.figure()
     aoa_dict = estimator.angle_estimator.aoa_angles_dict
     if estimator.time_estimator.multi_band:

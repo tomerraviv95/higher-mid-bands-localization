@@ -3,6 +3,9 @@ from typing import Tuple
 
 import numpy as np
 
+##### this part is for the synthetic channel only #####
+
+
 WALLS = np.array([[8, 11], [8, 15], [11, 15], [11, 11], [8, 11]])
 LOSS_FACTOR = {6000: 1.1, 24000: 100}
 
@@ -23,6 +26,8 @@ def calc_power(P0: float, bs_loc: np.ndarray, ue_pos: np.ndarray, fc: float) -> 
             P0 /= LOSS_FACTOR[fc]
     return P0
 
+
+##### this part is for the synthetic channel only #####
 
 def compute_path_loss(toa: float, fc: float) -> float:
     # free path loss computation

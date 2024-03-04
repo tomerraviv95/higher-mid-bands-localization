@@ -1,4 +1,5 @@
 from collections import namedtuple
+from typing import List
 
 from python_code import conf
 from python_code.utils.constants import BandType
@@ -6,7 +7,7 @@ from python_code.utils.constants import BandType
 Band = namedtuple('Band', ['fc', 'Nr', 'K', 'BW'])
 
 
-def get_bands_from_conf():
+def get_bands_from_conf() -> List[Band]:
     """"
     Gather all the hyperparameters per band into a single data holder
     Each band shall hold the frequency fc, number of antennas, number of subcarriers and BW

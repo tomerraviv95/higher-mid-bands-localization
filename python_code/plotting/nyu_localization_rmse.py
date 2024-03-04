@@ -11,6 +11,8 @@ from python_code.main import main
 plt.style.use('dark_background')
 
 if __name__ == "__main__":
+    # calculation of the rmse results for the figures in the paper
+    # compute the average rmse over the 400 locations for each transmitted power
     csv_path = os.path.join(RAYTRACING_DIR, str(6000), f"bs{str(1)}.csv")
     csv_loaded = pd.read_csv(csv_path)
     params6 = {'K': [20], 'Nr': [8], 'fc': [6000], 'BW': [2.4], 'band_type': 'SINGLE'}
