@@ -31,7 +31,7 @@ def load_ny_scenario(bs_ind: int, ue_pos: np.ndarray, band: Band):
         initial_power = conf.input_power  # initial power in dBm
         loss_db = row[f'path_loss_{path}']
         received_power = initial_power - loss_db  # still in dBm
-        toa = row[f'delay_{path}'] / MU_SEC
+        toa = row[f'delay_{path}'] / MU_SEC  # toa in micro-second
         if path == 1:
             conf.medium_speed = np.linalg.norm(ue_pos - bs_loc) / toa
         # path time is above the maximal limit

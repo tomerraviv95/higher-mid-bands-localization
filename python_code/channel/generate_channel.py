@@ -13,12 +13,13 @@ from python_code.utils.constants import Channel, ScenarioType, SYNTHETIC_L_MAX, 
 from python_code.utils.path_loss import watt_from_dbm
 
 
-def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float], band: Band) -> np.ndarray:
+def compute_observations(toas: List[float], aoas: List[float], powers: List[float], band: Band) -> np.ndarray:
     """"
-    Compute the channel observations based on the band's parameters, and L TOAs, AOAs and POWERs
+    Compute the channel observations based on the band's parameters, and L toas, aoas and powers.
+    See the paper for the definition of the channel.
     """
     # extract number of detectable paths
-    L = len(POWER)
+    L = len(powers)
     # Generate channel
     h = np.zeros((band.Nr, band.K, NS), dtype=complex)
     if torch.cuda.is_available():
@@ -31,20 +32,20 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
         # assume random phase beamforming
         F = np.exp(1j * np.random.rand(1, 1, NS) * 2 * np.pi)
         # phase delay for the K subcarriers
-        delays_phase_vector = compute_time_options(band.fc, band.K, band.BW, np.array([TOA[l]]))
+        delays_phase_vector = compute_time_options(band.fc, band.K, band.BW, np.array([toas[l]]))
         # different phase in each antennas element
-        aoa_vector = compute_angle_options(np.sin(np.array([AOA[l]])), values=np.arange(band.Nr)).T
+        aoa_vector = compute_angle_options(np.sin(np.array([aoas[l]])), values=np.arange(band.Nr)).T
         if torch.cuda.is_available():
             delay_aoa_tensor = torch.matmul(torch.tensor(aoa_vector).to(DEVICE),
                                             torch.tensor(delays_phase_vector).to(DEVICE))
             delay_aoa_tensor = torch.tensor(F).to(DEVICE) * delay_aoa_tensor.unsqueeze(-1)
             # add for each path
-            h += watt_from_dbm(POWER[l]) / noise_power * delay_aoa_tensor
+            h += watt_from_dbm(powers[l]) / noise_power * delay_aoa_tensor
         else:
             delay_aoa_matrix = np.matmul(aoa_vector, delays_phase_vector)
             delay_aoa_matrix = F * delay_aoa_matrix[..., np.newaxis]
             # add for each path
-            h += watt_from_dbm(POWER[l]) / noise_power * delay_aoa_matrix
+            h += watt_from_dbm(powers[l]) / noise_power * delay_aoa_matrix
     if torch.cuda.is_available():
         h = h.cpu().numpy()
     # adding the white Gaussian noise
