@@ -16,8 +16,4 @@ def get_bands_from_conf() -> List[Band]:
     for fc, Nr, K, BW in zip(conf.fc, conf.Nr, conf.K, conf.BW):
         band = Band(fc=fc, Nr=Nr, K=K, BW=BW)
         bands.append(band)
-    if len(bands) == 1:
-        assert conf.band_type == BandType.SINGLE.name
-    else:
-        assert conf.band_type == BandType.MULTI.name
     return bands

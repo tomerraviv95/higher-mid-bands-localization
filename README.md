@@ -62,7 +62,6 @@ You can control the simulated setup via the hyperparameters in the config:
 * alg - the parameters estimation algorithm. Either 'Beamformer' or 'MUSIC'.
 * aoa_res - resolution in degrees for the azimuth dictionary, e.g. 1.5.
 * T_res - resolution in mu seconds in the time dictionary.e.g. 0.002.
-* band_type - whether estimation is done from a single sub-band or multiple ones.
 
 #### general
 * seed - set random seed for the current run, e.g. 1. For the sake of reproducibility. 

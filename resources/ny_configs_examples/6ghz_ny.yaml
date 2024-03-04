@@ -15,7 +15,6 @@ est_type: 'both' # 'angle','time','both'
 alg: 'Beamformer' # 'Beamformer','MUSIC'
 aoa_res: 0.1  # resolution in degrees for the azimuth dictionary
 T_res: 0.001  # resolution in micro second for the delay dictionary
-band_type: 'SINGLE' # 'SINGLE' or 'MULTI'
 
 # general
 seed: 1 # run seed

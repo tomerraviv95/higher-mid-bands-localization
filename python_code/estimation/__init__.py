@@ -7,6 +7,5 @@ estimators = {EstimatorType.ANGLE: AngleEstimator, EstimatorType.TIME: TimeEstim
               EstimatorType.ANGLE_TIME: AngleTimeEstimator}
 
 estimations_strings_conversions = {'angle': EstimatorType.ANGLE,
-                            'time': EstimatorType.TIME,
-                            'both': EstimatorType.ANGLE_TIME}
-
+                                   'time': EstimatorType.TIME,
+                                   'both': EstimatorType.ANGLE_TIME}

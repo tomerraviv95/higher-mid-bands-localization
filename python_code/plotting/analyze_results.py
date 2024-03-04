@@ -20,32 +20,32 @@ mpl.rcParams['legend.fontsize'] = 20
 mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['font.family'] = 'STIXGeneral'
 
-file_to_label = {"fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20]_band_type_SINGLE.csv": "6GHz Sub-band Beamformer",
-                 "fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20]_band_type_SINGLE.csv": "12GHz Sub-band Beamformer",
-                 "fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20]_band_type_SINGLE.csv": "18GHz Sub-band Beamformer",
-                 "fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20]_band_type_SINGLE.csv": "24GHz Sub-band Beamformer",
-                 "fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20]_band_type_MULTI.csv": "{6,24}GHz Multi-Frequency Beamformer",
-                 "MUSIC_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20]_band_type_MULTI.csv": "{6,24}GHz Multi-Frequency MUSIC",
-                 "fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20]_band_type_MULTI.csv": "{6,12,18,24}GHz Multi-Frequency Beamformer",
-                 "MUSIC_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20]_band_type_MULTI.csv": "{6,12,18,24}GHz Multi-Frequency MUSIC"}
+file_to_label = {"fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20].csv": "6GHz Sub-band Beamformer",
+                 "fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20].csv": "12GHz Sub-band Beamformer",
+                 "fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20].csv": "18GHz Sub-band Beamformer",
+                 "fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20].csv": "24GHz Sub-band Beamformer",
+                 "fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": "{6,24}GHz Multi-Frequency Beamformer",
+                 "MUSIC_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": "{6,24}GHz Multi-Frequency MUSIC",
+                 "fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": "{6,12,18,24}GHz Multi-Frequency Beamformer",
+                 "MUSIC_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": "{6,12,18,24}GHz Multi-Frequency MUSIC"}
 
-color_to_label = {"fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20]_band_type_SINGLE.csv": "blue",
-                  "fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20]_band_type_SINGLE.csv": "green",
-                  "fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20]_band_type_SINGLE.csv": "orange",
-                  "fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20]_band_type_SINGLE.csv": "red",
-                  "fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20]_band_type_MULTI.csv": "black",
-                  "MUSIC_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20]_band_type_MULTI.csv": "pink",
-                  "MUSIC_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20]_band_type_MULTI.csv": "pink",
-                  "fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20]_band_type_MULTI.csv": "black"}
+color_to_label = {"fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20].csv": "blue",
+                  "fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20].csv": "green",
+                  "fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20].csv": "orange",
+                  "fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20].csv": "red",
+                  "fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": "black",
+                  "MUSIC_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": "pink",
+                  "MUSIC_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": "pink",
+                  "fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": "black"}
 
-marker_to_label = {"fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20]_band_type_SINGLE.csv": "o",
-                   "fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20]_band_type_SINGLE.csv": "X",
-                   "fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20]_band_type_SINGLE.csv": "s",
-                   "fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20]_band_type_SINGLE.csv": "p",
-                   "fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20]_band_type_MULTI.csv": "P",
-                   "MUSIC_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20]_band_type_MULTI.csv": ">",
-                   "MUSIC_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20]_band_type_MULTI.csv": ">",
-                   "fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20]_band_type_MULTI.csv": "P"}
+marker_to_label = {"fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20].csv": "o",
+                   "fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20].csv": "X",
+                   "fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20].csv": "s",
+                   "fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20].csv": "p",
+                   "fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": "P",
+                   "MUSIC_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": ">",
+                   "MUSIC_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": ">",
+                   "fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": "P"}
 
 linestyle_to_label = {"fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20]_band_type_SINGLE.csv": "dotted",
                    "fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20]_band_type_SINGLE.csv": "dashed",

@@ -9,7 +9,7 @@ from python_code.optimization.position_optimizer import optimize_to_estimate_pos
 from python_code.plotting.estimations_printer import printer_main
 from python_code.plotting.plotter import print_channel
 from python_code.utils.bands_manipulation import get_bands_from_conf
-from python_code.utils.constants import EstimatorType, C
+from python_code.utils.constants import EstimatorType, C, BandType
 
 
 def main():
@@ -42,7 +42,8 @@ def main():
             # append to list
             per_band_y.append(bs_ue_channel.y)
             bs_ue_channels.append(bs_ue_channel)
-        estimation, estimator = estimate_physical_parameters[conf.band_type](per_band_y, bands, estimator_type)
+        multiband = BandType.MULTI.name if len(per_band_y) > 1 else BandType.SINGLE.name
+        estimation, estimator = estimate_physical_parameters[multiband](per_band_y, bands, estimator_type)
         estimations.append(estimation)
         printer_main(bs_ue_channel, estimation, estimator, estimator_type)
     # must estimate both angle and time to estimate locations in this code version (theoretically you could use one)
