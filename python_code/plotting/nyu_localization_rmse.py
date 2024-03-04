@@ -15,20 +15,23 @@ if __name__ == "__main__":
     # compute the average rmse over the 400 locations for each transmitted power
     csv_path = os.path.join(RAYTRACING_DIR, str(6000), f"bs{str(1)}.csv")
     csv_loaded = pd.read_csv(csv_path)
-    params6 = {'K': [20], 'Nr': [8], 'fc': [6000], 'BW': [2.4]}
-    params12 = {'K': [20], 'Nr': [16], 'fc': [12000], 'BW': [3.6]}
-    params18 = {'K': [20], 'Nr': [24], 'fc': [18000], 'BW': [4.8]}
-    params24 = {'K': [20], 'Nr': [32], 'fc': [24000], 'BW': [9.6]}
-    params_6_24 = {'K': [20, 20], 'Nr': [8, 32], 'fc': [6000, 24000], 'BW': [2.4, 9.6]}
+    params6 = {'K': [20], 'Nr': [8], 'fc': [6000], 'BW': [2.4], 'alg': 'Beamformer'}
+    params12 = {'K': [20], 'Nr': [16], 'fc': [12000], 'BW': [3.6], 'alg': 'Beamformer'}
+    params18 = {'K': [20], 'Nr': [24], 'fc': [18000], 'BW': [4.8], 'alg': 'Beamformer'}
+    params24 = {'K': [20], 'Nr': [32], 'fc': [24000], 'BW': [9.6], 'alg': 'Beamformer'}
+    params_6_24 = {'K': [20, 20], 'Nr': [8, 32], 'fc': [6000, 24000], 'BW': [2.4, 9.6], 'alg': 'Beamformer'}
     params_all = {'K': [20, 20, 20, 20], 'Nr': [8, 16, 24, 32], 'fc': [6000, 12000, 18000, 24000],
-                  'BW': [2.4, 3.6, 4.8, 9.6]}
-    params_list = [params_6_24, params_all]
+                  'BW': [2.4, 3.6, 4.8, 9.6], 'alg': 'Beamformer'}
+    params_6_24_music = {'K': [20, 20], 'Nr': [8, 32], 'fc': [6000, 24000], 'BW': [2.4, 9.6], 'alg': 'MUSIC'}
+    params_all_music = {'K': [20, 20, 20, 20], 'Nr': [8, 16, 24, 32], 'fc': [6000, 12000, 18000, 24000],
+                        'BW': [2.4, 3.6, 4.8, 9.6], 'alg': 'MUSIC'}
+    params_list = [params6, params12, params18, params24, params_6_24, params_all, params_6_24_music, params_all_music]
     for params in params_list:
         for field, value in params.items():
             conf.set_value(field=field, value=value)
         ue_x_positions = range(0, 1121, 5)
         ue_y_positions = range(0, 506, 5)
-        input_powers = range(-10, 11)
+        input_powers = range(-10, 11, 5)
         # go over multiple SNRs
         for input_power in input_powers:
             rmse_dict = {}
