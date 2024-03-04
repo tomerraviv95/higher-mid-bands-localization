@@ -9,7 +9,7 @@ from python_code.channel.synthetic_channel.bs_scatterers import create_bs_locs, 
 from python_code.channel.synthetic_channel.synthetic import generate_synthetic_parameters
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.basis_functions import compute_angle_options, compute_time_options
-from python_code.utils.constants import Channel, ScenarioType, L_MAX, MEGA, NF, N_0, NS
+from python_code.utils.constants import Channel, ScenarioType, SYNTHETIC_L_MAX, MEGA, NF, N_0, NS
 from python_code.utils.path_loss import watt_from_dbm
 
 
@@ -58,15 +58,14 @@ def compute_observations(TOA: List[float], AOA: List[float], POWER: List[float],
 def get_channel(bs_ind: int, ue_pos: np.ndarray, band: Band) -> Channel:
     if conf.scenario == ScenarioType.SYNTHETIC.name:
         bs_loc = create_bs_locs(bs_ind)
-        scatterers = create_scatter_points(L_MAX)
-        TOA, AOA, POWER = generate_synthetic_parameters(bs_loc, ue_pos, scatterers, band)
+        scatterers = create_scatter_points(SYNTHETIC_L_MAX)
+        toas, aoas, powers = generate_synthetic_parameters(bs_loc, ue_pos, scatterers, band)
     elif conf.scenario == ScenarioType.NY.name:
-        bs_loc, TOA, AOA, POWER = load_ny_scenario(bs_ind, ue_pos, band)
-        scatterers = None
+        bs_loc, toas, aoas, powers = load_ny_scenario(bs_ind, ue_pos, band)
     else:
         raise ValueError("Scenario is not implemented!!!")
     # compute the channel observations based on the above paths
-    y = compute_observations(TOA, AOA, POWER, band)
+    y = compute_observations(toas, aoas, powers, band)
     # save results for easy access in a namedtuple
-    channel_instance = Channel(scatterers=scatterers, bs=bs_loc, y=y, TOA=TOA, AOA=AOA, band=band, ZOA=None)
+    channel_instance = Channel(bs=bs_loc, y=y, TOA=toas, AOA=aoas, band=band, ZOA=None)
     return channel_instance

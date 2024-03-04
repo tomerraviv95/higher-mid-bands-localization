@@ -1,3 +1,4 @@
+import math
 from collections import namedtuple
 from enum import Enum
 
@@ -6,13 +7,14 @@ import numpy as np
 C = 300  # speed of light meter / micro-second
 MU_SEC = 10 ** (-6)  # mu seconds factor
 MEGA = 10 ** 6  # for the mega hertz frequencies
-L_MAX = 4  # maximum number of paths for the synthetic channel
+SYNTHETIC_L_MAX = 4  # maximum number of paths for the synthetic channel
 NF = 7  # noise figure in dB
 N_0 = -174  # dBm
 DEG = np.pi / 180  # conversion from degrees to pi
 NS = 20  # number of pilot samples
+BS_ORIENTATION = -math.pi / 2  # orientation of the BS
 
-Channel = namedtuple("Channel", ["scatterers", "y", "bs", "AOA", "TOA", "ZOA", "band"])
+Channel = namedtuple("Channel", ["y", "bs", "AOA", "TOA", "ZOA", "band"])
 
 Estimation = namedtuple("Estimation", ["AOA", "TOA", "ZOA", "POWER"], defaults=(None,) * 4)
 
