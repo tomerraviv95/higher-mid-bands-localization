@@ -13,8 +13,8 @@ BW: [ 2.4, 3.6 ] # BW frequency in MHz
 # beamforming parameters
 est_type: 'both' # 'angle','time','both'
 alg: 'Beamformer' # 'Beamformer','MUSIC'
-aoa_res: 0.5  # resolution in degrees for the azimuth dictionary
-T_res: 0.01  # resolution in micro second for the delay dictionary
+aoa_res: 0.1  # resolution in degrees for the azimuth dictionary
+T_res: 0.001  # resolution in micro second for the delay dictionary
 
 # general
 seed: 1 # run seed
