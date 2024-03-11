@@ -22,9 +22,6 @@ if __name__ == "__main__":
     params_6_24 = {'K': [20, 20], 'Nr': [8, 32], 'fc': [6000, 24000], 'BW': [2.4, 9.6], 'alg': 'Beamformer'}
     params_all = {'K': [20, 20, 20, 20], 'Nr': [8, 16, 24, 32], 'fc': [6000, 12000, 18000, 24000],
                   'BW': [2.4, 3.6, 5.8, 9.6], 'alg': 'Beamformer'}
-    # params_6_24_music = {'K': [20, 20], 'Nr': [8, 32], 'fc': [6000, 24000], 'BW': [2.4, 9.6], 'alg': 'MUSIC'}
-    # params_all_music = {'K': [20, 20, 20, 20], 'Nr': [8, 16, 24, 32], 'fc': [6000, 12000, 18000, 24000],
-    #                     'BW': [2.4, 3.6, 4.8, 9.6], 'alg': 'MUSIC'}
     params_list = [params6, params12, params18, params24, params_6_24, params_all]
     for params in params_list:
         for field, value in params.items():

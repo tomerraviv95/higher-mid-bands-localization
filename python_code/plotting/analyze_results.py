@@ -59,22 +59,20 @@ linestyle_to_label = {"Beamformer_fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[2
 
 if __name__ == "__main__":
     # plotter for rmse results figures in the paper
-    input_powers = range(-10, 11,5)
+    input_powers = range(-10, 11)
     files1 = [
         "Beamformer_fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20].csv",
         "Beamformer_fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20].csv",
         "Beamformer_fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20].csv",
         "Beamformer_fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20].csv",
-        "MUSIC_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20]_band_type_MULTI.csv",
         "Beamformer_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv"
         ]
     files2 = [
         "Beamformer_fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20].csv",
         "Beamformer_fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20].csv",
         "Beamformer_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv",
-        # "MUSIC_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv"
     ]
-    files = files2
+    files = files1
     mean_rmse_dict = {}
     for input_power in input_powers:
         dir_path = f"{NY_DIR}/{str(input_power)}/"
