@@ -24,7 +24,6 @@ if __name__ == "__main__":
     cmap_for_label = LinearSegmentedColormap.from_list("Custom", colors[1:], N=4)
     norm_for_label = mpl.colors.Normalize(vmin=0, vmax=25)
     colormap_for_label = mpl.cm.ScalarMappable(norm=norm_for_label, cmap=cmap_for_label)
-    # colormap = mpl.cm.ScalarMappable(norm=norm, cmap=cmap)
     for ax, file in zip(axes, files):
         file_path = dir_path + file
         df = pd.read_csv(file_path, index_col=0)

@@ -35,9 +35,5 @@ def compute_path_loss(toa: float, fc: float) -> float:
     return 10 ** (loss_db / 20)
 
 
-def watt_from_dbm(dbm_power: float) -> float:
-    return 10 ** ((dbm_power - 30) / 10)
-
-
-def watt_from_db(db_power: float) -> float:
-    return 10 ** (db_power / 10)
+def amp_from_dbm(dbm_power: float) -> float:
+    return 10 ** ((dbm_power - 30) / 20)

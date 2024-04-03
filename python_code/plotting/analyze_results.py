@@ -20,57 +20,57 @@ mpl.rcParams['legend.fontsize'] = 20
 mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['font.family'] = 'STIXGeneral'
 
-file_to_label = {"Beamformer_fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20].csv": "6GHz Sub-band Beamformer",
-                 "Beamformer_fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20].csv": "12GHz Sub-band Beamformer",
-                 "Beamformer_fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20].csv": "18GHz Sub-band Beamformer",
-                 "Beamformer_fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20].csv": "24GHz Sub-band Beamformer",
-                 "Beamformer_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": "{6,24}GHz Multi-Frequency Beamformer",
+file_to_label = {"Beamformer_fc_[6000]_antennas_[4]_bw_[6]_subcarriers_[200].csv": "6GHz Sub-band Beamformer",
+                 "Beamformer_fc_[12000]_antennas_[8]_bw_[12]_subcarriers_[400].csv": "12GHz Sub-band Beamformer",
+                 "Beamformer_fc_[18000]_antennas_[12]_bw_[18]_subcarriers_[300].csv": "18GHz Sub-band Beamformer",
+                 "Beamformer_fc_[24000]_antennas_[18]_bw_[24]_subcarriers_[400].csv": "24GHz Sub-band Beamformer",
+                 "Beamformer_fc_[6000, 24000]_antennas_[4, 18]_bw_[6, 24]_subcarriers_[200, 400].csv": "{6,24}GHz Multi-Frequency Beamformer",
                  "MUSIC_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": "{6,24}GHz Multi-Frequency MUSIC",
-                 "Beamformer_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": "{6,12,18,24}GHz Multi-Frequency Beamformer",
+                 "Beamformer_fc_[6000, 12000, 18000, 24000]_antennas_[4, 8, 12, 18]_bw_[6, 12, 18, 24]_subcarriers_[200, 400, 300, 400].csv": "{6,12,18,24}GHz Multi-Frequency Beamformer",
                  "MUSIC_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": "{6,12,18,24}GHz Multi-Frequency MUSIC"}
 
-color_to_label = {"Beamformer_fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20].csv": "blue",
-                  "Beamformer_fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20].csv": "green",
-                  "Beamformer_fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20].csv": "orange",
-                  "Beamformer_fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20].csv": "red",
-                  "Beamformer_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": "black",
+color_to_label = {"Beamformer_fc_[6000]_antennas_[4]_bw_[6]_subcarriers_[200].csv": "blue",
+                  "Beamformer_fc_[12000]_antennas_[8]_bw_[12]_subcarriers_[400].csv": "green",
+                  "Beamformer_fc_[18000]_antennas_[12]_bw_[18]_subcarriers_[300].csv": "orange",
+                  "Beamformer_fc_[24000]_antennas_[18]_bw_[24]_subcarriers_[400].csv": "red",
+                  "Beamformer_fc_[6000, 24000]_antennas_[4, 18]_bw_[6, 24]_subcarriers_[200, 400].csv": "black",
                   "MUSIC_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": "pink",
                   "MUSIC_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": "pink",
-                  "Beamformer_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": "black"}
+                  "Beamformer_fc_[6000, 12000, 18000, 24000]_antennas_[4, 8, 12, 18]_bw_[6, 12, 18, 24]_subcarriers_[200, 400, 300, 400].csv": "black"}
 
-marker_to_label = {"Beamformer_fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20].csv": "o",
-                   "Beamformer_fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20].csv": "X",
-                   "Beamformer_fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20].csv": "s",
-                   "Beamformer_fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20].csv": "p",
-                   "Beamformer_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": "P",
+marker_to_label = {"Beamformer_fc_[6000]_antennas_[4]_bw_[6]_subcarriers_[200].csv": "o",
+                   "Beamformer_fc_[12000]_antennas_[8]_bw_[12]_subcarriers_[400].csv": "X",
+                   "Beamformer_fc_[18000]_antennas_[12]_bw_[18]_subcarriers_[300].csv": "s",
+                   "Beamformer_fc_[24000]_antennas_[18]_bw_[24]_subcarriers_[400].csv": "p",
+                   "Beamformer_fc_[6000, 24000]_antennas_[4, 18]_bw_[6, 24]_subcarriers_[200, 400].csv": "P",
                    "MUSIC_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": ">",
                    "MUSIC_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": ">",
-                   "Beamformer_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": "P"}
+                   "Beamformer_fc_[6000, 12000, 18000, 24000]_antennas_[4, 8, 12, 18]_bw_[6, 12, 18, 24]_subcarriers_[200, 400, 300, 400].csv": "P"}
 
-linestyle_to_label = {"Beamformer_fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20].csv": "dotted",
-                   "Beamformer_fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20].csv": "dashed",
-                   "Beamformer_fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20].csv": "dashdot",
-                   "Beamformer_fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20].csv": (5, (10,3)),
-                   "Beamformer_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": "solid",
+linestyle_to_label = {"Beamformer_fc_[6000]_antennas_[4]_bw_[6]_subcarriers_[200].csv": "dotted",
+                   "Beamformer_fc_[12000]_antennas_[8]_bw_[12]_subcarriers_[400].csv": "dashed",
+                   "Beamformer_fc_[18000]_antennas_[12]_bw_[18]_subcarriers_[300].csv": "dashdot",
+                   "Beamformer_fc_[24000]_antennas_[18]_bw_[24]_subcarriers_[400].csv": (5, (10,3)),
+                   "Beamformer_fc_[6000, 24000]_antennas_[4, 18]_bw_[6, 24]_subcarriers_[200, 400].csv": "solid",
                    "MUSIC_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv": "solid",
                    "MUSIC_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20]_band_type_MULTI.csv": "solid",
-                   "Beamformer_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv": "solid"}
+                   "Beamformer_fc_[6000, 12000, 18000, 24000]_antennas_[4, 8, 12, 18]_bw_[6, 12, 18, 24]_subcarriers_[200, 400, 300, 400].csv": "solid"}
 
 
 if __name__ == "__main__":
     # plotter for rmse results figures in the paper
-    input_powers = range(-10, 11)
+    input_powers = range(-16, 22, 2)
     files1 = [
-        "Beamformer_fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20].csv",
-        "Beamformer_fc_[12000]_antennas_[16]_bw_[3.6]_subcarriers_[20].csv",
-        "Beamformer_fc_[18000]_antennas_[24]_bw_[4.8]_subcarriers_[20].csv",
-        "Beamformer_fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20].csv",
-        "Beamformer_fc_[6000, 12000, 18000, 24000]_antennas_[8, 16, 24, 32]_bw_[2.4, 3.6, 4.8, 9.6]_subcarriers_[20, 20, 20, 20].csv"
+        "Beamformer_fc_[6000]_antennas_[4]_bw_[6]_subcarriers_[200].csv",
+        "Beamformer_fc_[12000]_antennas_[8]_bw_[12]_subcarriers_[400].csv",
+        "Beamformer_fc_[18000]_antennas_[12]_bw_[18]_subcarriers_[300].csv",
+        "Beamformer_fc_[24000]_antennas_[18]_bw_[24]_subcarriers_[400].csv",
+        "Beamformer_fc_[6000, 12000, 18000, 24000]_antennas_[4, 8, 12, 18]_bw_[6, 12, 18, 24]_subcarriers_[200, 400, 300, 400].csv"
         ]
     files2 = [
-        "Beamformer_fc_[6000]_antennas_[8]_bw_[2.4]_subcarriers_[20].csv",
-        "Beamformer_fc_[24000]_antennas_[32]_bw_[9.6]_subcarriers_[20].csv",
-        "Beamformer_fc_[6000, 24000]_antennas_[8, 32]_bw_[2.4, 9.6]_subcarriers_[20, 20].csv",
+        "Beamformer_fc_[6000]_antennas_[4]_bw_[6]_subcarriers_[200].csv",
+        "Beamformer_fc_[24000]_antennas_[18]_bw_[24]_subcarriers_[400].csv",
+        "Beamformer_fc_[6000, 24000]_antennas_[4, 18]_bw_[6, 24]_subcarriers_[200, 400].csv",
     ]
     files = files1
     mean_rmse_dict = {}
