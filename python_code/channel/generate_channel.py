@@ -10,7 +10,7 @@ from python_code.channel.synthetic_channel.synthetic import generate_synthetic_p
 from python_code.utils.bands_manipulation import Band
 from python_code.utils.basis_functions import compute_angle_options, compute_time_options
 from python_code.utils.constants import Channel, ScenarioType, SYNTHETIC_L_MAX, MEGA, NF, N_0, NS
-from python_code.utils.path_loss import amp_from_dbm
+from python_code.utils.path_loss import watt_power_from_dbm
 
 
 def compute_observations(toas: List[float], aoas: List[float], powers: List[float], band: Band) -> np.ndarray:
@@ -26,8 +26,7 @@ def compute_observations(toas: List[float], aoas: List[float], powers: List[floa
         h = torch.tensor(h, dtype=torch.complex128).to(DEVICE)
     # calculate the noise power, and instead of multiplication by the noise, divide the signal
     BW_loss = 10 * np.log10(band.BW * MEGA)  # BW loss in dB
-    noise_power = amp_from_dbm(NF + BW_loss + N_0)
-    beamforming_gain = 20 * np.log10(band.Nr)
+    total_noise = NF + BW_loss + N_0
     # for each path
     for l in range(L):
         # assume random phase beamforming
@@ -41,16 +40,16 @@ def compute_observations(toas: List[float], aoas: List[float], powers: List[floa
                                             torch.tensor(delays_phase_vector).to(DEVICE))
             delay_aoa_tensor = torch.tensor(F).to(DEVICE) * delay_aoa_tensor.unsqueeze(-1)
             # add for each path
-            h += amp_from_dbm(powers[l] + beamforming_gain) * delay_aoa_tensor
+            h += watt_power_from_dbm(powers[l]-total_noise) * delay_aoa_tensor
         else:
             delay_aoa_matrix = np.matmul(aoa_vector, delays_phase_vector)
             delay_aoa_matrix = F * delay_aoa_matrix[..., np.newaxis]
             # add for each path
-            h += amp_from_dbm(powers[l] + beamforming_gain) * delay_aoa_matrix
+            h += watt_power_from_dbm(powers[l]-total_noise) * delay_aoa_matrix
     if torch.cuda.is_available():
         h = h.cpu().numpy()
     # adding the white Gaussian noise
-    normal_gaussian_noise = noise_power / np.sqrt(2) * (
+    normal_gaussian_noise = 1 / np.sqrt(2) * (
             np.random.randn(band.Nr, band.K, NS) + 1j * np.random.randn(band.Nr, band.K, NS))
     # finally sum up to y, the final observation
     y = h + normal_gaussian_noise
