@@ -9,11 +9,11 @@ MU_SEC = 10 ** (-6)  # mu seconds factor
 MEGA = 10 ** 6  # for the mega hertz frequencies
 SYNTHETIC_L_MAX = 4  # maximum number of paths for the synthetic channel
 NF = 7  # noise figure in dB
-N_0 = -174  # dBm
+N_0 = 174  # dBm
 DEG = np.pi / 180  # conversion from degrees to pi
-NS = 5  # number of pilot samples
+NS = 20  # number of pilot samples
 BS_ORIENTATION = -math.pi / 2  # orientation of the BS
-ALG_THRESHOLD = 5  # ratio of signal to noise ratio for the algorithms
+ALG_THRESHOLD = 1.2  # ratio of signal to noise ratio for the algorithms
 
 Channel = namedtuple("Channel", ["y", "bs", "AOA", "TOA", "ZOA", "band"])
 
