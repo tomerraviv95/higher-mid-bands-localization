@@ -25,7 +25,7 @@ class MultiBandBeamformer(Beamformer):
             maximum_ind = np.array(np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape))
             norm_values_list.append(norm_values)
             # only if peak is above noise level
-            print(k,norm_values[maximum_ind[0], maximum_ind[1]],ALG_THRESHOLD * np.mean(norm_values))
+            print(k, norm_values[maximum_ind[0], maximum_ind[1]] / np.mean(norm_values))
             if norm_values[maximum_ind[0], maximum_ind[1]] > ALG_THRESHOLD * np.mean(norm_values):
                 peak = maximum_ind
                 chosen_k = k
