@@ -15,12 +15,12 @@ if __name__ == "__main__":
     # compute the average rmse over the 400 locations for each transmitted power
     csv_path = os.path.join(RAYTRACING_DIR, str(6000), f"bs{str(1)}.csv")
     csv_loaded = pd.read_csv(csv_path)
-    params6 = {'K': [100], 'Nr': [5], 'fc': [6000], 'BW': [6], 'alg': 'Beamformer'}
-    params12 = {'K': [200], 'Nr': [10], 'fc': [12000], 'BW': [12], 'alg': 'Beamformer'}
-    params18 = {'K': [150], 'Nr': [15], 'fc': [18000], 'BW': [24], 'alg': 'Beamformer'}
-    params24 = {'K': [200], 'Nr': [20], 'fc': [24000], 'BW': [48], 'alg': 'Beamformer'}
-    params_6_24 = {'K': [100, 200], 'Nr': [5,20], 'fc': [6000, 24000], 'BW': [6, 48], 'alg': 'Beamformer'}
-    params_all = {'K': [100,200,150,200], 'Nr': [5,10,15,20], 'fc': [6000, 12000, 18000, 24000],
+    params6 = {'K': [100], 'Nr': [4], 'fc': [6000], 'BW': [6], 'alg': 'Beamformer'}
+    params12 = {'K': [200], 'Nr': [8], 'fc': [12000], 'BW': [12], 'alg': 'Beamformer'}
+    params18 = {'K': [150], 'Nr': [16], 'fc': [18000], 'BW': [24], 'alg': 'Beamformer'}
+    params24 = {'K': [200], 'Nr': [24], 'fc': [24000], 'BW': [48], 'alg': 'Beamformer'}
+    params_6_24 = {'K': [100, 200], 'Nr': [4, 24], 'fc': [6000, 24000], 'BW': [6, 48], 'alg': 'Beamformer'}
+    params_all = {'K': [100, 200, 150, 200], 'Nr': [5, 10, 15, 20], 'fc': [6000, 12000, 18000, 24000],
                   'BW': [3, 6, 9, 12], 'alg': 'Beamformer'}
     params_list = [params_all, params6, params12, params18, params24, params_6_24]
     params_list = [params6, params24, params_6_24]
@@ -29,7 +29,7 @@ if __name__ == "__main__":
             conf.set_value(field=field, value=value)
         ue_x_positions = range(0, 1121, 5)
         ue_y_positions = range(0, 506, 5)
-        input_powers = range(10, 11, 10)
+        input_powers = range(-10, 21, 10)
         # go over multiple SNRs
         for input_power in input_powers:
             rmse_dict = {}
