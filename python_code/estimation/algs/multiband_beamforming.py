@@ -26,6 +26,7 @@ class MultiBandBeamformer(Beamformer):
             maximum_ind = np.array(np.unravel_index(np.argmax(norm_values, axis=None), norm_values.shape))
             norm_values_list.append(norm_values)
             peaks.append(maximum_ind)
+            print(maximum_ind)
             peak_values.append(norm_values[maximum_ind[0], maximum_ind[1]] / np.mean(norm_values))
         max_peak_value = max(peak_values)
         self.k = peak_values.index(max_peak_value)

@@ -27,6 +27,7 @@ def compute_observations(toas: List[float], aoas: List[float], powers: List[floa
     # calculate the noise power, and instead of multiplication by the noise, divide the signal
     BW_loss = 10 * np.log10(band.BW * MEGA)  # BW loss in dB
     total_noise = -1 * (NF + BW_loss + N_0)
+    print(total_noise)
     # for each path
     for l in range(L):
         # assume random phase beamforming
