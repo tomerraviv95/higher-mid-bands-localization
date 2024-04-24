@@ -1,0 +1,21 @@
+# System parameters
+scenario: 'NY' # 'SYNTHETIC' or 'NY'
+ue_pos: [ 80 , 70 ]  # transmitter UE position
+B: 1 # number of BSs by which localization is done. It is 1 for the NY scenario and maximum of 3 for the synthetic.
+input_power: 10  # dBm
+
+# Bands parameters
+K: [ 20 ] # number of subcarriers
+Nr: [ 32 ] # number of elements in ULA
+fc: [ 24000 ] # carrier frequency in MHz
+BW: [ 9.6 ] # BW frequency in MHz
+
+# beamforming parameters
+est_type: 'both' # 'angle','time','both'
+alg: 'Beamformer' # 'Beamformer','MUSIC'
+aoa_res: 0.1  # resolution in degrees for the azimuth dictionary
+T_res: 0.001  # resolution in micro second for the delay dictionary
+
+# general
+seed: 1 # run seed
+plot_estimation_results: False # whether to plot the estimation spectrum - True or False
