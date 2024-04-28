@@ -1,4 +1,6 @@
 import matplotlib as mpl
+
+mpl.use('TkAgg')
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -52,6 +54,7 @@ linestyle_to_label = {"Beamformer_fc_[6000]_antennas_[4]_bw_[6]_subcarriers_[100
 if __name__ == "__main__":
     # plotter for rmse results figures in the paper
     input_powers = range(-20, 41, 10)
+    input_powers = [20]
     files1 = [
         "Beamformer_fc_[6000]_antennas_[4]_bw_[6]_subcarriers_[100].csv",
         "Beamformer_fc_[12000]_antennas_[8]_bw_[12]_subcarriers_[200].csv",
@@ -66,26 +69,56 @@ if __name__ == "__main__":
         "Beamformer_fc_[6000, 24000]_antennas_[4, 24]_bw_[6, 48]_subcarriers_[100, 200].csv",
     ]
     files = files1
+    plot_type = 'CDF'
     mean_rmse_dict = {}
+    rmse_dict = {}
     for input_power in input_powers:
         dir_path = f"{NY_DIR}/{str(input_power)}/"
         for file in files:
             file_path = dir_path + file
             df = pd.read_csv(file_path, index_col=0)
-            mean_rmse = np.mean(np.clip(df['Position RMSE'], a_min=0, a_max=MAX_RMSE))
+            rmse_vals = np.clip(df['Position RMSE'], a_min=0, a_max=MAX_RMSE)[:-1]
+            mean_rmse = np.mean(rmse_vals)
             if file not in mean_rmse_dict:
                 mean_rmse_dict[file] = []
+                rmse_dict[file] = []
             mean_rmse_dict[file].append(mean_rmse)
+            rmse_dict[file].extend(rmse_vals)
     # RMSE PLOT
-    fig = plt.figure()
-    for file in files:
-        plt.plot(input_powers, mean_rmse_dict[file], label=file_to_label[file], markersize=9,
-                 linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file],
-                 linestyle=linestyle_to_label[file])
-    plt.xlabel('Transmitted Power [dBm]')
-    plt.ylabel('RMSE [m]')
-    plt.grid(which='both', ls='--')
-    plt.legend(loc='lower left', prop={'size': 13})
-    plt.ylim([0, 5])
-    fig.savefig('RMSE.png')
-    plt.show()
+    if plot_type == 'RMSE':
+        fig = plt.figure()
+        for file in files:
+            plt.plot(input_powers, mean_rmse_dict[file], label=file_to_label[file], markersize=9,
+                     linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file],
+                     linestyle=linestyle_to_label[file])
+        plt.xlabel('Transmitted Power [dBm]')
+        plt.ylabel('RMSE [m]')
+        plt.grid(which='both', ls='--')
+        plt.legend(loc='lower left', prop={'size': 13})
+        plt.ylim([0, 5])
+        fig.savefig('RMSE.png')
+        plt.show()
+    elif plot_type == 'CDF':
+        fig = plt.figure()
+
+        for file in files:
+            plt.ecdf(rmse_dict[file], label=file_to_label[file], markersize=9,
+                     linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file],
+                     linestyle=linestyle_to_label[file], markevery=20)
+        ax = plt.gca()
+        inset_ax = ax.inset_axes([0.4, 0.35, 0.5, 0.5])
+        for file in files:
+            inset_ax.ecdf(rmse_dict[file], label=file_to_label[file], markersize=9,
+                          linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file],
+                          linestyle=linestyle_to_label[file], markevery=20)
+        inset_ax.set_xlim([10, 45])
+        inset_ax.set_ylim([0.85, 1])
+        plt.ylabel('Fraction of Data')
+        plt.xlabel('RMSE [m]')
+        plt.grid(which='both', ls='--')
+        plt.legend(loc='lower left', prop={'size': 13})
+        plt.xlim([0, 45])
+        fig.savefig('CDF.png')
+        plt.show()
+    else:
+        raise ValueError("No such graph type!")

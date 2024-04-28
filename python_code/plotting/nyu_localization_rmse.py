@@ -23,7 +23,6 @@ if __name__ == "__main__":
     params_all = {'K': [100, 200, 150, 200], 'Nr': [4, 8, 16, 24], 'fc': [6000, 12000, 18000, 24000],
                   'BW': [6, 12, 24, 48], 'alg': 'Beamformer'}
     params_list = [params_all, params6, params12, params18, params24, params_6_24]
-    params_list = [params6, params24, params_6_24]
     for params in params_list:
         for field, value in params.items():
             conf.set_value(field=field, value=value)
