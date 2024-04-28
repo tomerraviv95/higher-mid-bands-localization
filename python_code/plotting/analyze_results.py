@@ -9,8 +9,8 @@ from dir_definitions import NY_DIR
 
 MAX_RMSE = 100
 
-mpl.rcParams['xtick.labelsize'] = 24
-mpl.rcParams['ytick.labelsize'] = 24
+mpl.rcParams['xtick.labelsize'] = 20
+mpl.rcParams['ytick.labelsize'] = 20
 mpl.rcParams['font.size'] = 6
 mpl.rcParams['figure.autolayout'] = True
 mpl.rcParams['figure.figsize'] = [9.5, 6.45]
@@ -18,7 +18,7 @@ mpl.rcParams['axes.titlesize'] = 28
 mpl.rcParams['axes.labelsize'] = 28
 mpl.rcParams['lines.linewidth'] = 2
 mpl.rcParams['lines.markersize'] = 8
-mpl.rcParams['legend.fontsize'] = 12
+mpl.rcParams['legend.fontsize'] = 10
 mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['font.family'] = 'STIXGeneral'
 
@@ -105,18 +105,30 @@ if __name__ == "__main__":
             plt.ecdf(rmse_dict[file], label=file_to_label[file], markersize=9,
                      linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file],
                      linestyle=linestyle_to_label[file], markevery=20)
+        # upper tail
         ax = plt.gca()
-        inset_ax = ax.inset_axes([0.4, 0.35, 0.5, 0.5])
+        inset_ax = ax.inset_axes([0.47, 0.62, 0.5, 0.3])
         for file in files:
             inset_ax.ecdf(rmse_dict[file], label=file_to_label[file], markersize=9,
                           linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file],
                           linestyle=linestyle_to_label[file], markevery=20)
-        inset_ax.set_xlim([10, 45])
-        inset_ax.set_ylim([0.85, 1])
-        plt.ylabel('Fraction of Data')
-        plt.xlabel('RMSE [m]')
+        inset_ax.set_xlim([6, 45])
+        inset_ax.set_ylim([0.92, 1])
+        inset_ax.set_yticks([0.92, 0.94, 0.96, 0.98, 1])
+        # lower tail
+        ax = plt.gca()
+        inset_ax = ax.inset_axes([0.47, 0.25, 0.5, 0.3])
+        for file in files:
+            inset_ax.ecdf(rmse_dict[file], label=file_to_label[file], markersize=9,
+                          linewidth=3.5, color=color_to_label[file], marker=marker_to_label[file],
+                          linestyle=linestyle_to_label[file], markevery=20)
+        inset_ax.set_xlim([0, 1])
+        inset_ax.set_ylim([0, 0.8])
+        inset_ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8])
         plt.grid(which='both', ls='--')
-        plt.legend(loc='lower left', prop={'size': 13})
+        plt.ylabel('Cumulative Distribution Function')
+        plt.xlabel('RMSE [m]')
+        plt.legend(loc='lower left', prop={'size': 11})
         plt.xlim([0, 45])
         fig.savefig('CDF.png')
         plt.show()
