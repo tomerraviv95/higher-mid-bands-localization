@@ -6,7 +6,7 @@
 
 Python repository for the paper "Multi-Frequency Localization in the FR3 band".
 
-Please cite our [paper](https://arxiv.org/abs/2305.07309), if the code is used for publishing research. 
+Please cite our [paper](https://spawc2024.org/technical-program/), if the code is used for publishing research. 
 
 # Table of Contents
 
